@@ -30,12 +30,15 @@ OutlierOld="set fmri(robust_yn) 0"
 OutlierNew="set fmri(robust_yn) 0"
 
 # Loop over many random group comparisons
-for Comparison in {1..8000}
+for Comparison in {1..8}
 do
 	echo "Starting random group comparison $Comparison !"
 
 	# Make a random permutation of all subjects
-	Randomized=`shuf /home/andek/Data/fcon1000/Cambridge/Cambridge_Buckner_subjects.txt`
+	#Randomized=`shuf /home/andek/Data/fcon1000/Cambridge/Cambridge_Buckner_subjects.txt`
+
+	# Read a pregenerated permutation
+	Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/Cambridge_permutations/permutation${Comparison}.txt`
 
 	#echo ${Randomized[@]}
 
@@ -324,7 +327,7 @@ do
 	    fi
 	    
         # Remove old results
-        rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}/Group*
+        #rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}/Group*
 
 		echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
 	fi
