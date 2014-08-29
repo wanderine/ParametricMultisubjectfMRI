@@ -6,10 +6,9 @@ SignificantDifferences=0
 Smoothing=4mm
 Design=boxcar30
 
-data_directory=/home/andek/Research_projects/RandomGroupAnalyses/${Smoothing}/${Design}
+results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
 temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
-
 
 threads=0
 MaximumThreads=8 # maximum number of CPU threads to use
@@ -30,8 +29,16 @@ ClusterDefiningThresholdNew="set fmri(z_thresh) 2.3"
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
+one=1
+two=2
+three=3
+four=4
+five=5
+six=6
+seven=7
+
 # Loop over many random group comparisons
-for Comparison in {1..8}
+for Comparison in {1..1000}
 do
 	echo "Starting random group comparison $Comparison !"
 
@@ -223,9 +230,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - seven))
+            cp ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected "
 	    fi
@@ -234,9 +243,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - six))
+            cp ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -245,9 +256,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - five))
+            cp ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -256,9 +269,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - four))
+            cp ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -267,9 +282,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - three))
+            cp ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -278,9 +295,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - two))
+            cp ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -289,9 +308,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - one))
+            cp ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -300,9 +321,10 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+            cp ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
