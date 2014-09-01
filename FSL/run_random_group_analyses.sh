@@ -6,6 +6,10 @@ SignificantDifferences=0
 Smoothing=4mm
 Design=boxcar30
 
+results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}
+design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
+temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
+
 threads=0
 MaximumThreads=8 # maximum number of CPU threads to use
 
@@ -25,12 +29,16 @@ ClusterDefiningThresholdNew="set fmri(z_thresh) 2.3"
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
-# Outlier detection
-OutlierOld="set fmri(robust_yn) 0"
-OutlierNew="set fmri(robust_yn) 0"
+one=1
+two=2
+three=3
+four=4
+five=5
+six=6
+seven=7
 
 # Loop over many random group comparisons
-for Comparison in {1..8}
+for Comparison in {1..1000}
 do
 	echo "Starting random group comparison $Comparison !"
 
@@ -61,15 +69,6 @@ do
 	FirstSubjectGroup1=1
 	FirstSubjectGroup2=21 # change 
 
-	#FirstRegressorGroup1="set fmri(evg1.1) 1"
-	#FirstRegressorGroup2="set fmri(evg20.1) 0" # change 
-
-	#SecondRegressorGroup1="set fmri(evg1.2) 0"
-	#SecondRegressorGroup2="set fmri(evg20.2) 1" # change 
-
-	#FirstGroupMemberGroup1="set fmri(groupmem.1) 1"
-	#FirstGroupMemberGroup2="set fmri(groupmem.20) 2" # change 
-
 	# Fixed or random effect, 2 = mixed, 3 = fixed
 	EffectOld="set fmri(mixed_yn) 2"
 	EffectNew="set fmri(mixed_yn) 2"
@@ -86,49 +85,39 @@ do
 	NumberOfSubjectsDiffGroup1=19 # change   (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files)
 	NumberOfSubjectsDiffGroup2=19 # change  (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
 
-	design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
-	data_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30
-
-	# Remove old designs
-	#rm ${data_directory}/designs/*
-
-	# Copy template designs 
-	cp ${design_directory}/GroupComparison.fsf ${data_directory}/designs$threads/
+	
+	# Copy template design 
+	cp ${design_directory}/GroupComparison.fsf ${temp_directory}/designs$threads/
 
 	#-----------------------------------------
-
 	# Change effect type
 
-	sed -i "s/${EffectOld}/${EffectNew}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${EffectOld}/${EffectNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	#-----------------------------------------
-
 	# Change thresholding type
 
-	sed -i "s/${ThresholdMethodOld}/${ThresholdMethodNew}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${ThresholdMethodOld}/${ThresholdMethodNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	#-----------------------------------------
-
 	# Change number of subjects
 
-	sed -i "s/${NumberOfSubjectsOld}/${NumberOfSubjectsNewMacKillop}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${NumberOfSubjectsOld}/${NumberOfSubjectsNewMacKillop}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	#-----------------------------------------
 	# Change cluster defining threshold
 
-	sed -i "s/${ClusterDefiningThresholdOld}/${ClusterDefiningThresholdNew}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${ClusterDefiningThresholdOld}/${ClusterDefiningThresholdNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	#-----------------------------------------
-
 	# Change threshold
 
-	sed -i "s/${ThresholdOld}/${ThresholdNew}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${ThresholdOld}/${ThresholdNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	#-----------------------------------------
-
 	# Change number of first level analyses
 
-	sed -i "s/${NumberOfFirstLevelAnalysesOld}/${NumberOfFirstLevelAnalysesNewMacKillop}/g" ${data_directory}/designs${threads}/GroupComparison.fsf
+	sed -i "s/${NumberOfFirstLevelAnalysesOld}/${NumberOfFirstLevelAnalysesNewMacKillop}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
 
 	# Setup groups
 
@@ -183,7 +172,6 @@ do
 	#echo ${SubjectsGroup2FileNames[@]}
 
 	#-----------------------------------------------
-
 	# Now add all the filenames to the design file
 
 	#-----------------------------------------------
@@ -202,7 +190,7 @@ do
 	    #echo "$NewSubject"
 
 	    # Add a new subject line in the text file, by first finding the previous subject line
-	    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${data_directory}/designs${threads}/${file} 
+	    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${file} 
 	done
 
 	#-----------------------------------------------
@@ -220,7 +208,7 @@ do
 	    #echo "$NewSubject"
 
 	    # Add a new subject line in the text file, by first finding the previous subject line
-	    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${data_directory}/designs${threads}/${file} 
+	    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${file} 
 	done
 
 	#-----------------------------------------
@@ -229,7 +217,7 @@ do
 
 	date1=$(date +"%s")
 
-	feat ${data_directory}/designs${threads}/GroupComparison.fsf &
+	feat ${temp_directory}/designs${threads}/GroupComparison.fsf &
 	((threads++))
 	
 	if [ "$threads" -eq "$MaximumThreads" ]; then
@@ -242,9 +230,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - seven))
+            cp ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected "
 	    fi
@@ -253,9 +243,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - six))
+            cp ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -264,9 +256,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - five))
+            cp ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -275,9 +269,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - four))
+            cp ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -286,9 +282,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - three))
+            cp ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -297,9 +295,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - two))
+            cp ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -308,9 +308,11 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+			Comparison_=$((Comparison - one))
+            cp ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison_}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
@@ -319,15 +321,16 @@ do
 	    if [ "$Lines" -gt "1" ] ; then
 	        echo "Significant group difference detected!"
 			echo $'\n'
-			cat /home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
+			cat ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 			echo $'\n'
 			((SignificantDifferences++))
+            cp ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates/coordinates_comparison${Comparison}.txt
 	    else
 	        echo "No significant group difference detected  "
 	    fi
 	    
         # Remove old results
-        #rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}/Group*
+        rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}/Group*
 
 		echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
 	fi
