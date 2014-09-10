@@ -1,12 +1,15 @@
 #!/bin/bash
 
-Smoothing=16mm
+Smoothing=6mm
 Design=boxcar30
+
+Study=Cambridge
+#Study=Beijing
 
 start_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
 # Loop over all subjects
-for i in /home/andek/Data/fcon1000/Cambridge/*; do 
+for i in /home/andek/Data/fcon1000/${Study}/*; do 
 
     # Check if fMRI data exists for this directory
     if [ -e ${i}/func/rest.nii.gz ]; then
@@ -15,16 +18,16 @@ for i in /home/andek/Data/fcon1000/Cambridge/*; do
         cd $i
         # Get subject name
         Subject=${PWD##*/}
-	echo "-------------------------------"	
-        echo "Processing" $Subject
-	echo "-------------------------------"	
+		echo "-------------------------------"	
+   		echo "Processing" $Subject
+		echo "-------------------------------"	
         # Go back to original directory
         cd $start_directory
 
         # set data directories
         top_dir=/home/andek
-        anat_dir=$top_dir/Data/fcon1000/Cambridge/${Subject}/anat
-        epi_dir=$top_dir/Data/fcon1000/Cambridge/${Subject}/func
+        anat_dir=$top_dir/Data/fcon1000/${Study}/${Subject}/anat
+        epi_dir=$top_dir/Data/fcon1000/${Study}/${Subject}/func
         stim_dir=$top_dir/Research_projects/RandomGroupAnalyses
 
         # run afni_proc.py to create a single subject processing script
@@ -39,7 +42,7 @@ for i in /home/andek/Data/fcon1000/Cambridge/*; do
                 -volreg_align_to third                                   \
                 -volreg_align_e2a                                        \
                 -volreg_tlrc_warp                                        \
-                -blur_size 16.0                                          \
+                -blur_size 6.0                                           \
                 -regress_stim_times $stim_dir/boxcar30stim.txt           \
                 -regress_stim_labels                                     \
                     boxcar30                                             \
@@ -49,20 +52,24 @@ for i in /home/andek/Data/fcon1000/Cambridge/*; do
                     -jobs 8                                              \
                     -gltsym 'SYM: boxcar30' -glt_label 1 activity        \
                 -regress_make_ideal_sum sum_ideal.1D                     \
+				-volreg_warp_dxyz 3										 \
                 -regress_est_blur_epits                                  \
                 -regress_est_blur_errts
 
+		# Fix to enforce 3 mm voxels
+        # -volreg_warp_dxyz 3										 \
+
         # Move analysis script
-        mv proc.${Subject} Scripts/${Smoothing}/${Design}
+        mv proc.${Subject} Scripts/${Study}/${Smoothing}/${Design}
 
         # Run analysis
-        tcsh -xef Scripts/${Smoothing}/${Design}/proc.${Subject} |& tee  Logs/${Smoothing}/${Design}/output.proc.${Subject} 
+        tcsh -xef Scripts/${Study}/${Smoothing}/${Design}/proc.${Subject} |& tee  Logs/${Study}/${Smoothing}/${Design}/output.proc.${Subject} 
     
         # Move results to correct folder
-        mv ${Subject}.results Results/${Smoothing}/${Design}
+        mv ${Subject}.results Results/${Study}/${Smoothing}/${Design}
 
     else
-	echo "This directory does not contain any fMRI data!"
+	    echo "This directory does not contain any fMRI data!"
     fi
 
 done

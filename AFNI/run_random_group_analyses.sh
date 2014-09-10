@@ -2,16 +2,21 @@
 
 # Set variables
 
-GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30 
-ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupAnalyses
+Smoothing=4mm
+Design=boxcar30
+Study=Cambridge
+#Study=Beijing
+
+GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
+ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
 # Loop over many random group comparisons
-for Comparison in {1..500}
+for Comparison in {1..1}
 do
 	echo "Starting random group comparison $Comparison !"
 
 	# Read a pregenerated permutation
-	Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/Cambridge_permutations/permutation${Comparison}.txt`
+	Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${Study}_permutations/permutation${Comparison}.txt`
 
 	thirtynine=39
 	Subjects=()
@@ -64,9 +69,9 @@ do
 	Subject39=${Subjects[$((38))]}
 	Subject40=${Subjects[$((39))]}
 
-	echo ${Subjects[$((0))]}
+	echo ${Subjects[@]}
 	
-	echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
+	#echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
 
 	3dttest++ -prefix $ResultsDirectory/4mm_boxcar30_${Comparison} -AminusB                 \
 	          -setA Group1                                               \
@@ -111,6 +116,9 @@ do
              ${Subject38} "$GroupDirectory/${Subject38}.results/stats.${Subject38}+tlrc[1]" \
              ${Subject39} "$GroupDirectory/${Subject39}.results/stats.${Subject39}+tlrc[1]" \
              ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1]" \
+
+	# Estimate smoothness from data
+	smoothnesses = ( `3dFWHMx -automask -input 4mm_boxcar30_${Comparison}+tlrc` )
 
 	# Now run cluster simulation to get p-values for clusters
 
