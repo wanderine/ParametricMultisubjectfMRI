@@ -10,6 +10,8 @@ Study=Cambridge
 GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
 ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
+NumberOfSubjects=40.0
+
 # Loop over many random group comparisons
 for Comparison in {1..1}
 do
@@ -69,7 +71,7 @@ do
 	Subject39=${Subjects[$((38))]}
 	Subject40=${Subjects[$((39))]}
 
-	echo ${Subjects[@]}
+	echo ${Subject2}
 	
 	#echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
 
@@ -117,12 +119,70 @@ do
              ${Subject39} "$GroupDirectory/${Subject39}.results/stats.${Subject39}+tlrc[1]" \
              ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1]" \
 
-	# Estimate smoothness from data
-	smoothnesses = ( `3dFWHMx -automask -input 4mm_boxcar30_${Comparison}+tlrc` )
+	# Calculate mean smoothness
+	
+	AllSmoothnesses=()
+	i=0
+
+	# Read all smoothness estimations from file
+	for subject in $(seq 0 $(($thirtynine)) )	
+	do
+		smoothnesses=`cat $GroupDirectory/${Subjects[$((subject))]}.results/blur.errts.1D`
+		smoothnessstring=${smoothnesses[$(($i))]}
+		AllSmoothnesses+=($smoothnessstring)
+	done
+
+	three=3
+
+	# Calculate mean x smoothness
+	XSmoothness=0.0
+	index=0
+	for subject in $(seq 0 $(($thirtynine)) )
+	#for subject in $(seq 0 $(($two)) )		
+	do
+		XSmoothness=$(echo $XSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
+		index=$((index + three))
+	done
+	XSmoothness=$(echo "scale=3;$XSmoothness /  ${NumberOfSubjects}" | bc)
+
+	# Calculate mean y smoothness
+	YSmoothness=0.0
+	index=1
+	for subject in $(seq 0 $(($thirtynine)) )
+	do
+		YSmoothness=$(echo $YSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
+		index=$((index + three))
+	done
+	YSmoothness=$(echo "scale=3; $YSmoothness /  ${NumberOfSubjects}" | bc)
+
+	# Calculate mean z smoothness
+	ZSmoothness=0.0
+	index=2
+	for subject in $(seq 0 $(($thirtynine)) )
+	do
+		ZSmoothness=$(echo $ZSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
+		index=$((index + three))
+	done
+	ZSmoothness=$(echo "scale=3; $ZSmoothness /  ${NumberOfSubjects}" | bc)
+
+	#echo ${AllSmoothnesses[*]}
+
+	echo "Mean x smoothness is $XSmoothness"
+	echo "Mean y smoothness is $YSmoothness"
+	echo "Mean z smoothness is $ZSmoothness"
 
 	# Now run cluster simulation to get p-values for clusters
+	3dClustSim -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -nxyz 54 64 50 -dxyz 3 3 3 -pthr 0.01 -niml -prefix kalle
 
+	#3dClustCount -final $ResultsDirectory/4mm_boxcar30_${Comparison}+tlrc
 
+	# Finally apply same voxel threshold to statistical map, and calculate the size of the largest cluster
+
+    # Compare the size of the largest cluster to the threshold from 3dClustSim, to see if the cluster is significantfsl &
+	
+3drefit -atrstring AFNI_CLUSTSIM_NN1 file:kalle.NN1.niml $ResultsDirectory/4mm_boxcar30_${Comparison}+tlrc
+ #-atrstring AFNI_CLUSTSIM_MASK file:kalle.mask \
+ 
 
 done
 
