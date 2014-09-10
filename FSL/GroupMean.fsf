@@ -1,0 +1,1537 @@
+
+# FEAT version number
+set fmri(version) 6.00
+
+# Are we in MELODIC?
+set fmri(inmelodic) 0
+
+# Analysis level
+# 1 : First-level analysis
+# 2 : Higher-level analysis
+set fmri(level) 2
+
+# Which stages to run
+# 0 : No first-level analysis (registration and/or group stats only)
+# 7 : Full first-level analysis
+# 1 : Pre-processing
+# 2 : Statistics
+set fmri(analysis) 2
+
+# Use relative filenames
+set fmri(relative_yn) 0
+
+# Balloon help
+set fmri(help_yn) 1
+
+# Run Featwatcher
+set fmri(featwatcher_yn) 1
+
+# Cleanup first-level standard-space images
+set fmri(sscleanup_yn) 0
+
+# Output directory
+set fmri(outputdir) "/home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupMean"
+
+# TR(s)
+set fmri(tr) 3
+
+# Total volumes
+set fmri(npts) 198
+
+# Delete volumes
+set fmri(ndelete) 0
+
+# Perfusion tag/control order
+set fmri(tagfirst) 1
+
+# Number of first-level analyses
+set fmri(multiple) 198
+
+# Higher-level input type
+# 1 : Inputs are lower-level FEAT directories
+# 2 : Inputs are cope images from FEAT directories
+set fmri(inputtype) 1
+
+# Carry out pre-stats processing?
+set fmri(filtering_yn) 0
+
+# Brain/background threshold, %
+set fmri(brain_thresh) 10
+
+# Critical z for design efficiency calculation
+set fmri(critical_z) 5.3
+
+# Noise level
+set fmri(noise) 0.66
+
+# Noise AR(1)
+set fmri(noisear) 0.34
+
+# Motion correction
+# 0 : None
+# 1 : MCFLIRT
+set fmri(mc) 1
+
+# Spin-history (currently obsolete)
+set fmri(sh_yn) 0
+
+# B0 fieldmap unwarping?
+set fmri(regunwarp_yn) 0
+
+# EPI dwell time (ms)
+set fmri(dwell) 0.7
+
+# EPI TE (ms)
+set fmri(te) 35
+
+# % Signal loss threshold
+set fmri(signallossthresh) 10
+
+# Unwarp direction
+set fmri(unwarp_dir) y-
+
+# Slice timing correction
+# 0 : None
+# 1 : Regular up (0, 1, 2, 3, ...)
+# 2 : Regular down
+# 3 : Use slice order file
+# 4 : Use slice timings file
+# 5 : Interleaved (0, 2, 4 ... 1, 3, 5 ... )
+set fmri(st) 0
+
+# Slice timings file
+set fmri(st_file) ""
+
+# BET brain extraction
+set fmri(bet_yn) 1
+
+# Spatial smoothing FWHM (mm)
+set fmri(smooth) 5
+
+# Intensity normalization
+set fmri(norm_yn) 0
+
+# Perfusion subtraction
+set fmri(perfsub_yn) 0
+
+# Highpass temporal filtering
+set fmri(temphp_yn) 1
+
+# Lowpass temporal filtering
+set fmri(templp_yn) 0
+
+# MELODIC ICA data exploration
+set fmri(melodic_yn) 0
+
+# Carry out main stats?
+set fmri(stats_yn) 1
+
+# Carry out prewhitening?
+set fmri(prewhiten_yn) 1
+
+# Add motion parameters to model
+# 0 : No
+# 1 : Yes
+set fmri(motionevs) 0
+set fmri(motionevsbeta) ""
+set fmri(scriptevsbeta) ""
+
+# Robust outlier detection in FLAME?
+set fmri(robust_yn) 0
+
+# Higher-level modelling
+# 3 : Fixed effects
+# 0 : Mixed Effects: Simple OLS
+# 2 : Mixed Effects: FLAME 1
+# 1 : Mixed Effects: FLAME 1+2
+set fmri(mixed_yn) 2
+
+# Number of EVs
+set fmri(evs_orig) 1
+set fmri(evs_real) 1
+set fmri(evs_vox) 0
+
+# Number of contrasts
+set fmri(ncon_orig) 1
+set fmri(ncon_real) 1
+
+# Number of F-tests
+set fmri(nftests_orig) 0
+set fmri(nftests_real) 0
+
+# Add constant column to design matrix? (obsolete)
+set fmri(constcol) 0
+
+# Carry out post-stats steps?
+set fmri(poststats_yn) 0
+
+# Pre-threshold masking?
+set fmri(threshmask) ""
+
+# Thresholding
+# 0 : None
+# 1 : Uncorrected
+# 2 : Voxel
+# 3 : Cluster
+set fmri(thresh) 3
+
+# P threshold
+set fmri(prob_thresh) 0.05
+
+# Z threshold
+set fmri(z_thresh) 2.3
+
+# Z min/max for colour rendering
+# 0 : Use actual Z min/max
+# 1 : Use preset Z min/max
+set fmri(zdisplay) 0
+
+# Z min in colour rendering
+set fmri(zmin) 2
+
+# Z max in colour rendering
+set fmri(zmax) 8
+
+# Colour rendering type
+# 0 : Solid blobs
+# 1 : Transparent blobs
+set fmri(rendertype) 1
+
+# Background image for higher-level stats overlays
+# 1 : Mean highres
+# 2 : First highres
+# 3 : Mean functional
+# 4 : First functional
+# 5 : Standard space template
+set fmri(bgimage) 5
+
+# Create time series plots
+set fmri(tsplot_yn) 1
+
+# Registration to initial structural
+set fmri(reginitial_highres_yn) 0
+
+# Search space for registration to initial structural
+# 0   : No search
+# 90  : Normal search
+# 180 : Full search
+set fmri(reginitial_highres_search) 90
+
+# Degrees of Freedom for registration to initial structural
+set fmri(reginitial_highres_dof) 3
+
+# Registration to main structural
+set fmri(reghighres_yn) 0
+
+# Search space for registration to main structural
+# 0   : No search
+# 90  : Normal search
+# 180 : Full search
+set fmri(reghighres_search) 90
+
+# Degrees of Freedom for registration to main structural
+set fmri(reghighres_dof) BBR
+
+# Registration to standard image?
+set fmri(regstandard_yn) 1
+
+# Use alternate reference images?
+set fmri(alternateReference_yn) 0
+
+# Standard image
+set fmri(regstandard) "/usr/local/fsl/data/standard/MNI152_T1_2mm_brain"
+
+# Search space for registration to standard space
+# 0   : No search
+# 90  : Normal search
+# 180 : Full search
+set fmri(regstandard_search) 90
+
+# Degrees of Freedom for registration to standard space
+set fmri(regstandard_dof) 12
+
+# Do nonlinear registration from structural to standard space?
+set fmri(regstandard_nonlinear_yn) 0
+
+# Control nonlinear warp field resolution
+set fmri(regstandard_nonlinear_warpres) 10 
+
+# High pass filter cutoff
+set fmri(paradigm_hp) 100
+
+# Number of lower-level copes feeding into higher-level analysis
+set fmri(ncopeinputs) 1
+
+# Use lower-level cope 1 for higher-level analysis
+set fmri(copeinput.1) 1
+
+
+# Add confound EVs text file
+set fmri(confoundevs) 0
+
+# EV 1 title
+set fmri(evtitle1) ""
+
+# Basic waveform shape (EV 1)
+# 0 : Square
+# 1 : Sinusoid
+# 2 : Custom (1 entry per volume)
+# 3 : Custom (3 column format)
+# 4 : Interaction
+# 10 : Empty (all zeros)
+set fmri(shape1) 2
+
+# Convolution (EV 1)
+# 0 : None
+# 1 : Gaussian
+# 2 : Gamma
+# 3 : Double-Gamma HRF
+# 4 : Gamma basis functions
+# 5 : Sine basis functions
+# 6 : FIR basis functions
+set fmri(convolve1) 0
+
+# Convolve phase (EV 1)
+set fmri(convolve_phase1) 0
+
+# Apply temporal filtering (EV 1)
+set fmri(tempfilt_yn1) 0
+
+# Add temporal derivative (EV 1)
+set fmri(deriv_yn1) 0
+
+# Custom EV file (EV 1)
+set fmri(custom1) "dummy"
+
+# Orthogonalise EV 1 wrt EV 0
+set fmri(ortho1.0) 0
+
+# Orthogonalise EV 1 wrt EV 1
+set fmri(ortho1.1) 0
+
+# Higher-level EV value for EV 1 and input 1
+set fmri(evg1.1) 1
+
+# Higher-level EV value for EV 1 and input 2
+set fmri(evg2.1) 1
+
+# Higher-level EV value for EV 1 and input 3
+set fmri(evg3.1) 1
+
+# Higher-level EV value for EV 1 and input 4
+set fmri(evg4.1) 1
+
+# Higher-level EV value for EV 1 and input 5
+set fmri(evg5.1) 1
+
+# Higher-level EV value for EV 1 and input 6
+set fmri(evg6.1) 1
+
+# Higher-level EV value for EV 1 and input 7
+set fmri(evg7.1) 1
+
+# Higher-level EV value for EV 1 and input 8
+set fmri(evg8.1) 1
+
+# Higher-level EV value for EV 1 and input 9
+set fmri(evg9.1) 1
+
+# Higher-level EV value for EV 1 and input 10
+set fmri(evg10.1) 1
+
+# Higher-level EV value for EV 1 and input 11
+set fmri(evg11.1) 1
+
+# Higher-level EV value for EV 1 and input 12
+set fmri(evg12.1) 1
+
+# Higher-level EV value for EV 1 and input 13
+set fmri(evg13.1) 1
+
+# Higher-level EV value for EV 1 and input 14
+set fmri(evg14.1) 1
+
+# Higher-level EV value for EV 1 and input 15
+set fmri(evg15.1) 1
+
+# Higher-level EV value for EV 1 and input 16
+set fmri(evg16.1) 1
+
+# Higher-level EV value for EV 1 and input 17
+set fmri(evg17.1) 1
+
+# Higher-level EV value for EV 1 and input 18
+set fmri(evg18.1) 1
+
+# Higher-level EV value for EV 1 and input 19
+set fmri(evg19.1) 1
+
+# Higher-level EV value for EV 1 and input 20
+set fmri(evg20.1) 1
+
+# Higher-level EV value for EV 1 and input 21
+set fmri(evg21.1) 1
+
+# Higher-level EV value for EV 1 and input 22
+set fmri(evg22.1) 1
+
+# Higher-level EV value for EV 1 and input 23
+set fmri(evg23.1) 1
+
+# Higher-level EV value for EV 1 and input 24
+set fmri(evg24.1) 1
+
+# Higher-level EV value for EV 1 and input 25
+set fmri(evg25.1) 1
+
+# Higher-level EV value for EV 1 and input 26
+set fmri(evg26.1) 1
+
+# Higher-level EV value for EV 1 and input 27
+set fmri(evg27.1) 1
+
+# Higher-level EV value for EV 1 and input 28
+set fmri(evg28.1) 1
+
+# Higher-level EV value for EV 1 and input 29
+set fmri(evg29.1) 1
+
+# Higher-level EV value for EV 1 and input 30
+set fmri(evg30.1) 1
+
+# Higher-level EV value for EV 1 and input 31
+set fmri(evg31.1) 1
+
+# Higher-level EV value for EV 1 and input 32
+set fmri(evg32.1) 1
+
+# Higher-level EV value for EV 1 and input 33
+set fmri(evg33.1) 1
+
+# Higher-level EV value for EV 1 and input 34
+set fmri(evg34.1) 1
+
+# Higher-level EV value for EV 1 and input 35
+set fmri(evg35.1) 1
+
+# Higher-level EV value for EV 1 and input 36
+set fmri(evg36.1) 1
+
+# Higher-level EV value for EV 1 and input 37
+set fmri(evg37.1) 1
+
+# Higher-level EV value for EV 1 and input 38
+set fmri(evg38.1) 1
+
+# Higher-level EV value for EV 1 and input 39
+set fmri(evg39.1) 1
+
+# Higher-level EV value for EV 1 and input 40
+set fmri(evg40.1) 1
+
+# Higher-level EV value for EV 1 and input 41
+set fmri(evg41.1) 1
+
+# Higher-level EV value for EV 1 and input 42
+set fmri(evg42.1) 1
+
+# Higher-level EV value for EV 1 and input 43
+set fmri(evg43.1) 1
+
+# Higher-level EV value for EV 1 and input 44
+set fmri(evg44.1) 1
+
+# Higher-level EV value for EV 1 and input 45
+set fmri(evg45.1) 1
+
+# Higher-level EV value for EV 1 and input 46
+set fmri(evg46.1) 1
+
+# Higher-level EV value for EV 1 and input 47
+set fmri(evg47.1) 1
+
+# Higher-level EV value for EV 1 and input 48
+set fmri(evg48.1) 1
+
+# Higher-level EV value for EV 1 and input 49
+set fmri(evg49.1) 1
+
+# Higher-level EV value for EV 1 and input 50
+set fmri(evg50.1) 1
+
+# Higher-level EV value for EV 1 and input 51
+set fmri(evg51.1) 1
+
+# Higher-level EV value for EV 1 and input 52
+set fmri(evg52.1) 1
+
+# Higher-level EV value for EV 1 and input 53
+set fmri(evg53.1) 1
+
+# Higher-level EV value for EV 1 and input 54
+set fmri(evg54.1) 1
+
+# Higher-level EV value for EV 1 and input 55
+set fmri(evg55.1) 1
+
+# Higher-level EV value for EV 1 and input 56
+set fmri(evg56.1) 1
+
+# Higher-level EV value for EV 1 and input 57
+set fmri(evg57.1) 1
+
+# Higher-level EV value for EV 1 and input 58
+set fmri(evg58.1) 1
+
+# Higher-level EV value for EV 1 and input 59
+set fmri(evg59.1) 1
+
+# Higher-level EV value for EV 1 and input 60
+set fmri(evg60.1) 1
+
+# Higher-level EV value for EV 1 and input 61
+set fmri(evg61.1) 1
+
+# Higher-level EV value for EV 1 and input 62
+set fmri(evg62.1) 1
+
+# Higher-level EV value for EV 1 and input 63
+set fmri(evg63.1) 1
+
+# Higher-level EV value for EV 1 and input 64
+set fmri(evg64.1) 1
+
+# Higher-level EV value for EV 1 and input 65
+set fmri(evg65.1) 1
+
+# Higher-level EV value for EV 1 and input 66
+set fmri(evg66.1) 1
+
+# Higher-level EV value for EV 1 and input 67
+set fmri(evg67.1) 1
+
+# Higher-level EV value for EV 1 and input 68
+set fmri(evg68.1) 1
+
+# Higher-level EV value for EV 1 and input 69
+set fmri(evg69.1) 1
+
+# Higher-level EV value for EV 1 and input 70
+set fmri(evg70.1) 1
+
+# Higher-level EV value for EV 1 and input 71
+set fmri(evg71.1) 1
+
+# Higher-level EV value for EV 1 and input 72
+set fmri(evg72.1) 1
+
+# Higher-level EV value for EV 1 and input 73
+set fmri(evg73.1) 1
+
+# Higher-level EV value for EV 1 and input 74
+set fmri(evg74.1) 1
+
+# Higher-level EV value for EV 1 and input 75
+set fmri(evg75.1) 1
+
+# Higher-level EV value for EV 1 and input 76
+set fmri(evg76.1) 1
+
+# Higher-level EV value for EV 1 and input 77
+set fmri(evg77.1) 1
+
+# Higher-level EV value for EV 1 and input 78
+set fmri(evg78.1) 1
+
+# Higher-level EV value for EV 1 and input 79
+set fmri(evg79.1) 1
+
+# Higher-level EV value for EV 1 and input 80
+set fmri(evg80.1) 1
+
+# Higher-level EV value for EV 1 and input 81
+set fmri(evg81.1) 1
+
+# Higher-level EV value for EV 1 and input 82
+set fmri(evg82.1) 1
+
+# Higher-level EV value for EV 1 and input 83
+set fmri(evg83.1) 1
+
+# Higher-level EV value for EV 1 and input 84
+set fmri(evg84.1) 1
+
+# Higher-level EV value for EV 1 and input 85
+set fmri(evg85.1) 1
+
+# Higher-level EV value for EV 1 and input 86
+set fmri(evg86.1) 1
+
+# Higher-level EV value for EV 1 and input 87
+set fmri(evg87.1) 1
+
+# Higher-level EV value for EV 1 and input 88
+set fmri(evg88.1) 1
+
+# Higher-level EV value for EV 1 and input 89
+set fmri(evg89.1) 1
+
+# Higher-level EV value for EV 1 and input 90
+set fmri(evg90.1) 1
+
+# Higher-level EV value for EV 1 and input 91
+set fmri(evg91.1) 1
+
+# Higher-level EV value for EV 1 and input 92
+set fmri(evg92.1) 1
+
+# Higher-level EV value for EV 1 and input 93
+set fmri(evg93.1) 1
+
+# Higher-level EV value for EV 1 and input 94
+set fmri(evg94.1) 1
+
+# Higher-level EV value for EV 1 and input 95
+set fmri(evg95.1) 1
+
+# Higher-level EV value for EV 1 and input 96
+set fmri(evg96.1) 1
+
+# Higher-level EV value for EV 1 and input 97
+set fmri(evg97.1) 1
+
+# Higher-level EV value for EV 1 and input 98
+set fmri(evg98.1) 1
+
+# Higher-level EV value for EV 1 and input 99
+set fmri(evg99.1) 1
+
+# Higher-level EV value for EV 1 and input 100
+set fmri(evg100.1) 1
+
+# Higher-level EV value for EV 1 and input 101
+set fmri(evg101.1) 1
+
+# Higher-level EV value for EV 1 and input 102
+set fmri(evg102.1) 1
+
+# Higher-level EV value for EV 1 and input 103
+set fmri(evg103.1) 1
+
+# Higher-level EV value for EV 1 and input 104
+set fmri(evg104.1) 1
+
+# Higher-level EV value for EV 1 and input 105
+set fmri(evg105.1) 1
+
+# Higher-level EV value for EV 1 and input 106
+set fmri(evg106.1) 1
+
+# Higher-level EV value for EV 1 and input 107
+set fmri(evg107.1) 1
+
+# Higher-level EV value for EV 1 and input 108
+set fmri(evg108.1) 1
+
+# Higher-level EV value for EV 1 and input 109
+set fmri(evg109.1) 1
+
+# Higher-level EV value for EV 1 and input 110
+set fmri(evg110.1) 1
+
+# Higher-level EV value for EV 1 and input 111
+set fmri(evg111.1) 1
+
+# Higher-level EV value for EV 1 and input 112
+set fmri(evg112.1) 1
+
+# Higher-level EV value for EV 1 and input 113
+set fmri(evg113.1) 1
+
+# Higher-level EV value for EV 1 and input 114
+set fmri(evg114.1) 1
+
+# Higher-level EV value for EV 1 and input 115
+set fmri(evg115.1) 1
+
+# Higher-level EV value for EV 1 and input 116
+set fmri(evg116.1) 1
+
+# Higher-level EV value for EV 1 and input 117
+set fmri(evg117.1) 1
+
+# Higher-level EV value for EV 1 and input 118
+set fmri(evg118.1) 1
+
+# Higher-level EV value for EV 1 and input 119
+set fmri(evg119.1) 1
+
+# Higher-level EV value for EV 1 and input 120
+set fmri(evg120.1) 1
+
+# Higher-level EV value for EV 1 and input 121
+set fmri(evg121.1) 1
+
+# Higher-level EV value for EV 1 and input 122
+set fmri(evg122.1) 1
+
+# Higher-level EV value for EV 1 and input 123
+set fmri(evg123.1) 1
+
+# Higher-level EV value for EV 1 and input 124
+set fmri(evg124.1) 1
+
+# Higher-level EV value for EV 1 and input 125
+set fmri(evg125.1) 1
+
+# Higher-level EV value for EV 1 and input 126
+set fmri(evg126.1) 1
+
+# Higher-level EV value for EV 1 and input 127
+set fmri(evg127.1) 1
+
+# Higher-level EV value for EV 1 and input 128
+set fmri(evg128.1) 1
+
+# Higher-level EV value for EV 1 and input 129
+set fmri(evg129.1) 1
+
+# Higher-level EV value for EV 1 and input 130
+set fmri(evg130.1) 1
+
+# Higher-level EV value for EV 1 and input 131
+set fmri(evg131.1) 1
+
+# Higher-level EV value for EV 1 and input 132
+set fmri(evg132.1) 1
+
+# Higher-level EV value for EV 1 and input 133
+set fmri(evg133.1) 1
+
+# Higher-level EV value for EV 1 and input 134
+set fmri(evg134.1) 1
+
+# Higher-level EV value for EV 1 and input 135
+set fmri(evg135.1) 1
+
+# Higher-level EV value for EV 1 and input 136
+set fmri(evg136.1) 1
+
+# Higher-level EV value for EV 1 and input 137
+set fmri(evg137.1) 1
+
+# Higher-level EV value for EV 1 and input 138
+set fmri(evg138.1) 1
+
+# Higher-level EV value for EV 1 and input 139
+set fmri(evg139.1) 1
+
+# Higher-level EV value for EV 1 and input 140
+set fmri(evg140.1) 1
+
+# Higher-level EV value for EV 1 and input 141
+set fmri(evg141.1) 1
+
+# Higher-level EV value for EV 1 and input 142
+set fmri(evg142.1) 1
+
+# Higher-level EV value for EV 1 and input 143
+set fmri(evg143.1) 1
+
+# Higher-level EV value for EV 1 and input 144
+set fmri(evg144.1) 1
+
+# Higher-level EV value for EV 1 and input 145
+set fmri(evg145.1) 1
+
+# Higher-level EV value for EV 1 and input 146
+set fmri(evg146.1) 1
+
+# Higher-level EV value for EV 1 and input 147
+set fmri(evg147.1) 1
+
+# Higher-level EV value for EV 1 and input 148
+set fmri(evg148.1) 1
+
+# Higher-level EV value for EV 1 and input 149
+set fmri(evg149.1) 1
+
+# Higher-level EV value for EV 1 and input 150
+set fmri(evg150.1) 1
+
+# Higher-level EV value for EV 1 and input 151
+set fmri(evg151.1) 1
+
+# Higher-level EV value for EV 1 and input 152
+set fmri(evg152.1) 1
+
+# Higher-level EV value for EV 1 and input 153
+set fmri(evg153.1) 1
+
+# Higher-level EV value for EV 1 and input 154
+set fmri(evg154.1) 1
+
+# Higher-level EV value for EV 1 and input 155
+set fmri(evg155.1) 1
+
+# Higher-level EV value for EV 1 and input 156
+set fmri(evg156.1) 1
+
+# Higher-level EV value for EV 1 and input 157
+set fmri(evg157.1) 1
+
+# Higher-level EV value for EV 1 and input 158
+set fmri(evg158.1) 1
+
+# Higher-level EV value for EV 1 and input 159
+set fmri(evg159.1) 1
+
+# Higher-level EV value for EV 1 and input 160
+set fmri(evg160.1) 1
+
+# Higher-level EV value for EV 1 and input 161
+set fmri(evg161.1) 1
+
+# Higher-level EV value for EV 1 and input 162
+set fmri(evg162.1) 1
+
+# Higher-level EV value for EV 1 and input 163
+set fmri(evg163.1) 1
+
+# Higher-level EV value for EV 1 and input 164
+set fmri(evg164.1) 1
+
+# Higher-level EV value for EV 1 and input 165
+set fmri(evg165.1) 1
+
+# Higher-level EV value for EV 1 and input 166
+set fmri(evg166.1) 1
+
+# Higher-level EV value for EV 1 and input 167
+set fmri(evg167.1) 1
+
+# Higher-level EV value for EV 1 and input 168
+set fmri(evg168.1) 1
+
+# Higher-level EV value for EV 1 and input 169
+set fmri(evg169.1) 1
+
+# Higher-level EV value for EV 1 and input 170
+set fmri(evg170.1) 1
+
+# Higher-level EV value for EV 1 and input 171
+set fmri(evg171.1) 1
+
+# Higher-level EV value for EV 1 and input 172
+set fmri(evg172.1) 1
+
+# Higher-level EV value for EV 1 and input 173
+set fmri(evg173.1) 1
+
+# Higher-level EV value for EV 1 and input 174
+set fmri(evg174.1) 1
+
+# Higher-level EV value for EV 1 and input 175
+set fmri(evg175.1) 1
+
+# Higher-level EV value for EV 1 and input 176
+set fmri(evg176.1) 1
+
+# Higher-level EV value for EV 1 and input 177
+set fmri(evg177.1) 1
+
+# Higher-level EV value for EV 1 and input 178
+set fmri(evg178.1) 1
+
+# Higher-level EV value for EV 1 and input 179
+set fmri(evg179.1) 1
+
+# Higher-level EV value for EV 1 and input 180
+set fmri(evg180.1) 1
+
+# Higher-level EV value for EV 1 and input 181
+set fmri(evg181.1) 1
+
+# Higher-level EV value for EV 1 and input 182
+set fmri(evg182.1) 1
+
+# Higher-level EV value for EV 1 and input 183
+set fmri(evg183.1) 1
+
+# Higher-level EV value for EV 1 and input 184
+set fmri(evg184.1) 1
+
+# Higher-level EV value for EV 1 and input 185
+set fmri(evg185.1) 1
+
+# Higher-level EV value for EV 1 and input 186
+set fmri(evg186.1) 1
+
+# Higher-level EV value for EV 1 and input 187
+set fmri(evg187.1) 1
+
+# Higher-level EV value for EV 1 and input 188
+set fmri(evg188.1) 1
+
+# Higher-level EV value for EV 1 and input 189
+set fmri(evg189.1) 1
+
+# Higher-level EV value for EV 1 and input 190
+set fmri(evg190.1) 1
+
+# Higher-level EV value for EV 1 and input 191
+set fmri(evg191.1) 1
+
+# Higher-level EV value for EV 1 and input 192
+set fmri(evg192.1) 1
+
+# Higher-level EV value for EV 1 and input 193
+set fmri(evg193.1) 1
+
+# Higher-level EV value for EV 1 and input 194
+set fmri(evg194.1) 1
+
+# Higher-level EV value for EV 1 and input 195
+set fmri(evg195.1) 1
+
+# Higher-level EV value for EV 1 and input 196
+set fmri(evg196.1) 1
+
+# Higher-level EV value for EV 1 and input 197
+set fmri(evg197.1) 1
+
+# Higher-level EV value for EV 1 and input 198
+set fmri(evg198.1) 1
+
+# Group membership for input 1
+set fmri(groupmem.1) 1
+
+# Group membership for input 2
+set fmri(groupmem.2) 1
+
+# Group membership for input 3
+set fmri(groupmem.3) 1
+
+# Group membership for input 4
+set fmri(groupmem.4) 1
+
+# Group membership for input 5
+set fmri(groupmem.5) 1
+
+# Group membership for input 6
+set fmri(groupmem.6) 1
+
+# Group membership for input 7
+set fmri(groupmem.7) 1
+
+# Group membership for input 8
+set fmri(groupmem.8) 1
+
+# Group membership for input 9
+set fmri(groupmem.9) 1
+
+# Group membership for input 10
+set fmri(groupmem.10) 1
+
+# Group membership for input 11
+set fmri(groupmem.11) 1
+
+# Group membership for input 12
+set fmri(groupmem.12) 1
+
+# Group membership for input 13
+set fmri(groupmem.13) 1
+
+# Group membership for input 14
+set fmri(groupmem.14) 1
+
+# Group membership for input 15
+set fmri(groupmem.15) 1
+
+# Group membership for input 16
+set fmri(groupmem.16) 1
+
+# Group membership for input 17
+set fmri(groupmem.17) 1
+
+# Group membership for input 18
+set fmri(groupmem.18) 1
+
+# Group membership for input 19
+set fmri(groupmem.19) 1
+
+# Group membership for input 20
+set fmri(groupmem.20) 1
+
+# Group membership for input 21
+set fmri(groupmem.21) 1
+
+# Group membership for input 22
+set fmri(groupmem.22) 1
+
+# Group membership for input 23
+set fmri(groupmem.23) 1
+
+# Group membership for input 24
+set fmri(groupmem.24) 1
+
+# Group membership for input 25
+set fmri(groupmem.25) 1
+
+# Group membership for input 26
+set fmri(groupmem.26) 1
+
+# Group membership for input 27
+set fmri(groupmem.27) 1
+
+# Group membership for input 28
+set fmri(groupmem.28) 1
+
+# Group membership for input 29
+set fmri(groupmem.29) 1
+
+# Group membership for input 30
+set fmri(groupmem.30) 1
+
+# Group membership for input 31
+set fmri(groupmem.31) 1
+
+# Group membership for input 32
+set fmri(groupmem.32) 1
+
+# Group membership for input 33
+set fmri(groupmem.33) 1
+
+# Group membership for input 34
+set fmri(groupmem.34) 1
+
+# Group membership for input 35
+set fmri(groupmem.35) 1
+
+# Group membership for input 36
+set fmri(groupmem.36) 1
+
+# Group membership for input 37
+set fmri(groupmem.37) 1
+
+# Group membership for input 38
+set fmri(groupmem.38) 1
+
+# Group membership for input 39
+set fmri(groupmem.39) 1
+
+# Group membership for input 40
+set fmri(groupmem.40) 1
+
+# Group membership for input 41
+set fmri(groupmem.41) 1
+
+# Group membership for input 42
+set fmri(groupmem.42) 1
+
+# Group membership for input 43
+set fmri(groupmem.43) 1
+
+# Group membership for input 44
+set fmri(groupmem.44) 1
+
+# Group membership for input 45
+set fmri(groupmem.45) 1
+
+# Group membership for input 46
+set fmri(groupmem.46) 1
+
+# Group membership for input 47
+set fmri(groupmem.47) 1
+
+# Group membership for input 48
+set fmri(groupmem.48) 1
+
+# Group membership for input 49
+set fmri(groupmem.49) 1
+
+# Group membership for input 50
+set fmri(groupmem.50) 1
+
+# Group membership for input 51
+set fmri(groupmem.51) 1
+
+# Group membership for input 52
+set fmri(groupmem.52) 1
+
+# Group membership for input 53
+set fmri(groupmem.53) 1
+
+# Group membership for input 54
+set fmri(groupmem.54) 1
+
+# Group membership for input 55
+set fmri(groupmem.55) 1
+
+# Group membership for input 56
+set fmri(groupmem.56) 1
+
+# Group membership for input 57
+set fmri(groupmem.57) 1
+
+# Group membership for input 58
+set fmri(groupmem.58) 1
+
+# Group membership for input 59
+set fmri(groupmem.59) 1
+
+# Group membership for input 60
+set fmri(groupmem.60) 1
+
+# Group membership for input 61
+set fmri(groupmem.61) 1
+
+# Group membership for input 62
+set fmri(groupmem.62) 1
+
+# Group membership for input 63
+set fmri(groupmem.63) 1
+
+# Group membership for input 64
+set fmri(groupmem.64) 1
+
+# Group membership for input 65
+set fmri(groupmem.65) 1
+
+# Group membership for input 66
+set fmri(groupmem.66) 1
+
+# Group membership for input 67
+set fmri(groupmem.67) 1
+
+# Group membership for input 68
+set fmri(groupmem.68) 1
+
+# Group membership for input 69
+set fmri(groupmem.69) 1
+
+# Group membership for input 70
+set fmri(groupmem.70) 1
+
+# Group membership for input 71
+set fmri(groupmem.71) 1
+
+# Group membership for input 72
+set fmri(groupmem.72) 1
+
+# Group membership for input 73
+set fmri(groupmem.73) 1
+
+# Group membership for input 74
+set fmri(groupmem.74) 1
+
+# Group membership for input 75
+set fmri(groupmem.75) 1
+
+# Group membership for input 76
+set fmri(groupmem.76) 1
+
+# Group membership for input 77
+set fmri(groupmem.77) 1
+
+# Group membership for input 78
+set fmri(groupmem.78) 1
+
+# Group membership for input 79
+set fmri(groupmem.79) 1
+
+# Group membership for input 80
+set fmri(groupmem.80) 1
+
+# Group membership for input 81
+set fmri(groupmem.81) 1
+
+# Group membership for input 82
+set fmri(groupmem.82) 1
+
+# Group membership for input 83
+set fmri(groupmem.83) 1
+
+# Group membership for input 84
+set fmri(groupmem.84) 1
+
+# Group membership for input 85
+set fmri(groupmem.85) 1
+
+# Group membership for input 86
+set fmri(groupmem.86) 1
+
+# Group membership for input 87
+set fmri(groupmem.87) 1
+
+# Group membership for input 88
+set fmri(groupmem.88) 1
+
+# Group membership for input 89
+set fmri(groupmem.89) 1
+
+# Group membership for input 90
+set fmri(groupmem.90) 1
+
+# Group membership for input 91
+set fmri(groupmem.91) 1
+
+# Group membership for input 92
+set fmri(groupmem.92) 1
+
+# Group membership for input 93
+set fmri(groupmem.93) 1
+
+# Group membership for input 94
+set fmri(groupmem.94) 1
+
+# Group membership for input 95
+set fmri(groupmem.95) 1
+
+# Group membership for input 96
+set fmri(groupmem.96) 1
+
+# Group membership for input 97
+set fmri(groupmem.97) 1
+
+# Group membership for input 98
+set fmri(groupmem.98) 1
+
+# Group membership for input 99
+set fmri(groupmem.99) 1
+
+# Group membership for input 100
+set fmri(groupmem.100) 1
+
+# Group membership for input 101
+set fmri(groupmem.101) 1
+
+# Group membership for input 102
+set fmri(groupmem.102) 1
+
+# Group membership for input 103
+set fmri(groupmem.103) 1
+
+# Group membership for input 104
+set fmri(groupmem.104) 1
+
+# Group membership for input 105
+set fmri(groupmem.105) 1
+
+# Group membership for input 106
+set fmri(groupmem.106) 1
+
+# Group membership for input 107
+set fmri(groupmem.107) 1
+
+# Group membership for input 108
+set fmri(groupmem.108) 1
+
+# Group membership for input 109
+set fmri(groupmem.109) 1
+
+# Group membership for input 110
+set fmri(groupmem.110) 1
+
+# Group membership for input 111
+set fmri(groupmem.111) 1
+
+# Group membership for input 112
+set fmri(groupmem.112) 1
+
+# Group membership for input 113
+set fmri(groupmem.113) 1
+
+# Group membership for input 114
+set fmri(groupmem.114) 1
+
+# Group membership for input 115
+set fmri(groupmem.115) 1
+
+# Group membership for input 116
+set fmri(groupmem.116) 1
+
+# Group membership for input 117
+set fmri(groupmem.117) 1
+
+# Group membership for input 118
+set fmri(groupmem.118) 1
+
+# Group membership for input 119
+set fmri(groupmem.119) 1
+
+# Group membership for input 120
+set fmri(groupmem.120) 1
+
+# Group membership for input 121
+set fmri(groupmem.121) 1
+
+# Group membership for input 122
+set fmri(groupmem.122) 1
+
+# Group membership for input 123
+set fmri(groupmem.123) 1
+
+# Group membership for input 124
+set fmri(groupmem.124) 1
+
+# Group membership for input 125
+set fmri(groupmem.125) 1
+
+# Group membership for input 126
+set fmri(groupmem.126) 1
+
+# Group membership for input 127
+set fmri(groupmem.127) 1
+
+# Group membership for input 128
+set fmri(groupmem.128) 1
+
+# Group membership for input 129
+set fmri(groupmem.129) 1
+
+# Group membership for input 130
+set fmri(groupmem.130) 1
+
+# Group membership for input 131
+set fmri(groupmem.131) 1
+
+# Group membership for input 132
+set fmri(groupmem.132) 1
+
+# Group membership for input 133
+set fmri(groupmem.133) 1
+
+# Group membership for input 134
+set fmri(groupmem.134) 1
+
+# Group membership for input 135
+set fmri(groupmem.135) 1
+
+# Group membership for input 136
+set fmri(groupmem.136) 1
+
+# Group membership for input 137
+set fmri(groupmem.137) 1
+
+# Group membership for input 138
+set fmri(groupmem.138) 1
+
+# Group membership for input 139
+set fmri(groupmem.139) 1
+
+# Group membership for input 140
+set fmri(groupmem.140) 1
+
+# Group membership for input 141
+set fmri(groupmem.141) 1
+
+# Group membership for input 142
+set fmri(groupmem.142) 1
+
+# Group membership for input 143
+set fmri(groupmem.143) 1
+
+# Group membership for input 144
+set fmri(groupmem.144) 1
+
+# Group membership for input 145
+set fmri(groupmem.145) 1
+
+# Group membership for input 146
+set fmri(groupmem.146) 1
+
+# Group membership for input 147
+set fmri(groupmem.147) 1
+
+# Group membership for input 148
+set fmri(groupmem.148) 1
+
+# Group membership for input 149
+set fmri(groupmem.149) 1
+
+# Group membership for input 150
+set fmri(groupmem.150) 1
+
+# Group membership for input 151
+set fmri(groupmem.151) 1
+
+# Group membership for input 152
+set fmri(groupmem.152) 1
+
+# Group membership for input 153
+set fmri(groupmem.153) 1
+
+# Group membership for input 154
+set fmri(groupmem.154) 1
+
+# Group membership for input 155
+set fmri(groupmem.155) 1
+
+# Group membership for input 156
+set fmri(groupmem.156) 1
+
+# Group membership for input 157
+set fmri(groupmem.157) 1
+
+# Group membership for input 158
+set fmri(groupmem.158) 1
+
+# Group membership for input 159
+set fmri(groupmem.159) 1
+
+# Group membership for input 160
+set fmri(groupmem.160) 1
+
+# Group membership for input 161
+set fmri(groupmem.161) 1
+
+# Group membership for input 162
+set fmri(groupmem.162) 1
+
+# Group membership for input 163
+set fmri(groupmem.163) 1
+
+# Group membership for input 164
+set fmri(groupmem.164) 1
+
+# Group membership for input 165
+set fmri(groupmem.165) 1
+
+# Group membership for input 166
+set fmri(groupmem.166) 1
+
+# Group membership for input 167
+set fmri(groupmem.167) 1
+
+# Group membership for input 168
+set fmri(groupmem.168) 1
+
+# Group membership for input 169
+set fmri(groupmem.169) 1
+
+# Group membership for input 170
+set fmri(groupmem.170) 1
+
+# Group membership for input 171
+set fmri(groupmem.171) 1
+
+# Group membership for input 172
+set fmri(groupmem.172) 1
+
+# Group membership for input 173
+set fmri(groupmem.173) 1
+
+# Group membership for input 174
+set fmri(groupmem.174) 1
+
+# Group membership for input 175
+set fmri(groupmem.175) 1
+
+# Group membership for input 176
+set fmri(groupmem.176) 1
+
+# Group membership for input 177
+set fmri(groupmem.177) 1
+
+# Group membership for input 178
+set fmri(groupmem.178) 1
+
+# Group membership for input 179
+set fmri(groupmem.179) 1
+
+# Group membership for input 180
+set fmri(groupmem.180) 1
+
+# Group membership for input 181
+set fmri(groupmem.181) 1
+
+# Group membership for input 182
+set fmri(groupmem.182) 1
+
+# Group membership for input 183
+set fmri(groupmem.183) 1
+
+# Group membership for input 184
+set fmri(groupmem.184) 1
+
+# Group membership for input 185
+set fmri(groupmem.185) 1
+
+# Group membership for input 186
+set fmri(groupmem.186) 1
+
+# Group membership for input 187
+set fmri(groupmem.187) 1
+
+# Group membership for input 188
+set fmri(groupmem.188) 1
+
+# Group membership for input 189
+set fmri(groupmem.189) 1
+
+# Group membership for input 190
+set fmri(groupmem.190) 1
+
+# Group membership for input 191
+set fmri(groupmem.191) 1
+
+# Group membership for input 192
+set fmri(groupmem.192) 1
+
+# Group membership for input 193
+set fmri(groupmem.193) 1
+
+# Group membership for input 194
+set fmri(groupmem.194) 1
+
+# Group membership for input 195
+set fmri(groupmem.195) 1
+
+# Group membership for input 196
+set fmri(groupmem.196) 1
+
+# Group membership for input 197
+set fmri(groupmem.197) 1
+
+# Group membership for input 198
+set fmri(groupmem.198) 1
+
+# Contrast & F-tests mode
+# real : control real EVs
+# orig : control original EVs
+set fmri(con_mode_old) real
+set fmri(con_mode) real
+
+# Display images for contrast_real 1
+set fmri(conpic_real.1) 1
+
+# Title for contrast_real 1
+set fmri(conname_real.1) "group mean"
+
+# Real contrast_real vector 1 element 1
+set fmri(con_real1.1) 1
+
+# Contrast masking - use >0 instead of thresholding?
+set fmri(conmask_zerothresh_yn) 0
+
+# Do contrast masking at all?
+set fmri(conmask1_1) 0
+
+##########################################################
+# Now options that don't appear in the GUI
+
+# Alternative (to BETting) mask image
+set fmri(alternative_mask) ""
+
+# Initial structural space registration initialisation transform
+set fmri(init_initial_highres) ""
+
+# Structural space registration initialisation transform
+set fmri(init_highres) ""
+
+# Standard space registration initialisation transform
+set fmri(init_standard) ""
+
+# For full FEAT analysis: overwrite existing .feat output dir?
+set fmri(overwrite_yn) 0
