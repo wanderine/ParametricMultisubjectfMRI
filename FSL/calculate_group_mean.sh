@@ -4,8 +4,10 @@ clear
 
 Smoothing=4mm
 Design=boxcar30
+Study=Cambridge
+#Study=Beijing
 
-results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}
+results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
 temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
 
@@ -13,7 +15,7 @@ temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
 cp ${design_directory}/GroupMean.fsf ${temp_directory}
 
 # Remove old results
-rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Smoothing}/${Design}/GroupMean*
+rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupMean*
 
 # Threshold type
 # 1 = uncorrected, 2 = voxel corrected, 3 = cluster corrected
@@ -82,7 +84,7 @@ StartText="set fmri(copeinput.1) 1"
 # Setup group
 
 SubjectsGroup1FileNames=()
-basetext="set feat_files(1) \"\/home\/andek\/Research_projects\/RandomGroupAnalyses\/Results\/4mm\/boxcar30\/sub00156.feat\"" 
+basetext="set feat_files(1) \"\/home\/andek\/Research_projects\/RandomGroupAnalyses\/Results\/Cambridge\/4mm\/boxcar30\/sub00156.feat\"" 
 basesubject="sub00156"
 SubjectsGroup1FileNames+=("$StartText")
 FirstSubject=1
