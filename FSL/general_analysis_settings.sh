@@ -16,9 +16,6 @@ ThresholdMethodNew="set fmri(thresh) 3"
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
-# Enter old number of TRs per scan, do not change
-TRs_Old=119
-
 # Smoothing
 SmoothingOld="set fmri(smooth) 6.0"
 
