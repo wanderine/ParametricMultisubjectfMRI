@@ -2,10 +2,9 @@
 
 clear
 
-# time randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c 2.3  -n 10001 -m MNI152_T1_2mm_brain_mask.nii.gz
-
 SignificantDifferences=0
-Smoothing=4mm
+
+Smoothing=6mm
 Design=boxcar30
 Study=Cambridge
 #Study=Beijing
@@ -13,9 +12,6 @@ Study=Cambridge
 results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
 temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
-
-# Remove old results
-rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/Group*
 
 # Cluster defining threshold
 ClusterDefiningThreshold=2.3
@@ -136,13 +132,16 @@ do
 	Results/${Study}/${Smoothing}/${Design}/${Subject39}.feat/reg_standard/stats/cope1.nii.gz \
 	Results/${Study}/${Smoothing}/${Design}/${Subject40}.feat/reg_standard/stats/cope1.nii.gz
 
-	#-------------------------------------
-	# Run group analysis
-	#-------------------------------------
+	#-------------------------------------------------------
+	# Run group analysis using permutation test in BROCCOLI
+	#-------------------------------------------------------
 
 	./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_40_subjects.mat -contrasts contrasts_40_subjects.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -permutationfile permutations.txt > log.txt
 
-	# Count number of lines
+	# Equivalent call to randomise
+	# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c 2.3  -n 10001 -m MNI152_T1_2mm_brain_mask.nii.gz
+
+	# Count number of lines in log
     Lines=`cat log.txt | wc -l`
     if [ "$Lines" -gt "2" ] ; then
 		((SignificantDifferences++))
