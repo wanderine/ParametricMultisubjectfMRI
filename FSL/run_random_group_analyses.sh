@@ -2,8 +2,6 @@
 
 clear
 
-SignificantDifferences=0
-
 SmoothingOld=4mm
 
 DesignOld=boxcar30
@@ -56,8 +54,11 @@ seven=7
 
 # Loop over different smoothing levels
 #for Smoothing in 1 2 3 4 5 6 7
-for Smoothing in 3 4 5 6 7
+#for Smoothing in 3 4 5 6 7
+for Smoothing in 7
 do
+	SignificantDifferences=0
+
 	date1=$(date +"%s")
 
 	if [ "$Smoothing" -eq "1" ] ; then
