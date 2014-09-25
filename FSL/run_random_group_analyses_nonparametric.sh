@@ -4,7 +4,7 @@ clear
 
 SignificantDifferences=0
 
-Smoothing=6mm
+Smoothing=4mm
 Design=boxcar30
 Study=Cambridge
 #Study=Beijing
@@ -14,16 +14,12 @@ design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templa
 temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
 
 # Cluster defining threshold
-ClusterDefiningThreshold=2.3
+ClusterDefiningThreshold=3.1
 
 # Loop over many random group comparisons
-#for Comparison in {1..1000}
 for Comparison in {1..1000}
 do
 	echo "Starting random group comparison $Comparison !"
-
-	# Make a random permutation of all subjects
-	#Randomized=`shuf /home/andek/Data/fcon1000/Cambridge/Cambridge_Buckner_subjects.txt`
 
 	# Read a pregenerated permutation
 	Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${Study}_permutations/permutation${Comparison}.txt`
@@ -136,10 +132,10 @@ do
 	# Run group analysis using permutation test in BROCCOLI
 	#-------------------------------------------------------
 
-	./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_40_subjects.mat -contrasts contrasts_40_subjects.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -permutationfile permutations.txt > log.txt
+	./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_40_subjects.mat -contrasts contrasts_40_subjects.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations.txt > log.txt
 
 	# Equivalent call to randomise
-	# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c 2.3  -n 10001 -m MNI152_T1_2mm_brain_mask.nii.gz
+	# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
 
 	# Count number of lines in log
     Lines=`cat log.txt | wc -l`
