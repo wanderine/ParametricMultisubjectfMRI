@@ -2,6 +2,8 @@
 
 # Set variables
 
+clear
+
 Smoothing=4mm
 Design=boxcar30
 Study=Cambridge
@@ -12,10 +14,22 @@ ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Stu
 
 NumberOfSubjects=40.0
 
+# Delete old results
+rm $ResultsDirectory/*
+
 # Loop over many random group comparisons
-for Comparison in {1..1}
+Comparisons=0.0
+SignificantDifferences=0.0
+one=1.0
+FWE=0.0
+for Comparison in {1..1000}
+#for Comparison in {1..2}
 do
+	Comparisons=$(echo "scale=3;$Comparisons + $one" | bc)
+
+	echo -e "\n"
 	echo "Starting random group comparison $Comparison !"
+	echo -e "\n"
 
 	# Read a pregenerated permutation
 	Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${Study}_permutations/permutation${Comparison}.txt`
@@ -71,11 +85,63 @@ do
 	Subject39=${Subjects[$((38))]}
 	Subject40=${Subjects[$((39))]}
 
-	echo ${Subject2}
-	
 	#echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
+	
+	#echo "$Subject1"
+	#echo "$Subject2"
+	#echo "$Subject3"
+	#echo "$Subject4"
+	#echo "$Subject5"
 
-	3dttest++ -prefix $ResultsDirectory/4mm_boxcar30_${Comparison} -AminusB                 \
+	# Remove old group mask
+	rm group_mask.nii
+
+	# Create group mask
+	3dMean -prefix group_mask.nii -mask_inter 	\
+            $GroupDirectory/${Subject1}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject2}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject3}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject4}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject5}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject6}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject7}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject8}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject9}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject10}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject11}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject12}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject13}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject14}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject15}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject16}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject17}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject18}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject19}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject20}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject21}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject22}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject23}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject24}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject25}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject26}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject27}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject28}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject29}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject30}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject31}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject32}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject33}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject34}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject35}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject36}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject37}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject38}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject39}.results/mask_group+tlrc.HEAD \
+            $GroupDirectory/${Subject40}.results/mask_group+tlrc.HEAD \
+
+	# Run a two-sample t-test
+
+	3dttest++ -mask group_mask.nii -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison} -AminusB                 \
 	          -setA Group1                                               \
              ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[1]" \
              ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}+tlrc[1]" \
@@ -167,22 +233,48 @@ do
 
 	#echo ${AllSmoothnesses[*]}
 
+	echo -e "\n"
 	echo "Mean x smoothness is $XSmoothness"
 	echo "Mean y smoothness is $YSmoothness"
 	echo "Mean z smoothness is $ZSmoothness"
+	echo -e "\n"
 
 	# Now run cluster simulation to get p-values for clusters
-	3dClustSim -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -nxyz 54 64 50 -dxyz 3 3 3 -pthr 0.01 -niml -prefix kalle
+	3dClustSim -mask group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -nxyz 54 64 50 -dxyz 3 3 3 -pthr 0.01 -nodec > clusterthreshold.txt
 
-	#3dClustCount -final $ResultsDirectory/4mm_boxcar30_${Comparison}+tlrc
+	echo -e "\n"
+
+	# Get cluster threshold as the last word/number
+	ClusterThreshold=`less clusterthreshold.txt | awk 'END { print $NF }'`
+	
+	echo -e "\n"
+	echo "Cluster threshold is $ClusterThreshold"
+	echo -e "\n"
 
 	# Finally apply same voxel threshold to statistical map, and calculate the size of the largest cluster
+	# t-value of 2.7 corresponds to p = 0.01
 
-    # Compare the size of the largest cluster to the threshold from 3dClustSim, to see if the cluster is significantfsl &
+	# Print clusters to screen
+	3dclust -dxyz=1 -1thresh 2.7 -1noneg  1.01 $ClusterThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc'[1]' 
+
+	# Print clusters to text file
+	3dclust -dxyz=1 -1thresh 2.7 -1noneg  1.01 $ClusterThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc'[1]' > clustersizes.txt
+
+	echo -e "\n"
 	
-3drefit -atrstring AFNI_CLUSTSIM_NN1 file:kalle.NN1.niml $ResultsDirectory/4mm_boxcar30_${Comparison}+tlrc
- #-atrstring AFNI_CLUSTSIM_MASK file:kalle.mask \
- 
+    String=CLUSTERS #Search for NO CLUSTERS
+	File=clustersizes.txt
+	if grep -q $String "$File"; then 
+		echo "No significant group difference detected"
+		FWE=$(echo "scale=3; $SignificantDifferences /  ${Comparisons}" | bc)
+		echo "Current FWE is $FWE"
+	else
+		echo "Significant group difference detected!"
+		SignificantDifferences=$(echo "scale=3;$SignificantDifferences + $one" | bc)
+		FWE=$(echo "scale=3; $SignificantDifferences /  ${Comparisons}" | bc)
+		echo "Current FWE is $FWE"
+	fi
+	echo -e "\n"
 
 done
 
