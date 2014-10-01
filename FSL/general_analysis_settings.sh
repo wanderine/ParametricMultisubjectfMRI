@@ -16,8 +16,12 @@ ThresholdMethodNew="set fmri(thresh) 3"
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
+# Design
+DesignOld=boxcar30
+
 # Smoothing
 SmoothingOld="set fmri(smooth) 6.0"
+SmoothingOutputOld=4mm
 
 # Boxcar off period
 BoxcarOffOld="set fmri(off1) 30"

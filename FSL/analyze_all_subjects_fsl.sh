@@ -4,18 +4,22 @@ clear
 
 source general_analysis_settings.sh
 
-#Study=Cambridge
-Study=Beijing
+Study=Cambridge
+#Study=Beijing
+
+# Design
+DesignNew=boxcar10
+
+# Length of boxcar periods (seconds)
+BoxcarOffNew="set fmri(off1) 10"
+BoxcarOnNew="set fmri(on1) 10"
 
 # Amount of smoothing (FWHM in mm)
 SmoothingNew="set fmri(smooth) 4.0"
-
-# Length of boxcar periods (seconds)
-BoxcarOffNew="set fmri(off1) 30"
-BoxcarOnNew="set fmri(on1) 30"
+SmoothingOutputNew=4mm
 
 # Highpass filter cutoff (twice boxcar length)
-HighPassNew="set fmri(paradigm_hp) 60" #60 for 30 seconds on off
+HighPassNew="set fmri(paradigm_hp) 20" #60 for 30 seconds on off, 20 for 10 seconds on off
 
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
@@ -41,6 +45,12 @@ for i in /home/andek/Data/fcon1000/${Study}/* ; do
         #---------------
         # Copy template design 
         cp ${design_directory}/Design_templates/GLM${Study}.fsf ${data_directory}/
+
+        # Change smoothing output
+        sed -i "s/${SmoothingOutputOld}/${SmoothingOutputNew}/g" ${data_directory}/GLM${Study}.fsf
+
+        # Change design output
+        sed -i "s/${DesignOld}/${DesignNew}/g" ${data_directory}/GLM${Study}.fsf
 
         # Change subject name
         sed -i "s/${SubjectOld}/${SubjectNew}/g" ${data_directory}/GLM${Study}.fsf
