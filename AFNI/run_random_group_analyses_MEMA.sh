@@ -7,12 +7,9 @@ clear
 # z-value of 2.3 corresponds to p = 0.01 (one sided)
 # z-value of 3.1 corresponds to p = 0.001 (one sided)
 
-# t-value 2.43
-# t-value 3.3
-
-ClusterDefiningThresholdP=0.001
-ClusterDefiningThreshold=3.1
-CDT=3.1
+ClusterDefiningThresholdP=0.01
+ClusterDefiningThreshold=2.3
+CDT=2.3
 
 Design=boxcar30
 
@@ -25,8 +22,8 @@ NoGroupMask=0
 NoGroupAnalysis=0
 
 # Loop over different smoothing levels
-for SmoothingLevel in 1 2 3 4 5 6 7
-#for SmoothingLevel in 
+#for SmoothingLevel in 1 2 3 4 5 6 7
+for SmoothingLevel in 1
 do
 
 	if [ "$SmoothingLevel" -eq "1" ] ; then
@@ -131,10 +128,10 @@ do
 		#echo "$Subject5"
 
 		# Remove old group mask
-		rm $ResultsDirectory/group_mask.nii
+		rm group_mask.nii
 
 		# Create group mask
-		3dMean -prefix $ResultsDirectory/group_mask.nii -mask_inter 	\
+		3dMean -prefix group_mask.nii -mask_inter 	\
 	            $GroupDirectory/${Subject1}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject2}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject3}.results/mask_group+tlrc.HEAD \
@@ -177,53 +174,53 @@ do
 	            $GroupDirectory/${Subject40}.results/mask_group+tlrc.HEAD 
 
 		# Check if group mask was created correctly
-	    if [ -e $ResultsDirectory/group_mask.nii  ]; then
+	    if [ -e group_mask.nii  ]; then
 
 			# Run a two-sample t-test, transform to z-values
 
-			3dttest++ -toz -mask $ResultsDirectory/group_mask.nii -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison} -AminusB                 \
-		          -setA Group1                                               \
-		             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[1]" \
-		             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}+tlrc[1]" \
-		             ${Subject3} "$GroupDirectory/${Subject3}.results/stats.${Subject3}+tlrc[1]" \
-		             ${Subject4} "$GroupDirectory/${Subject4}.results/stats.${Subject4}+tlrc[1]" \
-		             ${Subject5} "$GroupDirectory/${Subject5}.results/stats.${Subject5}+tlrc[1]" \
-		             ${Subject6} "$GroupDirectory/${Subject6}.results/stats.${Subject6}+tlrc[1]" \
-		             ${Subject7} "$GroupDirectory/${Subject7}.results/stats.${Subject7}+tlrc[1]" \
-		             ${Subject8} "$GroupDirectory/${Subject8}.results/stats.${Subject8}+tlrc[1]" \
-		             ${Subject9} "$GroupDirectory/${Subject9}.results/stats.${Subject9}+tlrc[1]" \
-		             ${Subject10} "$GroupDirectory/${Subject10}.results/stats.${Subject10}+tlrc[1]" \
-		             ${Subject11} "$GroupDirectory/${Subject11}.results/stats.${Subject11}+tlrc[1]" \
-		             ${Subject12} "$GroupDirectory/${Subject12}.results/stats.${Subject12}+tlrc[1]" \
-		             ${Subject13} "$GroupDirectory/${Subject13}.results/stats.${Subject13}+tlrc[1]" \
-		             ${Subject14} "$GroupDirectory/${Subject14}.results/stats.${Subject14}+tlrc[1]" \
-		             ${Subject15} "$GroupDirectory/${Subject15}.results/stats.${Subject15}+tlrc[1]" \
-		             ${Subject16} "$GroupDirectory/${Subject16}.results/stats.${Subject16}+tlrc[1]" \
-		             ${Subject17} "$GroupDirectory/${Subject17}.results/stats.${Subject17}+tlrc[1]" \
-		             ${Subject18} "$GroupDirectory/${Subject18}.results/stats.${Subject18}+tlrc[1]" \
-		             ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}+tlrc[1]" \
-		             ${Subject20} "$GroupDirectory/${Subject20}.results/stats.${Subject20}+tlrc[1]" \
-    		      -setB Group2                                               \
-		             ${Subject21} "$GroupDirectory/${Subject21}.results/stats.${Subject21}+tlrc[1]" \
-		             ${Subject22} "$GroupDirectory/${Subject22}.results/stats.${Subject22}+tlrc[1]" \
-		             ${Subject23} "$GroupDirectory/${Subject23}.results/stats.${Subject23}+tlrc[1]" \
-		             ${Subject24} "$GroupDirectory/${Subject24}.results/stats.${Subject24}+tlrc[1]" \
-		             ${Subject25} "$GroupDirectory/${Subject25}.results/stats.${Subject25}+tlrc[1]" \
-		             ${Subject26} "$GroupDirectory/${Subject26}.results/stats.${Subject26}+tlrc[1]" \
-		             ${Subject27} "$GroupDirectory/${Subject27}.results/stats.${Subject27}+tlrc[1]" \
-		             ${Subject28} "$GroupDirectory/${Subject28}.results/stats.${Subject28}+tlrc[1]" \
-    		         ${Subject29} "$GroupDirectory/${Subject29}.results/stats.${Subject29}+tlrc[1]" \
-		             ${Subject30} "$GroupDirectory/${Subject30}.results/stats.${Subject30}+tlrc[1]" \
-		             ${Subject31} "$GroupDirectory/${Subject31}.results/stats.${Subject31}+tlrc[1]" \
-		             ${Subject32} "$GroupDirectory/${Subject32}.results/stats.${Subject32}+tlrc[1]" \
-		             ${Subject33} "$GroupDirectory/${Subject33}.results/stats.${Subject33}+tlrc[1]" \
-		             ${Subject34} "$GroupDirectory/${Subject34}.results/stats.${Subject34}+tlrc[1]" \
-		             ${Subject35} "$GroupDirectory/${Subject35}.results/stats.${Subject35}+tlrc[1]" \
-		             ${Subject36} "$GroupDirectory/${Subject36}.results/stats.${Subject36}+tlrc[1]" \
-		             ${Subject37} "$GroupDirectory/${Subject37}.results/stats.${Subject37}+tlrc[1]" \
-		             ${Subject38} "$GroupDirectory/${Subject38}.results/stats.${Subject38}+tlrc[1]" \
-		             ${Subject39} "$GroupDirectory/${Subject39}.results/stats.${Subject39}+tlrc[1]" \
-		             ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1]" 
+			3dMEMA -mask group_mask.nii -jobs 8 -groups A B -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison} -AminusB                 \
+		          -set A                                               \
+		             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[1]" "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[2]" \
+		             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[1]" "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[2]" \
+		             ${Subject3} "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[1]" "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[2]" \
+		             ${Subject4} "$GroupDirectory/${Subject4}.results/stats.${Subject4}_REML+tlrc[1]" "$GroupDirectory/${Subject4}.results/stats.${Subject4}_REML+tlrc[2]" \
+		             ${Subject5} "$GroupDirectory/${Subject5}.results/stats.${Subject5}_REML+tlrc[1]" "$GroupDirectory/${Subject5}.results/stats.${Subject5}_REML+tlrc[2]" \
+		             ${Subject6} "$GroupDirectory/${Subject6}.results/stats.${Subject6}_REML+tlrc[1]" "$GroupDirectory/${Subject6}.results/stats.${Subject6}_REML+tlrc[2]" \
+		             ${Subject7} "$GroupDirectory/${Subject7}.results/stats.${Subject7}_REML+tlrc[1]" "$GroupDirectory/${Subject7}.results/stats.${Subject7}_REML+tlrc[2]" \
+		             ${Subject8} "$GroupDirectory/${Subject8}.results/stats.${Subject8}_REML+tlrc[1]" "$GroupDirectory/${Subject8}.results/stats.${Subject8}_REML+tlrc[2]" \
+		             ${Subject9} "$GroupDirectory/${Subject9}.results/stats.${Subject9}_REML+tlrc[1]" "$GroupDirectory/${Subject9}.results/stats.${Subject9}_REML+tlrc[2]" \
+		             ${Subject10} "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[1]" "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[2]" \
+		             ${Subject11} "$GroupDirectory/${Subject11}.results/stats.${Subject11}_REML+tlrc[1]" "$GroupDirectory/${Subject11}.results/stats.${Subject11}_REML+tlrc[2]" \
+		             ${Subject12} "$GroupDirectory/${Subject12}.results/stats.${Subject12}_REML+tlrc[1]" "$GroupDirectory/${Subject12}.results/stats.${Subject12}_REML+tlrc[2]" \
+		             ${Subject13} "$GroupDirectory/${Subject13}.results/stats.${Subject13}_REML+tlrc[1]" "$GroupDirectory/${Subject13}.results/stats.${Subject13}_REML+tlrc[2]" \
+		             ${Subject14} "$GroupDirectory/${Subject14}.results/stats.${Subject14}_REML+tlrc[1]" "$GroupDirectory/${Subject14}.results/stats.${Subject14}_REML+tlrc[2]" \
+		             ${Subject15} "$GroupDirectory/${Subject15}.results/stats.${Subject15}_REML+tlrc[1]" "$GroupDirectory/${Subject15}.results/stats.${Subject15}_REML+tlrc[2]" \
+		             ${Subject16} "$GroupDirectory/${Subject16}.results/stats.${Subject16}_REML+tlrc[1]" "$GroupDirectory/${Subject16}.results/stats.${Subject16}_REML+tlrc[2]" \
+		             ${Subject17} "$GroupDirectory/${Subject17}.results/stats.${Subject17}_REML+tlrc[1]" "$GroupDirectory/${Subject17}.results/stats.${Subject17}_REML+tlrc[2]" \
+		             ${Subject18} "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[1]" "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[2]" \
+		             ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[1]" "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[2]" \
+		             ${Subject20} "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[1]" "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[2]" \
+    		      -set B                                               \
+		             ${Subject21} "$GroupDirectory/${Subject21}.results/stats.${Subject21}_REML+tlrc[1]" "$GroupDirectory/${Subject21}.results/stats.${Subject21}_REML+tlrc[2]" \
+		             ${Subject22} "$GroupDirectory/${Subject22}.results/stats.${Subject22}_REML+tlrc[1]" "$GroupDirectory/${Subject22}.results/stats.${Subject22}_REML+tlrc[2]" \
+		             ${Subject23} "$GroupDirectory/${Subject23}.results/stats.${Subject23}_REML+tlrc[1]" "$GroupDirectory/${Subject23}.results/stats.${Subject23}_REML+tlrc[2]" \
+		             ${Subject24} "$GroupDirectory/${Subject24}.results/stats.${Subject24}_REML+tlrc[1]" "$GroupDirectory/${Subject24}.results/stats.${Subject24}_REML+tlrc[2]" \
+		             ${Subject25} "$GroupDirectory/${Subject25}.results/stats.${Subject25}_REML+tlrc[1]" "$GroupDirectory/${Subject25}.results/stats.${Subject25}_REML+tlrc[2]" \
+		             ${Subject26} "$GroupDirectory/${Subject26}.results/stats.${Subject26}_REML+tlrc[1]" "$GroupDirectory/${Subject26}.results/stats.${Subject26}_REML+tlrc[2]" \
+		             ${Subject27} "$GroupDirectory/${Subject27}.results/stats.${Subject27}_REML+tlrc[1]" "$GroupDirectory/${Subject27}.results/stats.${Subject27}_REML+tlrc[2]" \
+		             ${Subject28} "$GroupDirectory/${Subject28}.results/stats.${Subject28}_REML+tlrc[1]" "$GroupDirectory/${Subject28}.results/stats.${Subject28}_REML+tlrc[2]" \
+    		         ${Subject29} "$GroupDirectory/${Subject29}.results/stats.${Subject29}_REML+tlrc[1]" "$GroupDirectory/${Subject29}.results/stats.${Subject29}_REML+tlrc[2]" \
+		             ${Subject30} "$GroupDirectory/${Subject30}.results/stats.${Subject30}_REML+tlrc[1]" "$GroupDirectory/${Subject30}.results/stats.${Subject30}_REML+tlrc[2]" \
+		             ${Subject31} "$GroupDirectory/${Subject31}.results/stats.${Subject31}_REML+tlrc[1]" "$GroupDirectory/${Subject31}.results/stats.${Subject31}_REML+tlrc[2]" \
+		             ${Subject32} "$GroupDirectory/${Subject32}.results/stats.${Subject32}_REML+tlrc[1]" "$GroupDirectory/${Subject32}.results/stats.${Subject32}_REML+tlrc[2]" \
+		             ${Subject33} "$GroupDirectory/${Subject33}.results/stats.${Subject33}_REML+tlrc[1]" "$GroupDirectory/${Subject33}.results/stats.${Subject33}_REML+tlrc[2]" \
+		             ${Subject34} "$GroupDirectory/${Subject34}.results/stats.${Subject34}_REML+tlrc[1]" "$GroupDirectory/${Subject34}.results/stats.${Subject34}_REML+tlrc[2]" \
+		             ${Subject35} "$GroupDirectory/${Subject35}.results/stats.${Subject35}_REML+tlrc[1]" "$GroupDirectory/${Subject35}.results/stats.${Subject35}_REML+tlrc[2]" \
+		             ${Subject36} "$GroupDirectory/${Subject36}.results/stats.${Subject36}_REML+tlrc[1]" "$GroupDirectory/${Subject36}.results/stats.${Subject36}_REML+tlrc[2]" \
+		             ${Subject37} "$GroupDirectory/${Subject37}.results/stats.${Subject37}_REML+tlrc[1]" "$GroupDirectory/${Subject37}.results/stats.${Subject37}_REML+tlrc[2]" \
+		             ${Subject38} "$GroupDirectory/${Subject38}.results/stats.${Subject38}_REML+tlrc[1]" "$GroupDirectory/${Subject38}.results/stats.${Subject38}_REML+tlrc[2]" \
+		             ${Subject39} "$GroupDirectory/${Subject39}.results/stats.${Subject39}_REML+tlrc[1]" "$GroupDirectory/${Subject39}.results/stats.${Subject39}_REML+tlrc[2]" \
+		             ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}_REML+tlrc[1]" "$GroupDirectory/${Subject40}.results/stats.${Subject40}_REML+tlrc[2]" 
 
 
 			# Check if group results were created correctly
@@ -283,7 +280,7 @@ do
 				echo -e "\n"
 
 				# Now run cluster simulation to get p-values for clusters
-				3dClustSim -mask $ResultsDirectory/group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr $ClusterDefiningThresholdP -nodec > clusterthreshold.txt
+				3dClustSim -mask group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr ${ClusterDefiningThresholdP} -nodec > clusterthreshold.txt
 
 				echo -e "\n"
 
