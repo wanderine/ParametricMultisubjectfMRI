@@ -5,7 +5,7 @@ clear
 SmoothingOld=4mm
 
 DesignOld=boxcar30
-DesignNew=boxcar30
+DesignNew=boxcar10
 
 StudyOld=Cambridge
 StudyNew=Cambridge
@@ -23,16 +23,17 @@ ThresholdMethodNew="set fmri(thresh) 3"
 
 # Cluster defining threshold
 ClusterDefiningThresholdOld="set fmri(z_thresh) 2.3"
-ClusterDefiningThresholdNew="set fmri(z_thresh) 2.3"
+ClusterDefiningThresholdNew="set fmri(z_thresh) 3.1"
+CDT=3.1
 
 # Set corrected threshold
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
-# Fixed or random effect, 2 = mixed effect FLAME1, 3 = fixed effect, 0 = mixed effect OLS
+# Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
 EffectOld="set fmri(mixed_yn) 2"
-EffectNew="set fmri(mixed_yn) 0"
-AnalysisType=OLS
+EffectNew="set fmri(mixed_yn) 2"
+AnalysisType=FLAME1
 
 # Number of subjects
 NumberOfSubjectsOld="set fmri(npts) 1"
@@ -53,9 +54,7 @@ six=6
 seven=7
 
 # Loop over different smoothing levels
-#for Smoothing in 1 2 3 4 5 6 7
-#for Smoothing in 3 4 5 6 7
-for Smoothing in 7
+for Smoothing in 1 2 3 4 5 6 7
 do
 	SignificantDifferences=0
 
@@ -269,7 +268,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - seven))
-	            cp ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected "
 		    fi
@@ -282,7 +281,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - six))
-	            cp ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -295,7 +294,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - five))
-	            cp ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -308,7 +307,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - four))
-	            cp ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -321,7 +320,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - three))
-	            cp ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -334,7 +333,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - two))
-	            cp ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -347,7 +346,7 @@ do
 				echo $'\n'
 				((SignificantDifferences++))
 				Comparison_=$((Comparison - one))
-	            cp ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison_}.txt
+	            cp ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -359,7 +358,7 @@ do
 				cat ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
 				echo $'\n'
 				((SignificantDifferences++))
-	            cp ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}/coordinates_comparison${Comparison}.txt
+	            cp ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison}.txt
 		    else
 		        echo "No significant group difference detected  "
 		    fi
@@ -372,7 +371,7 @@ do
 
 	done
 
-	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}.txt
+	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}.txt
 
 	date2=$(date +"%s")
 	diff=$(($date2-$date1))

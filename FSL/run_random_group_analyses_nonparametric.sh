@@ -5,7 +5,7 @@ clear
 SignificantDifferences=0
 
 Smoothing=4mm
-Design=boxcar30
+Design=boxcar10
 Study=Cambridge
 #Study=Beijing
 
