@@ -178,7 +178,7 @@ do
 
 			# Run a two-sample t-test, transform to z-values
 
-			3dMEMA -mask group_mask.nii -jobs 8 -groups A B -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison} -AminusB                 \
+			3dMEMA -mask group_mask.nii -jobs 8 -groups A B -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}          \
 		          -set A                                               \
 		             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[1]" "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[2]" \
 		             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[1]" "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[2]" \
@@ -328,9 +328,9 @@ do
 
 	done
 
-	echo "Current FWE is $FWE" > results_${Study}_${Smoothing}_${Design}_OLS_${CDT}.txt
-	echo "Number of failed group masks is $NoGroupMask" >> results_${Study}_${Smoothing}_${Design}_OLS_${CDT}.txt
-	echo "Number of failed group analyses is $NoGroupAnalysis" >> results_${Study}_${Smoothing}_${Design}_OLS_${CDT}.txt
+	echo "Current FWE is $FWE" > results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
+	echo "Number of failed group masks is $NoGroupMask" >> results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
+	echo "Number of failed group analyses is $NoGroupAnalysis" >> results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
 
 done
 
