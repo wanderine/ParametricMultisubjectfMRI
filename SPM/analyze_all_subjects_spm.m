@@ -1,14 +1,3 @@
-% This batch script analyses the Face fMRI dataset available from the SPM site:
-% http://www.fil.ion.ucl.ac.uk/spm/data/face_rep/face_rep_SPM5.html
-% as described in the manual Chapter 29.
-
-% Copyright (C) 2008 Wellcome Trust Centre for Neuroimaging
-
-% Guillaume Flandin
-% $Id: face_repetition_single_spm5_batch.m 30 2008-05-20 11:16:55Z guillaume $
-
-%% Path containing data
-%--------------------------------------------------------------------------
 
 clear all
 clc
@@ -22,11 +11,11 @@ cd D:\fcon1000\Cambridge\
 
 subjects = dir;
 
-for subject = 4:length(subjects);
+for subject = 6:length(subjects);
 %for subject = 1:1
     
     if ispc
-        subjectString = subjects(subject+2).name;
+        subjectString = subjects(subject+2).name
         addpath('D:\spm8')
         data_path = ['D:\fcon1000\Cambridge\' subjectString '\'];
     end
@@ -41,7 +30,8 @@ for subject = 4:length(subjects);
     %% WORKING DIRECTORY (useful for .ps only)
     %--------------------------------------------------------------------------
     clear jobs
-    jobs{1}.util{1}.cdir.directory = cellstr(data_path);
+    job = 1;
+    jobs{job}.util{1}.cdir.directory = cellstr(data_path);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % SPATIAL PREPROCESSING
@@ -51,39 +41,43 @@ for subject = 4:length(subjects);
     %% REALIGN (motion correction)
     %--------------------------------------------------------------------------
     
-    % Gives rbold.nii
+    % Gives rbold.nii    
+    job = job + 1;
     filename = [data_path 'func\rest.nii'];
-    jobs{2}.spatial{1}.realign{1}.estwrite.data{1} = cellstr(filename);
+    jobs{job}.spatial{1}.realign{1}.estwrite.data{1} = cellstr(filename);
     
-    %% COREGISTRATION, T1 and T1 template (before segment)
+    %% COREGISTRATION, T1 and T1 template 
     %--------------------------------------------------------------------------
     
+    %job = job + 1;
     %filename = ['D:/spm8/templates/T1.nii'];
-    %jobs{4}.spatial{1}.coreg{1}.estwrite.ref = {[filename ',1']};
-    %filename = [data_path 'anatomy/mprage_defaced.nii'];
-    %jobs{4}.spatial{1}.coreg{1}.estwrite.source = {[filename ',1']};
+    %jobs{job}.spatial{1}.coreg{1}.estwrite.ref = {[filename ',1']};
+    %filename = [data_path 'anat/mprage_anonymized.nii'];
+    %jobs{job}.spatial{1}.coreg{1}.estwrite.source = {[filename ',1']};
     
     %--------------------------------------------------------------------------
     %% COREGISTRATION, fMRI and T1
     %--------------------------------------------------------------------------
     
+    job = job + 1;
     filename = [data_path 'func/meanrest.nii'];
-    jobs{3}.spatial{1}.coreg{1}.estimate.ref = {[filename ',1']};
+    jobs{job}.spatial{1}.coreg{1}.estimate.ref = {[filename ',1']};
     filename = [data_path 'anat/mprage_anonymized.nii'];
-    jobs{3}.spatial{1}.coreg{1}.estimate.source = {[filename ',1']};
+    jobs{job}.spatial{1}.coreg{1}.estimate.source = {[filename ',1']};
     
     %--------------------------------------------------------------------------
     %% SEGMENT
     %--------------------------------------------------------------------------
     
+    job = job + 1;
     filename = [data_path 'anat/mprage_anonymized.nii'];
-    jobs{4}.spatial{1}.preproc.data = {[filename ',1']};
+    jobs{job}.spatial{1}.preproc.data = {[filename ',1']};
     
     %--------------------------------------------------------------------------
     %% NORMALIZE (using transformation from segment)
     %--------------------------------------------------------------------------
     
-    job = 5;
+    job = job + 1;
     matname = [data_path 'anat/mprage_anonymized_seg_sn.mat'];
     jobs{job}.spatial{1}.normalise{1}.write.subj.matname  = cellstr(matname);
     filename = [data_path 'func/rrest.nii'];
@@ -98,15 +92,13 @@ for subject = 4:length(subjects);
     %--------------------------------------------------------------------------
     %% SMOOTHING
     %--------------------------------------------------------------------------
-    
-    job = 6;
+        
     for smoothing = 4:2:16
-        %for smoothing = 4
+        job = job + 1;        
         filename = [data_path 'func\wrrest.nii'];
         jobs{job}.spatial{1}.smooth.data = cellstr(filename);
         jobs{job}.spatial{1}.smooth.prefix = ['s' num2str(smoothing)];
-        jobs{job}.spatial{1}.smooth.fwhm = [smoothing smoothing smoothing];
-        job = job + 1;
+        jobs{job}.spatial{1}.smooth.fwhm = [smoothing smoothing smoothing];        
     end
     
     
@@ -189,7 +181,7 @@ for subject = 4:length(subjects);
             jobs{2}.stats{4}.results.spmmat = cellstr(filename);
             jobs{2}.stats{4}.results.conspec.contrasts = Inf;
             jobs{2}.stats{4}.results.conspec.threshdesc = 'none';
-            jobs{2}.stats{4}.results.conspec.thresh = 0.001; % threshold
+            jobs{2}.stats{4}.results.conspec.thresh = 0.3; % uncorrected voxel threshold
             jobs{2}.stats{4}.results.conspec.extent = 0;
             
             spm_jobman('run',jobs);
