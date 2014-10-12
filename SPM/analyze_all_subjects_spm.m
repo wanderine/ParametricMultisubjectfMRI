@@ -11,7 +11,7 @@ cd D:\fcon1000\Cambridge\
 
 subjects = dir;
 
-for subject = 6:length(subjects);
+for subject = 74:length(subjects);
 %for subject = 1:1
     
     if ispc
@@ -115,6 +115,8 @@ for subject = 6:length(subjects);
     
     for experiment = 1:4
         for smoothing = 4:2:16
+            
+            subjectString
             
             spm_file = ['D:\fcon1000\temp\classical\SPM.mat'];
             if exist(spm_file,'file')==2
