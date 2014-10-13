@@ -45,16 +45,7 @@ for subject = 74:length(subjects);
     job = job + 1;
     filename = [data_path 'func\rest.nii'];
     jobs{job}.spatial{1}.realign{1}.estwrite.data{1} = cellstr(filename);
-    
-    %% COREGISTRATION, T1 and T1 template 
-    %--------------------------------------------------------------------------
-    
-    %job = job + 1;
-    %filename = ['D:/spm8/templates/T1.nii'];
-    %jobs{job}.spatial{1}.coreg{1}.estwrite.ref = {[filename ',1']};
-    %filename = [data_path 'anat/mprage_anonymized.nii'];
-    %jobs{job}.spatial{1}.coreg{1}.estwrite.source = {[filename ',1']};
-    
+        
     %--------------------------------------------------------------------------
     %% COREGISTRATION, fMRI and T1
     %--------------------------------------------------------------------------

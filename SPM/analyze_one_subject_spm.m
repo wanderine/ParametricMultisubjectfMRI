@@ -3,6 +3,8 @@ clear all
 clc
 close all
 
+subjectString = 'sub10619';
+
 voxel_size = 2;
 TR = 3;
 TRs = 119;
@@ -11,7 +13,6 @@ cd D:\fcon1000\Cambridge\
 
 addpath('D:\spm8')
 
-subjectString = 'sub02953';
 data_path = ['D:\fcon1000\Cambridge\' subjectString '\'];
 
 %--------------------------------------------------------------------------
@@ -40,15 +41,6 @@ job = job + 1;
 filename = [data_path 'func\rest.nii'];
 jobs{job}.spatial{1}.realign{1}.estwrite.data{1} = cellstr(filename);
 
-%% COREGISTRATION, T1 and T1 template
-%--------------------------------------------------------------------------
-
-job = job + 1;
-filename = ['D:/spm8/templates/T1.nii'];
-jobs{job}.spatial{1}.coreg{1}.estwrite.ref = {[filename ',1']};
-filename = [data_path 'anat/mprage_anonymized.nii'];
-jobs{job}.spatial{1}.coreg{1}.estwrite.source = {[filename ',1']};
-
 %--------------------------------------------------------------------------
 %% COREGISTRATION, fMRI and T1
 %--------------------------------------------------------------------------
@@ -56,15 +48,17 @@ jobs{job}.spatial{1}.coreg{1}.estwrite.source = {[filename ',1']};
 job = job + 1;
 filename = [data_path 'func/meanrest.nii'];
 jobs{job}.spatial{1}.coreg{1}.estimate.ref = {[filename ',1']};
-filename = [data_path 'anat/rmprage_anonymized.nii'];
+filename = [data_path 'anat/mprage_anonymized.nii'];
 jobs{job}.spatial{1}.coreg{1}.estimate.source = {[filename ',1']};
+jobs{job}.spatial{1}.coreg{1}.estwrite.other = {''};
+
 
 %--------------------------------------------------------------------------
 %% SEGMENT
 %--------------------------------------------------------------------------
 
 job = job + 1;
-filename = [data_path 'anat/rmprage_anonymized.nii'];
+filename = [data_path 'anat/mprage_anonymized.nii'];
 jobs{job}.spatial{1}.preproc.data = {[filename ',1']};
 
 %--------------------------------------------------------------------------
@@ -72,14 +66,14 @@ jobs{job}.spatial{1}.preproc.data = {[filename ',1']};
 %--------------------------------------------------------------------------
 
 job = job + 1;
-matname = [data_path 'anat/rmprage_anonymized_seg_sn.mat'];
+matname = [data_path 'anat/mprage_anonymized_seg_sn.mat'];
 jobs{job}.spatial{1}.normalise{1}.write.subj.matname  = cellstr(matname);
 filename = [data_path 'func/rrest.nii'];
 jobs{job}.spatial{1}.normalise{1}.write.subj.resample = cellstr(filename);
 jobs{job}.spatial{1}.normalise{1}.write.roptions.vox  = [voxel_size voxel_size voxel_size];
 
 jobs{job}.spatial{1}.normalise{2}.write.subj.matname  = cellstr(matname);
-filename = [data_path 'anat/mrmprage_anonymized.nii'];
+filename = [data_path 'anat/mmprage_anonymized.nii'];
 jobs{job}.spatial{1}.normalise{2}.write.subj.resample = cellstr(filename)
 jobs{job}.spatial{1}.normalise{2}.write.roptions.vox  = [1 1 1];
 
@@ -98,9 +92,6 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% RUN
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%save('batch_preprocessing.mat','jobs');
-% %spm_jobman('interactive',jobs);
 spm_jobman('run',jobs);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
