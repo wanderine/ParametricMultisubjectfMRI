@@ -11,11 +11,11 @@ cd D:\fcon1000\Cambridge\
 
 subjects = dir;
 
-for subject = 74:length(subjects);
-%for subject = 1:1
+for subject = 1:length(subjects);
     
     if ispc
         subjectString = subjects(subject+2).name
+        %subjectString = 'sub94304';
         addpath('D:\spm8')
         data_path = ['D:\fcon1000\Cambridge\' subjectString '\'];
     end
@@ -109,6 +109,9 @@ for subject = 74:length(subjects);
             
             subjectString
             
+            smoothing
+            experiment
+            
             spm_file = ['D:\fcon1000\temp\classical\SPM.mat'];
             if exist(spm_file,'file')==2
                 %system(['rm' spm_file]); % Linux
@@ -184,7 +187,6 @@ for subject = 74:length(subjects);
             movefile('con_0001.img',['D:\fcon1000\Cambridge\' subjectString '\func\con_' experimentString '_s' num2str(smoothing) '.img']);
             
         end
-    end
-    
+    end   
 end
 

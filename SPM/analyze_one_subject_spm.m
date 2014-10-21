@@ -3,7 +3,7 @@ clear all
 clc
 close all
 
-subjectString = 'sub10619';
+subjectString = 'sub99085';
 
 voxel_size = 2;
 TR = 3;
@@ -102,6 +102,9 @@ for experiment = 1:4
     for smoothing = 4:2:16
         
         subjectString
+        
+        smoothing
+        experiment
         
         spm_file = ['D:\fcon1000\temp\classical2\SPM.mat'];
         if exist(spm_file,'file')==2
