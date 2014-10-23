@@ -30,7 +30,7 @@ NoGroupAnalysis=0
 
 # Loop over different smoothing levels
 for SmoothingLevel in 1 2 3 4 5 6 7
-#for SmoothingLevel in 1
+#for SmoothingLevel in 7
 do
 
 	if [ "$SmoothingLevel" -eq "1" ] ; then
@@ -52,10 +52,6 @@ do
 	GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
 	ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
-	touch xsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-	touch ysmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-	touch zsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-
 	# Delete old results
 	rm $ResultsDirectory/*
 	
@@ -68,7 +64,7 @@ do
 
 	# Loop over many random group comparisons
 	for Comparison in {1..1000}
-	#for Comparison in {1..6}
+	#for Comparison in {1..2}
 	do
 		Comparisons=$(echo "scale=3;$Comparisons + $one" | bc)
 	
@@ -237,62 +233,115 @@ do
 			# Check if group results were created correctly
 			if [ -e $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc.HEAD  ]; then
 
-				# Calculate mean smoothness
+				rm temp/beta_subject*
+
+				3dTcat -prefix temp/beta_subject1.nii $GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject2.nii $GroupDirectory/${Subject2}.results/stats.${Subject2}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject3.nii $GroupDirectory/${Subject3}.results/stats.${Subject3}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject4.nii $GroupDirectory/${Subject4}.results/stats.${Subject4}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject5.nii $GroupDirectory/${Subject5}.results/stats.${Subject5}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject6.nii $GroupDirectory/${Subject6}.results/stats.${Subject6}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject7.nii $GroupDirectory/${Subject7}.results/stats.${Subject7}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject8.nii $GroupDirectory/${Subject8}.results/stats.${Subject8}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject9.nii $GroupDirectory/${Subject9}.results/stats.${Subject9}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject10.nii $GroupDirectory/${Subject10}.results/stats.${Subject10}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject11.nii $GroupDirectory/${Subject11}.results/stats.${Subject11}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject12.nii $GroupDirectory/${Subject12}.results/stats.${Subject12}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject13.nii $GroupDirectory/${Subject13}.results/stats.${Subject13}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject14.nii $GroupDirectory/${Subject14}.results/stats.${Subject14}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject15.nii $GroupDirectory/${Subject15}.results/stats.${Subject15}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject16.nii $GroupDirectory/${Subject16}.results/stats.${Subject16}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject17.nii $GroupDirectory/${Subject17}.results/stats.${Subject17}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject18.nii $GroupDirectory/${Subject18}.results/stats.${Subject18}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject19.nii $GroupDirectory/${Subject19}.results/stats.${Subject19}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject20.nii $GroupDirectory/${Subject20}.results/stats.${Subject20}+tlrc[1] 
+
+				3dTcat -prefix temp/beta_subject21.nii $GroupDirectory/${Subject21}.results/stats.${Subject21}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject22.nii $GroupDirectory/${Subject22}.results/stats.${Subject22}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject23.nii $GroupDirectory/${Subject23}.results/stats.${Subject23}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject24.nii $GroupDirectory/${Subject24}.results/stats.${Subject24}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject25.nii $GroupDirectory/${Subject25}.results/stats.${Subject25}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject26.nii $GroupDirectory/${Subject26}.results/stats.${Subject26}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject27.nii $GroupDirectory/${Subject27}.results/stats.${Subject27}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject28.nii $GroupDirectory/${Subject28}.results/stats.${Subject28}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject29.nii $GroupDirectory/${Subject29}.results/stats.${Subject29}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject30.nii $GroupDirectory/${Subject30}.results/stats.${Subject30}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject31.nii $GroupDirectory/${Subject31}.results/stats.${Subject31}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject32.nii $GroupDirectory/${Subject32}.results/stats.${Subject32}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject33.nii $GroupDirectory/${Subject33}.results/stats.${Subject33}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject34.nii $GroupDirectory/${Subject34}.results/stats.${Subject34}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject35.nii $GroupDirectory/${Subject35}.results/stats.${Subject35}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject36.nii $GroupDirectory/${Subject36}.results/stats.${Subject36}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject37.nii $GroupDirectory/${Subject37}.results/stats.${Subject37}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject38.nii $GroupDirectory/${Subject38}.results/stats.${Subject38}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject39.nii $GroupDirectory/${Subject39}.results/stats.${Subject39}+tlrc[1] 
+				3dTcat -prefix temp/beta_subject40.nii $GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1] 
+
+				rm all_subjects.nii.gz
+
+				fslmerge -t all_subjects.nii.gz \
+				temp/beta_subject1.nii \
+				temp/beta_subject2.nii \
+				temp/beta_subject3.nii \
+				temp/beta_subject4.nii \
+				temp/beta_subject5.nii \
+				temp/beta_subject6.nii \
+				temp/beta_subject7.nii \
+				temp/beta_subject8.nii \
+				temp/beta_subject9.nii \
+				temp/beta_subject10.nii \
+				temp/beta_subject11.nii \
+				temp/beta_subject12.nii \
+				temp/beta_subject13.nii \
+				temp/beta_subject14.nii \
+				temp/beta_subject15.nii \
+				temp/beta_subject16.nii \
+				temp/beta_subject17.nii \
+				temp/beta_subject18.nii \
+				temp/beta_subject19.nii \
+				temp/beta_subject20.nii \
+				temp/beta_subject21.nii \
+				temp/beta_subject22.nii \
+				temp/beta_subject23.nii \
+				temp/beta_subject24.nii \
+				temp/beta_subject25.nii \
+				temp/beta_subject26.nii \
+				temp/beta_subject27.nii \
+				temp/beta_subject28.nii \
+				temp/beta_subject29.nii \
+				temp/beta_subject30.nii \
+				temp/beta_subject31.nii \
+				temp/beta_subject32.nii \
+				temp/beta_subject33.nii \
+				temp/beta_subject34.nii \
+				temp/beta_subject35.nii \
+				temp/beta_subject36.nii \
+				temp/beta_subject37.nii \
+				temp/beta_subject38.nii \
+				temp/beta_subject39.nii \
+				temp/beta_subject40.nii
+
+				rm detrended.nii.gz
+
+				3dDetrend -polort 0 -prefix detrended.nii.gz all_subjects.nii.gz
+
+				# Estimate smoothness
+				3dFWHMx -mask $ResultsDirectory/group_mask.nii -input detrended.nii.gz
+				Smoothnesses=`3dFWHMx -mask $ResultsDirectory/group_mask.nii -input detrended.nii.gz` 
 	
-				AllSmoothnesses=()
-				i=0
+				Values=()
+		    	Value=${Smoothnesses[$((0))]}
+			    Values+=($Value)
 
-				# Read all smoothness estimations from file
-				for subject in $(seq 0 $(($thirtynine)) )	
-				do
-					smoothnesses=`cat $GroupDirectory/${Subjects[$((subject))]}.results/blur.errts.1D`
-					smoothnessstring=${smoothnesses[$(($i))]}
-					AllSmoothnesses+=($smoothnessstring)
-				done
+				XSmoothness=${Values[$((0))]}
+				YSmoothness=${Values[$((1))]}
+				ZSmoothness=${Values[$((2))]}
 
-				three=3
-
-				# Calculate mean x smoothness
-				XSmoothness=0.0
-				index=0
-				for subject in $(seq 0 $(($thirtynine)) )
-				do
-					XSmoothness=$(echo $XSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
-					index=$((index + three))
-				done
-				XSmoothness=$(echo "scale=3;$XSmoothness /  ${NumberOfSubjects}" | bc)
-
-				# Calculate mean y smoothness
-				YSmoothness=0.0
-				index=1
-				for subject in $(seq 0 $(($thirtynine)) )
-				do
-					YSmoothness=$(echo $YSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
-					index=$((index + three))
-				done
-				YSmoothness=$(echo "scale=3; $YSmoothness /  ${NumberOfSubjects}" | bc)
-
-				# Calculate mean z smoothness
-				ZSmoothness=0.0
-				index=2
-				for subject in $(seq 0 $(($thirtynine)) )
-				do
-					ZSmoothness=$(echo $ZSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
-					index=$((index + three))
-				done
-				ZSmoothness=$(echo "scale=3; $ZSmoothness /  ${NumberOfSubjects}" | bc)
-
-				#echo ${AllSmoothnesses[*]}
-	
 				echo -e "\n"
 				echo "Mean x smoothness is $XSmoothness"
 				echo "Mean y smoothness is $YSmoothness"
 				echo "Mean z smoothness is $ZSmoothness"
 				echo -e "\n"
-
-				echo "$XSmoothness" >> xsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-				echo "$YSmoothness" >> ysmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-				echo "$ZSmoothness" >> zsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
 
 				# Now run cluster simulation to get p-values for clusters
 				3dClustSim -mask $ResultsDirectory/group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr $ClusterDefiningThresholdP -nodec > clusterthreshold.txt
@@ -309,10 +358,10 @@ do
 				# Finally apply same voxel threshold to statistical map, and calculate the size of the largest cluster
 
 				# Print clusters to screen
-				3dclust -1dindex 1 -1tindex 1 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 $ClusterExtentThreshold $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc
+				3dclust -1dindex 1 -1tindex 1 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc
 	
 				# Print clusters to text file
-				3dclust -1dindex 1 -1tindex 1 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 $ClusterExtentThreshold $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc > clustersizes.txt
+				3dclust -1dindex 1 -1tindex 1 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc > clustersizes.txt
 
 				echo -e "\n"
 	
@@ -343,9 +392,9 @@ do
 
 	done
 
-	echo "Current FWE is $FWE" > Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
-	echo "Number of failed group masks is $NoGroupMask" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
-	echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
+	echo "Current FWE is $FWE" > Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupresiduals.txt
+	echo "Number of failed group masks is $NoGroupMask" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupresiduals.txt
+	echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupresiduals.txt
 
 done
 

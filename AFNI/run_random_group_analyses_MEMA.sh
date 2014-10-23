@@ -4,14 +4,21 @@
 
 clear
 
-# z-value of 2.3 corresponds to p = 0.01 (one sided)
-# z-value of 3.1 corresponds to p = 0.001 (one sided)
+# Use z-scores instead of t-scores, to not change threshold for different group sizes
+
+# z-value of 2.326 corresponds to p = 0.01 (one sided)
+# z-value of 3.086 corresponds to p = 0.001 (one sided)
 
 ClusterDefiningThresholdP=0.01
-ClusterDefiningThreshold=2.3
+
+ClusterDefiningThreshold=2.326
 CDT=2.3
 
-Design=boxcar30
+#ClusterDefiningThreshold=3.086
+#CDT=3.1
+
+Design=boxcar30_REML
+DesignName=boxcar30
 
 Study=Cambridge
 #Study=Beijing
@@ -23,7 +30,7 @@ NoGroupAnalysis=0
 
 # Loop over different smoothing levels
 #for SmoothingLevel in 1 2 3 4 5 6 7
-for SmoothingLevel in 1
+for SmoothingLevel in 7
 do
 
 	if [ "$SmoothingLevel" -eq "1" ] ; then
@@ -56,8 +63,8 @@ do
 	FWE=0.0
 
 	# Loop over many random group comparisons
-	for Comparison in {1..1000}
-	#for Comparison in {1..2}
+	#for Comparison in {1..1000}
+	for Comparison in {1..1}
 	do
 		Comparisons=$(echo "scale=3;$Comparisons + $one" | bc)
 	
@@ -128,10 +135,10 @@ do
 		#echo "$Subject5"
 
 		# Remove old group mask
-		rm group_mask.nii
+		rm group_mask*
 
 		# Create group mask
-		3dMean -prefix group_mask.nii -mask_inter 	\
+		3dMean -prefix group_mask -mask_inter 	\
 	            $GroupDirectory/${Subject1}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject2}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject3}.results/mask_group+tlrc.HEAD \
@@ -174,12 +181,14 @@ do
 	            $GroupDirectory/${Subject40}.results/mask_group+tlrc.HEAD 
 
 		# Check if group mask was created correctly
-	    if [ -e group_mask.nii  ]; then
+	    if [ -e group_mask+tlrc.HEAD  ]; then
 
 			# Run a two-sample t-test, transform to z-values
-
-			3dMEMA -mask group_mask.nii -jobs 8 -groups A B -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}          \
-		          -set A                                               \
+			
+			#
+			#3dMEMA -groups A B -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}_MEMA   -jobs 8        \
+			3dMEMA -groups A B -mask group_mask+tlrc.HEAD -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}_MEMA   -jobs 8        \
+		          -set AA                                               \
 		             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[1]" "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[2]" \
 		             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[1]" "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[2]" \
 		             ${Subject3} "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[1]" "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[2]" \
@@ -200,7 +209,7 @@ do
 		             ${Subject18} "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[1]" "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[2]" \
 		             ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[1]" "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[2]" \
 		             ${Subject20} "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[1]" "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[2]" \
-    		      -set B                                               \
+    		      -set BB                                               \
 		             ${Subject21} "$GroupDirectory/${Subject21}.results/stats.${Subject21}_REML+tlrc[1]" "$GroupDirectory/${Subject21}.results/stats.${Subject21}_REML+tlrc[2]" \
 		             ${Subject22} "$GroupDirectory/${Subject22}.results/stats.${Subject22}_REML+tlrc[1]" "$GroupDirectory/${Subject22}.results/stats.${Subject22}_REML+tlrc[2]" \
 		             ${Subject23} "$GroupDirectory/${Subject23}.results/stats.${Subject23}_REML+tlrc[1]" "$GroupDirectory/${Subject23}.results/stats.${Subject23}_REML+tlrc[2]" \
@@ -224,7 +233,7 @@ do
 
 
 			# Check if group results were created correctly
-			if [ -e $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc.HEAD  ]; then
+			if [ -e $ResultsDirectory/${Smoothing}_${Design}_${Comparison}_MEMA+tlrc.HEAD  ]; then
 
 				# Calculate mean smoothness
 	
@@ -280,7 +289,8 @@ do
 				echo -e "\n"
 
 				# Now run cluster simulation to get p-values for clusters
-				3dClustSim -mask group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr ${ClusterDefiningThresholdP} -nodec > clusterthreshold.txt
+				3dClustSim -mask group_mask+tlrc.HEAD -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr ${ClusterDefiningThresholdP} -nodec > clusterthreshold.txt
+				#3dClustSim -nxyz 54 64 50 -dxyz 3.0 3.0 3.0 -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr ${ClusterDefiningThresholdP} -nodec > clusterthreshold.txt
 
 				echo -e "\n"
 
@@ -293,14 +303,13 @@ do
 
 				# Finally apply same voxel threshold to statistical map, and calculate the size of the largest cluster
 
-				# Print clusters to screen
-				3dclust -1dindex 1 -1tindex 1 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc
+				# Print clusters to screen (volume 5 is t-score for group B - group A)
+				3dclust -1dindex 5 -1tindex 5 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}_MEMA+tlrc
 	
-				# Print clusters to text file
-				3dclust -1dindex 1 -1tindex 1 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc > clustersizes.txt
+				# Print clusters to text file (volume 5 is t-score for group B - group A)
+				3dclust -1dindex 5 -1tindex 5 -dxyz=1 -1thresh $ClusterDefiningThreshold -1noneg  1.01 $ClusterExtentThreshold  $ResultsDirectory/${Smoothing}_${Design}_${Comparison}_MEMA+tlrc > clustersizes.txt
 
-				echo -e "\n"
-	
+				echo -e "\n"	
 	
 			    String=CLUSTERS #Search for NO CLUSTERS
 				File=clustersizes.txt
@@ -328,9 +337,9 @@ do
 
 	done
 
-	echo "Current FWE is $FWE" > results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
-	echo "Number of failed group masks is $NoGroupMask" >> results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
-	echo "Number of failed group analyses is $NoGroupAnalysis" >> results_${Study}_${Smoothing}_${Design}_MEMA_${CDT}.txt
+	echo "Current FWE is $FWE" > Results/results_${Study}_${Smoothing}_${DesignName}_MEMA_${CDT}.txt
+	echo "Number of failed group masks is $NoGroupMask" >> Results/results_${Study}_${Smoothing}_${DesignName}_MEMA_${CDT}.txt
+	echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_${Study}_${Smoothing}_${DesignName}_MEMA_${CDT}.txt
 
 done
 
