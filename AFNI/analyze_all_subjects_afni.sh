@@ -3,13 +3,11 @@
 Study=Cambridge
 #Study=Beijing
 
-Design=boxcar30
+Design=boxcar10_REML
 
 start_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
-#for Smooth in 1 2 3 4 5 6 7
-#for Smooth in 1 2 3 4 5 6 7
-for Smooth in 5 6 7
+for Smooth in 1 2 3 4 5 6 7
 do
 
 	if [ "$Smooth" -eq "1" ]; then
@@ -35,7 +33,6 @@ do
 		Smoothing_=16.0
 	fi
 
-
 	# Loop over all subjects
 	for i in /home/andek/Data/fcon1000/${Study}/*; do 
 
@@ -51,8 +48,6 @@ do
 			echo "-------------------------------"	
 	        # Go back to original directory
 	        cd $start_directory
-
-			#Subject=sub54846
 
 	        # set data directories
 	        top_dir=/home/andek
@@ -73,22 +68,24 @@ do
     	            -volreg_align_e2a                                        \
     	            -volreg_tlrc_warp                                        \
     	            -blur_size $Smoothing_                                    \
-    	            -regress_stim_times $stim_dir/boxcar30stim.txt           \
+    	            -regress_stim_times $stim_dir/boxcar10stim.txt           \
     	            -regress_stim_labels                                     \
-    	                boxcar30                                             \
-    	            -regress_basis 'BLOCK(30,1)'                             \
+    	                boxcar10                                             \
+    	            -regress_basis 'BLOCK(10,1)'                             \
     	            -regress_censor_motion 0.3                               \
     	            -regress_opts_3dD                                        \
     	                -jobs 8                                              \
-    	                -gltsym 'SYM: boxcar30' -glt_label 1 activity        \
+    	                -gltsym 'SYM: boxcar10' -glt_label 1 activity        \
     	            -regress_make_ideal_sum sum_ideal.1D                     \
 					-volreg_warp_dxyz 3										 \
     	            -regress_est_blur_epits                                  \
-    	            -regress_est_blur_errts
+    	            -regress_est_blur_errts									 \
+					-regress_reml_exec
 
 			# Fix to enforce 3 mm voxels
-    	    # -volreg_warp_dxyz 3										 \
+    	    # -volreg_warp_dxyz 3										 
 	
+			# Fix to enforce good normalization for all subjects
     	    #-tlrc_opts_at -OK_maxite -init_xform AUTO_CENTER -pad_input 60
 
     	    # Move analysis script

@@ -10,10 +10,10 @@ clear
 # z-value of 3.086 corresponds to p = 0.001 (one sided)
 
 ClusterDefiningThresholdP=0.01
-
 ClusterDefiningThreshold=2.326
 CDT=2.3
 
+#ClusterDefiningThresholdP=0.001
 #ClusterDefiningThreshold=3.086
 #CDT=3.1
 
@@ -23,7 +23,8 @@ DesignName=boxcar30
 Study=Cambridge
 #Study=Beijing
 
-NumberOfSubjects=40.0
+fiftynine=59
+NumberOfSubjects=60.0
 
 NoGroupMask=0
 NoGroupAnalysis=0
@@ -52,9 +53,9 @@ do
 	GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
 	ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
-	touch xsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-	touch ysmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-	touch zsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
+	touch SmoothnessEstimates/xsmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
+	touch SmoothnessEstimates/ysmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
+	touch SmoothnessEstimates/zsmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
 
 	# Delete old results
 	rm $ResultsDirectory/*
@@ -79,15 +80,12 @@ do
 		# Read a pregenerated permutation
 		Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${Study}_permutations/permutation${Comparison}.txt`
 
-		thirtynine=39
 		Subjects=()
-		# Put the first 40 subjects into Subjects
-		for subject in $(seq 0 $(($thirtynine)) )	
-		do
-			subjectstring=${Randomized[$(($subject))]}
-			Subjects+=($subjectstring)
-		done
+		subjectstring=${Randomized[$((0))]}
+		Subjects+=($subjectstring)
 
+		# Put the first 60 subjects into Subjects
+		
 		Subject1=${Subjects[$((0))]}
 		Subject2=${Subjects[$((1))]}
 		Subject3=${Subjects[$((2))]}
@@ -108,7 +106,6 @@ do
 		Subject18=${Subjects[$((17))]}
 		Subject19=${Subjects[$((18))]}
 		Subject20=${Subjects[$((19))]}
-
 		Subject21=${Subjects[$((20))]}
 		Subject22=${Subjects[$((21))]}
 		Subject23=${Subjects[$((22))]}
@@ -129,6 +126,26 @@ do
 		Subject38=${Subjects[$((37))]}
 		Subject39=${Subjects[$((38))]}
 		Subject40=${Subjects[$((39))]}
+		Subject41=${Subjects[$((40))]}
+		Subject42=${Subjects[$((41))]}
+		Subject43=${Subjects[$((42))]}
+		Subject44=${Subjects[$((43))]}
+		Subject45=${Subjects[$((44))]}
+		Subject46=${Subjects[$((45))]}
+		Subject47=${Subjects[$((46))]}
+		Subject48=${Subjects[$((47))]}
+		Subject49=${Subjects[$((48))]}
+		Subject50=${Subjects[$((49))]}
+		Subject51=${Subjects[$((50))]}
+		Subject52=${Subjects[$((51))]}
+		Subject53=${Subjects[$((52))]}
+		Subject54=${Subjects[$((53))]}
+		Subject55=${Subjects[$((54))]}
+		Subject56=${Subjects[$((55))]}
+		Subject57=${Subjects[$((56))]}
+		Subject58=${Subjects[$((57))]}
+		Subject59=${Subjects[$((58))]}
+		Subject60=${Subjects[$((59))]}
 
 		#echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
 		
@@ -182,7 +199,27 @@ do
 	            $GroupDirectory/${Subject37}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject38}.results/mask_group+tlrc.HEAD \
 	            $GroupDirectory/${Subject39}.results/mask_group+tlrc.HEAD \
-	            $GroupDirectory/${Subject40}.results/mask_group+tlrc.HEAD 
+	            $GroupDirectory/${Subject40}.results/mask_group+tlrc.HEAD \
+				$GroupDirectory/${Subject41}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject42}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject43}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject44}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject45}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject46}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject47}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject48}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject49}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject50}.results/mask_group+tlrc.HEAD \
+    	        $GroupDirectory/${Subject51}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject52}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject53}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject54}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject55}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject56}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject57}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject58}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject59}.results/mask_group+tlrc.HEAD \
+	            $GroupDirectory/${Subject60}.results/mask_group+tlrc.HEAD \
 
 		# Check if group mask was created correctly
 	    if [ -e $ResultsDirectory/group_mask.nii  ]; then
@@ -190,7 +227,7 @@ do
 			# Run a two-sample t-test, transform to z-values
 
 			3dttest++ -toz -mask $ResultsDirectory/group_mask.nii -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison} -AminusB                 \
-		          -setA Group1                                               \
+		          -setA Group1  \
 		             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[1]" \
 		             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}+tlrc[1]" \
 		             ${Subject3} "$GroupDirectory/${Subject3}.results/stats.${Subject3}+tlrc[1]" \
@@ -211,7 +248,6 @@ do
 		             ${Subject18} "$GroupDirectory/${Subject18}.results/stats.${Subject18}+tlrc[1]" \
 		             ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}+tlrc[1]" \
 		             ${Subject20} "$GroupDirectory/${Subject20}.results/stats.${Subject20}+tlrc[1]" \
-    		      -setB Group2                                               \
 		             ${Subject21} "$GroupDirectory/${Subject21}.results/stats.${Subject21}+tlrc[1]" \
 		             ${Subject22} "$GroupDirectory/${Subject22}.results/stats.${Subject22}+tlrc[1]" \
 		             ${Subject23} "$GroupDirectory/${Subject23}.results/stats.${Subject23}+tlrc[1]" \
@@ -222,6 +258,7 @@ do
 		             ${Subject28} "$GroupDirectory/${Subject28}.results/stats.${Subject28}+tlrc[1]" \
     		         ${Subject29} "$GroupDirectory/${Subject29}.results/stats.${Subject29}+tlrc[1]" \
 		             ${Subject30} "$GroupDirectory/${Subject30}.results/stats.${Subject30}+tlrc[1]" \
+				-setB Group2                                               \
 		             ${Subject31} "$GroupDirectory/${Subject31}.results/stats.${Subject31}+tlrc[1]" \
 		             ${Subject32} "$GroupDirectory/${Subject32}.results/stats.${Subject32}+tlrc[1]" \
 		             ${Subject33} "$GroupDirectory/${Subject33}.results/stats.${Subject33}+tlrc[1]" \
@@ -231,8 +268,27 @@ do
 		             ${Subject37} "$GroupDirectory/${Subject37}.results/stats.${Subject37}+tlrc[1]" \
 		             ${Subject38} "$GroupDirectory/${Subject38}.results/stats.${Subject38}+tlrc[1]" \
 		             ${Subject39} "$GroupDirectory/${Subject39}.results/stats.${Subject39}+tlrc[1]" \
-		             ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1]" 
-
+		             ${Subject40} "$GroupDirectory/${Subject40}.results/stats.${Subject40}+tlrc[1]" \
+		             ${Subject41} "$GroupDirectory/${Subject41}.results/stats.${Subject41}+tlrc[1]" \
+		             ${Subject42} "$GroupDirectory/${Subject42}.results/stats.${Subject42}+tlrc[1]" \
+		             ${Subject43} "$GroupDirectory/${Subject43}.results/stats.${Subject43}+tlrc[1]" \
+		             ${Subject44} "$GroupDirectory/${Subject44}.results/stats.${Subject44}+tlrc[1]" \
+		             ${Subject45} "$GroupDirectory/${Subject45}.results/stats.${Subject45}+tlrc[1]" \
+		             ${Subject46} "$GroupDirectory/${Subject46}.results/stats.${Subject46}+tlrc[1]" \
+		             ${Subject47} "$GroupDirectory/${Subject47}.results/stats.${Subject47}+tlrc[1]" \
+		             ${Subject48} "$GroupDirectory/${Subject48}.results/stats.${Subject48}+tlrc[1]" \
+		             ${Subject49} "$GroupDirectory/${Subject49}.results/stats.${Subject49}+tlrc[1]" \
+		             ${Subject50} "$GroupDirectory/${Subject50}.results/stats.${Subject50}+tlrc[1]" \
+		             ${Subject51} "$GroupDirectory/${Subject51}.results/stats.${Subject51}+tlrc[1]" \
+		             ${Subject52} "$GroupDirectory/${Subject52}.results/stats.${Subject52}+tlrc[1]" \
+		             ${Subject53} "$GroupDirectory/${Subject53}.results/stats.${Subject53}+tlrc[1]" \
+		             ${Subject54} "$GroupDirectory/${Subject54}.results/stats.${Subject54}+tlrc[1]" \
+		             ${Subject55} "$GroupDirectory/${Subject55}.results/stats.${Subject55}+tlrc[1]" \
+		             ${Subject56} "$GroupDirectory/${Subject56}.results/stats.${Subject56}+tlrc[1]" \
+		             ${Subject57} "$GroupDirectory/${Subject57}.results/stats.${Subject57}+tlrc[1]" \
+		             ${Subject58} "$GroupDirectory/${Subject58}.results/stats.${Subject58}+tlrc[1]" \
+    		         ${Subject59} "$GroupDirectory/${Subject59}.results/stats.${Subject59}+tlrc[1]" \
+		             ${Subject60} "$GroupDirectory/${Subject60}.results/stats.${Subject60}+tlrc[1]" 
 
 			# Check if group results were created correctly
 			if [ -e $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc.HEAD  ]; then
@@ -243,7 +299,7 @@ do
 				i=0
 
 				# Read all smoothness estimations from file
-				for subject in $(seq 0 $(($thirtynine)) )	
+				for subject in $(seq 0 $(($fiftynine)) )	
 				do
 					smoothnesses=`cat $GroupDirectory/${Subjects[$((subject))]}.results/blur.errts.1D`
 					smoothnessstring=${smoothnesses[$(($i))]}
@@ -255,7 +311,7 @@ do
 				# Calculate mean x smoothness
 				XSmoothness=0.0
 				index=0
-				for subject in $(seq 0 $(($thirtynine)) )
+				for subject in $(seq 0 $(($fiftynine)) )
 				do
 					XSmoothness=$(echo $XSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
 					index=$((index + three))
@@ -265,7 +321,7 @@ do
 				# Calculate mean y smoothness
 				YSmoothness=0.0
 				index=1
-				for subject in $(seq 0 $(($thirtynine)) )
+				for subject in $(seq 0 $(($fiftynine)) )
 				do
 					YSmoothness=$(echo $YSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
 					index=$((index + three))
@@ -275,7 +331,7 @@ do
 				# Calculate mean z smoothness
 				ZSmoothness=0.0
 				index=2
-				for subject in $(seq 0 $(($thirtynine)) )
+				for subject in $(seq 0 $(($fiftynine)) )
 				do
 					ZSmoothness=$(echo $ZSmoothness + ${AllSmoothnesses[$(($index))]} | bc)
 					index=$((index + three))
@@ -290,9 +346,9 @@ do
 				echo "Mean z smoothness is $ZSmoothness"
 				echo -e "\n"
 
-				echo "$XSmoothness" >> xsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-				echo "$YSmoothness" >> ysmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
-				echo "$ZSmoothness" >> zsmoothnesses_${Study}_${Smoothing}_${DesignName}.txt 
+				echo "$XSmoothness" >> SmoothnessEstimates/xsmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
+				echo "$YSmoothness" >> SmoothnessEstimates/ysmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
+				echo "$ZSmoothness" >> SmoothnessEstimates/zsmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize30.txt 
 
 				# Now run cluster simulation to get p-values for clusters
 				3dClustSim -mask $ResultsDirectory/group_mask.nii -fwhmxyz ${XSmoothness} ${YSmoothness} ${ZSmoothness} -athr 0.05 -pthr $ClusterDefiningThresholdP -nodec > clusterthreshold.txt
@@ -315,8 +371,7 @@ do
 				3dclust -1dindex 1 -1tindex 1 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 $ClusterExtentThreshold $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc > clustersizes.txt
 
 				echo -e "\n"
-	
-	
+		
 			    String=CLUSTERS #Search for NO CLUSTERS
 				File=clustersizes.txt
 				if grep -q $String "$File"; then 
@@ -343,9 +398,9 @@ do
 
 	done
 
-	echo "Current FWE is $FWE" > Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
-	echo "Number of failed group masks is $NoGroupMask" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
-	echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}.txt
+	echo "Current FWE is $FWE" > Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize30.txt
+	echo "Number of failed group masks is $NoGroupMask" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize30.txt
+	echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize30.txt
 
 done
 
