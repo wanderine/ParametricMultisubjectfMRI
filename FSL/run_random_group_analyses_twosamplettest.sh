@@ -96,7 +96,7 @@ do
 		#-------------------------------------
 
 		FirstSubjectGroup1=1
-		FirstSubjectGroup2=$((GroupSize + one)) # change 
+		FirstSubjectGroup2=$((GroupSize + one)) 
 
 		StartText="set fmri(copeinput.1) 1"
 
@@ -104,7 +104,10 @@ do
 		cp ${design_directory}/${DesignFile} ${temp_directory}/designs$threads/
 
 		#-----------------------------------------
+		# Change study (output directory)
+		sed -i "s/${StudyOld}/${StudyNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
+		#-----------------------------------------
 		# Change smoothing (output directory)
 		sed -i "s/${SmoothingOld}/${SmoothingNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
