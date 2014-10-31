@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/home/andek/Research_projects/RandomGroupAnalyses/Results/4mm/boxcar30/GroupComparison"
+set fmri(outputdir) "/home/andek/Research_projects/RandomGroupAnalyses/Results/Cambridge/4mm/boxcar30/GroupComparison"
 
 # TR(s)
 set fmri(tr) 3

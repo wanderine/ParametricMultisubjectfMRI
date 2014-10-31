@@ -2,10 +2,23 @@
 
 clear
 
+GroupSize=40
+DesignFile=TwoSampleTtest_GroupSize${GroupSize}.fsf
+
+# Cluster defining threshold
+ClusterDefiningThresholdOld="set fmri(z_thresh) 2.3"
+ClusterDefiningThresholdNew="set fmri(z_thresh) 3.1"
+CDT=3.1
+
+# Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
+EffectOld="set fmri(mixed_yn) 2"
+EffectNew="set fmri(mixed_yn) 2"
+AnalysisType=FLAME1
+
 SmoothingOld=4mm
 
 DesignOld=boxcar30
-DesignNew=boxcar10
+DesignNew=boxcar30
 
 StudyOld=Cambridge
 StudyNew=Cambridge
@@ -21,29 +34,9 @@ MaximumThreads=8 # maximum number of CPU threads to use
 ThresholdMethodOld="set fmri(thresh) 3"
 ThresholdMethodNew="set fmri(thresh) 3"
 
-# Cluster defining threshold
-ClusterDefiningThresholdOld="set fmri(z_thresh) 2.3"
-ClusterDefiningThresholdNew="set fmri(z_thresh) 3.1"
-CDT=3.1
-
 # Set corrected threshold
 ThresholdOld='0.05'
 ThresholdNew='0.05'
-
-# Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
-EffectOld="set fmri(mixed_yn) 2"
-EffectNew="set fmri(mixed_yn) 2"
-AnalysisType=FLAME1
-
-# Number of subjects
-NumberOfSubjectsOld="set fmri(npts) 1"
-NumberOfSubjectsNew="set fmri(npts) 40" # change
-
-NumberOfFirstLevelAnalysesOld="set fmri(multiple) 1"
-NumberOfFirstLevelAnalysesNew="set fmri(multiple) 40" # change (total number of subjects)
-
-NumberOfSubjectsDiffGroup1=19 # change   (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files)
-NumberOfSubjectsDiffGroup2=19 # change  (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
 
 one=1
 two=2
@@ -53,8 +46,12 @@ five=5
 six=6
 seven=7
 
+NumberOfSubjectsDiffGroup1=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files)
+NumberOfSubjectsDiffGroup2=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
+
 # Loop over different smoothing levels
 for Smoothing in 1 2 3 4 5 6 7
+#for Smoothing in 1
 do
 	SignificantDifferences=0
 
@@ -90,63 +87,46 @@ do
 		# Read a pregenerated permutation from file
 		Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${StudyNew}_permutations/permutation${Comparison}.txt`
 
-		#echo ${Randomized[@]}
-
-		thirtynine=39
-		GroupSize=20
-
 		Subjects=()
+   		subjectstring=${Randomized[$((0))]}
+	    Subjects+=($subjectstring)
 
-		# Put the first 40 subjects into Subjects
-		for subject in $(seq 0 $(($thirtynine)) )	
-		do
-    		subjectstring=${Randomized[$(($subject))]}
-		    Subjects+=($subjectstring)
-		done
-
-		#echo ${Subjects[10]}
+		#echo ${Subjects[*]}
 
 		#-------------------------------------
 
 		FirstSubjectGroup1=1
-		FirstSubjectGroup2=21 # change 
+		FirstSubjectGroup2=$((GroupSize + one)) # change 
 
 		StartText="set fmri(copeinput.1) 1"
 
 		# Copy template design 
-		cp ${design_directory}/GroupComparison.fsf ${temp_directory}/designs$threads/
+		cp ${design_directory}/${DesignFile} ${temp_directory}/designs$threads/
 
 		#-----------------------------------------
+
 		# Change smoothing (output directory)
-		sed -i "s/${SmoothingOld}/${SmoothingNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		sed -i "s/${SmoothingOld}/${SmoothingNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		#-----------------------------------------
 		# Change design (output directory)
-		sed -i "s/${DesignOld}/${DesignNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		sed -i "s/${DesignOld}/${DesignNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		#-----------------------------------------
 		# Change effect type
-		sed -i "s/${EffectOld}/${EffectNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		sed -i "s/${EffectOld}/${EffectNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		#-----------------------------------------
 		# Change thresholding type
-		sed -i "s/${ThresholdMethodOld}/${ThresholdMethodNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
-
-		#-----------------------------------------
-		# Change number of subjects
-		sed -i "s/${NumberOfSubjectsOld}/${NumberOfSubjectsNewMacKillop}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		sed -i "s/${ThresholdMethodOld}/${ThresholdMethodNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		#-----------------------------------------
 		# Change cluster defining threshold
-		sed -i "s/${ClusterDefiningThresholdOld}/${ClusterDefiningThresholdNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		sed -i "s/${ClusterDefiningThresholdOld}/${ClusterDefiningThresholdNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		#-----------------------------------------
-		# Change threshold
-		sed -i "s/${ThresholdOld}/${ThresholdNew}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
-
-		#-----------------------------------------
-		# Change number of first level analyses
-		sed -i "s/${NumberOfFirstLevelAnalysesOld}/${NumberOfFirstLevelAnalysesNewMacKillop}/g" ${temp_directory}/designs${threads}/GroupComparison.fsf
+		# Change corrected threshold
+		sed -i "s/${ThresholdOld}/${ThresholdNew}/g" ${temp_directory}/designs${threads}/${DesignFile}
 
 		# Setup groups
 
@@ -165,7 +145,7 @@ do
 		do
 		    # Get a new subject
 	    	subjectstring=${Subjects[$(($subject))]}
-		    # Change subject number (feat_files(n))	
+			# Change subject number (feat_files(n))	
 	    	modifiedtext="${basetext/$FirstSubjectGroup1/$(($subject + $one))}"		
 		    # Change the subject string
 		    modifiedtext="${modifiedtext/$basesubject/$subjectstring}"		
@@ -215,10 +195,9 @@ do
 		# Group 1
 		#-----------------------------------------------
 
-		file="GroupComparison.fsf"
 		one=1
 		# Loop over subjects to add, group 1
-		for subject in $(seq 0 $(($NumberOfSubjectsDiffGroup1  )) )	
+		for subject in $(seq 0 $(($NumberOfSubjectsDiffGroup1)) )	
 		do   
 		    LastSubject=${SubjectsGroup1FileNames[$subject]}
 	    	NewSubject=${SubjectsGroup1FileNames[$(($subject + $one))]}
@@ -227,7 +206,7 @@ do
 		    #echo "$NewSubject"
 
 		    # Add a new subject line in the text file, by first finding the previous subject line
-		    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${file} 
+		    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${DesignFile} 
 		done
 
 		#-----------------------------------------------
@@ -245,13 +224,13 @@ do
 		    #echo "$NewSubject"
 
 		    # Add a new subject line in the text file, by first finding the previous subject line
-		    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${file} 
+		    sed -i "s/${LastSubject}/${LastSubject}\n\n${NewSubject}/" ${temp_directory}/designs${threads}/${DesignFile} 
 		done
 
 		#-----------------------------------------
 
 		# Run group analysis
-		feat ${temp_directory}/designs${threads}/GroupComparison.fsf &
+		feat ${temp_directory}/designs${threads}/${DesignFile} &
 		((threads++))
 	
 		if [ "$threads" -eq "$MaximumThreads" ]; then
@@ -371,7 +350,7 @@ do
 
 	done
 
-	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}.txt
+	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_twosamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}_groupsize${GroupSize}.txt
 
 	date2=$(date +"%s")
 	diff=$(($date2-$date1))
