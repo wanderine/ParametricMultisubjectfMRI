@@ -7,13 +7,13 @@ DesignFile=OneSampleTtest_GroupSize${GroupSize}.fsf
 
 # Cluster defining threshold
 ClusterDefiningThresholdOld="set fmri(z_thresh) 2.3"
-ClusterDefiningThresholdNew="set fmri(z_thresh) 3.1"
-CDT=3.1
+ClusterDefiningThresholdNew="set fmri(z_thresh) 2.3"
+CDT=2.3
 
 # Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
 EffectOld="set fmri(mixed_yn) 2"
-EffectNew="set fmri(mixed_yn) 2"
-AnalysisType=FLAME1
+EffectNew="set fmri(mixed_yn) 0"
+AnalysisType=OLS
 
 SmoothingOld=4mm
 
@@ -76,11 +76,11 @@ do
 	# Remove old results
 	rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}/Group*
 
-	# Loop over many random group comparisons
+	# Loop over many random group analyses
 	for Comparison in {1..1000}
 	#for Comparison in {1..8}
 	do
-		echo "Starting random group comparison $Comparison !"
+		echo "Starting random group analysis $Comparison !"
 
 		# Read a pregenerated permutation from file
 		Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${StudyNew}_permutations/permutation${Comparison}.txt`
