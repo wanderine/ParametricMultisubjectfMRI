@@ -4,8 +4,10 @@ clear
 
 source general_analysis_settings.sh
 
-Study=Cambridge
-#Study=Beijing
+MaximumThreads=8 # Maximum number of CPU threads to use
+
+#Study=Cambridge
+Study=Beijing
 
 # Design
 DesignNew=boxcar10
@@ -14,70 +16,94 @@ DesignNew=boxcar10
 BoxcarOffNew="set fmri(off1) 10"
 BoxcarOnNew="set fmri(on1) 10"
 
-# Amount of smoothing (FWHM in mm)
-SmoothingNew="set fmri(smooth) 4.0"
-SmoothingOutputNew=4mm
-
 # Highpass filter cutoff (twice boxcar length)
 HighPassNew="set fmri(paradigm_hp) 20" #60 for 30 seconds on off, 20 for 10 seconds on off
 
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
-threads=0
-MaximumThreads=8 # Maximum number of CPU threads to use
+for Smoothing in 3 4 5 6 7 ; do
+#for Smoothing in 1 2 3 4 5 6 7 ; do
 
-# Loop over all subjects
-for i in /home/andek/Data/fcon1000/${Study}/* ; do
+	threads=0
 
-    # Check if fMRI data exists for this directory
-    if [ -e ${i}/func/rest.nii.gz ]; then
+	# Amount of smoothing (FWHM in mm)
+	if [ "$Smoothing" -eq "1" ]; then
+		SmoothingNew="set fmri(smooth) 4.0"
+		SmoothingOutputNew=4mm
+	elif [ "$Smoothing" -eq "2" ]; then
+		SmoothingNew="set fmri(smooth) 6.0"
+		SmoothingOutputNew=6mm
+	elif [ "$Smoothing" -eq "3" ]; then
+		SmoothingNew="set fmri(smooth) 8.0"
+		SmoothingOutputNew=8mm
+	elif [ "$Smoothing" -eq "4" ]; then
+		SmoothingNew="set fmri(smooth) 10.0"
+		SmoothingOutputNew=10mm
+	elif [ "$Smoothing" -eq "5" ]; then
+		SmoothingNew="set fmri(smooth) 12.0"
+		SmoothingOutputNew=12mm
+	elif [ "$Smoothing" -eq "6" ]; then
+		SmoothingNew="set fmri(smooth) 14.0"
+		SmoothingOutputNew=14mm
+	elif [ "$Smoothing" -eq "7" ]; then
+		SmoothingNew="set fmri(smooth) 16.0"
+		SmoothingOutputNew=16mm
+	fi
 
-		# Go to current directory
-		cd $i
-		# Get subject name
-	   	SubjectNew=${PWD##*/}
-	    echo "Processing" $SubjectNew
-		# Go back to original directory
-		cd $design_directory
 
-        data_directory=/home/andek/Data/fcon1000/${Study}/${SubjectNew}/func
+	# Loop over all subjects
+	for i in /home/andek/Data/fcon1000/${Study}/* ; do
 
-        #---------------
-        # Copy template design 
-        cp ${design_directory}/Design_templates/GLM${Study}.fsf ${data_directory}/
+	    # Check if fMRI data exists for this directory
+	    if [ -e ${i}/func/rest.nii.gz ]; then
 
-        # Change smoothing output
-        sed -i "s/${SmoothingOutputOld}/${SmoothingOutputNew}/g" ${data_directory}/GLM${Study}.fsf
+			# Go to current directory
+			cd $i
+			# Get subject name
+		   	SubjectNew=${PWD##*/}
+		    echo "Processing" $SubjectNew
+			# Go back to original directory
+			cd $design_directory
 
-        # Change design output
-        sed -i "s/${DesignOld}/${DesignNew}/g" ${data_directory}/GLM${Study}.fsf
+	        data_directory=/home/andek/Data/fcon1000/${Study}/${SubjectNew}/func
 
-        # Change subject name
-        sed -i "s/${SubjectOld}/${SubjectNew}/g" ${data_directory}/GLM${Study}.fsf
+	        #---------------
+	        # Copy template design 
+	        cp ${design_directory}/Design_templates/GLM${Study}.fsf ${data_directory}/
 
-        # Change smoothing
-        sed -i "s/${SmoothingOld}/${SmoothingNew}/g" ${data_directory}/GLM${Study}.fsf
+	        # Change smoothing output
+	        sed -i "s/${SmoothingOutputOld}/${SmoothingOutputNew}/g" ${data_directory}/GLM${Study}.fsf
 
-        # Change boxcar period time
-        sed -i "s/${BoxcarOffOld}/${BoxcarOffNew}/g" ${data_directory}/GLM${Study}.fsf
-        sed -i "s/${BoxcarOnOld}/${BoxcarOnNew}/g" ${data_directory}/GLM${Study}.fsf
+	        # Change design output
+	        sed -i "s/${DesignOld}/${DesignNew}/g" ${data_directory}/GLM${Study}.fsf
 
-        # Change highpass filter
-        sed -i "s/${HighPassOld}/${HighPassNew}/g" ${data_directory}/GLM${Study}.fsf
+	        # Change subject name
+	        sed -i "s/${SubjectOld}/${SubjectNew}/g" ${data_directory}/GLM${Study}.fsf
 
-        #---------------
-        # Run analyses in parallel
-        feat ${data_directory}/GLM${Study}.fsf &
-	    ((threads++))
+	        # Change smoothing
+	        sed -i "s/${SmoothingOld}/${SmoothingNew}/g" ${data_directory}/GLM${Study}.fsf
+
+	        # Change boxcar period time
+	        sed -i "s/${BoxcarOffOld}/${BoxcarOffNew}/g" ${data_directory}/GLM${Study}.fsf
+	        sed -i "s/${BoxcarOnOld}/${BoxcarOnNew}/g" ${data_directory}/GLM${Study}.fsf
+
+	        # Change highpass filter
+	        sed -i "s/${HighPassOld}/${HighPassNew}/g" ${data_directory}/GLM${Study}.fsf
+
+	        #---------------
+	        # Run analyses in parallel
+	        feat ${data_directory}/GLM${Study}.fsf &
+		    ((threads++))
 	
-		if [ $threads -eq "$MaximumThreads" ]; then
-		    wait
-            threads=0
-        fi
+			if [ $threads -eq "$MaximumThreads" ]; then
+			    wait
+	            threads=0
+	        fi
 
-    else
-		echo "This directory does not contain any fMRI data"
-    fi
+	    else
+			echo "This directory does not contain any fMRI data"
+	    fi
 
+	done
 done
 
