@@ -6,7 +6,7 @@ addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
 design = 'boxcar30';
-groupSize = 20;
+groupSize = 40;
 clusterDefiningThreshold = 0.001;
 
 significantDifferences = zeros(7,1);

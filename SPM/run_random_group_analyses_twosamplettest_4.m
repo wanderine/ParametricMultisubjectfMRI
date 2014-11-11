@@ -5,8 +5,8 @@ clc
 addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
-design = 'boxcar30';
-groupSize = 10;
+design = 'boxcar10';
+groupSize = 20;
 clusterDefiningThreshold = 0.001;
 
 significantDifferences = zeros(7,1);
@@ -19,7 +19,7 @@ errors = zeros(7,1);
 
 smoothingLevels = 4:2:16;
 
-for smoothing = 3:3       
+for smoothing = 4:4       
     
     % Do 1000 random group comparisons for each smoothing
     comparisons = 0;

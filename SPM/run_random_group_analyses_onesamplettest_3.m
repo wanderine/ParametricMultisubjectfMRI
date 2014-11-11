@@ -7,7 +7,7 @@ addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
 design = 'boxcar30';
 groupSize = 20;
-clusterDefiningThreshold = 0.001;
+clusterDefiningThreshold = 0.01;
 
 significantDifferences = zeros(7,1);
 
@@ -19,7 +19,7 @@ errors = zeros(7,1);
 
 smoothingLevels = 4:2:16;
 
-for smoothing = 2:2       
+for smoothing = 7:7       
     
     % Do 1000 random group comparisons for each smoothing
     for comparison = 1:1000
