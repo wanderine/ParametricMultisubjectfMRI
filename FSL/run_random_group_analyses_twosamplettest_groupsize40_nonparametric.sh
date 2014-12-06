@@ -2,8 +2,6 @@
 
 clear
 
-
-Smoothing=16mm
 Design=boxcar30
 Study=Cambridge
 #Study=Beijing
@@ -53,8 +51,8 @@ do
 			#echo ${Randomized[@]}
 
 			Subjects=()
-   			subjectstring=${Randomized[$(($subject))]}
-    		Subjects+=($subjectstring)
+	   		subjectstring=${Randomized[$((0))]}
+		    Subjects+=($subjectstring)
 
 			Subject1=${Subjects[$((0))]}
 			Subject2=${Subjects[$((1))]}
@@ -259,7 +257,7 @@ do
 
 		done
 
-	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_twosamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize20.txt
+		echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_twosamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize20.txt
 
 	done
 

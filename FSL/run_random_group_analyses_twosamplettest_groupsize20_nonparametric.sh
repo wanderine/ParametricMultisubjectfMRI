@@ -6,10 +6,6 @@ Design=boxcar10
 #Study=Cambridge
 Study=Beijing
 
-results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
-design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
-temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
-
 # Loop over different cluster defining thresholds
 for C in 1 2
 do
@@ -54,16 +50,9 @@ do
 	
 			#echo ${Randomized[@]}
 	
-			thirtynine=39
-
 			Subjects=()
-
-			# Put the first 40 subjects into Subjects
-			for subject in $(seq 0 $(($thirtynine)) )	
-			do
-    			subjectstring=${Randomized[$(($subject))]}
-			    Subjects+=($subjectstring)
-			done
+	   		subjectstring=${Randomized[$((0))]}
+		    Subjects+=($subjectstring)
 
 			Subject1=${Subjects[$((0))]}
 			Subject2=${Subjects[$((1))]}
