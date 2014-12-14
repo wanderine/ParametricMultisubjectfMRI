@@ -2,12 +2,12 @@
 
 clear
 
-Design=boxcar30
+Design=boxcar10
 #Study=Cambridge
 Study=Beijing
 
 # Loop over different cluster defining thresholds
-for C in 2
+for C in 1 2
 do
 
 	if [ "$C" -eq "1" ] ; then
@@ -19,7 +19,7 @@ do
 	# Loop over different smoothing levels
 	for S in 1 2 3 4
 	do
-		SignificantDifferences=0
+		SignificantActivations=0
 
 		date1=$(date +"%s")
 
@@ -40,10 +40,9 @@ do
 		fi
 
 		# Loop over many random group comparisons
-		#for Comparison in {1..1000}
 		for Comparison in {1..1000}
 		do
-		echo "Starting random group comparison $Comparison !"
+		echo "Starting random group analysis $Comparison !"
 
 			# Read a pregenerated permutation
 			Randomized=`cat /home/andek/Research_projects/RandomGroupAnalyses/${Study}_permutations/permutation${Comparison}.txt`
@@ -75,27 +74,6 @@ do
 			Subject19=${Subjects[$((18))]}
 			Subject20=${Subjects[$((19))]}
 
-			Subject21=${Subjects[$((20))]}
-			Subject22=${Subjects[$((21))]}
-			Subject23=${Subjects[$((22))]}
-			Subject24=${Subjects[$((23))]}
-			Subject25=${Subjects[$((24))]}
-			Subject26=${Subjects[$((25))]}
-			Subject27=${Subjects[$((26))]}
-			Subject28=${Subjects[$((27))]}
-			Subject29=${Subjects[$((28))]}
-			Subject30=${Subjects[$((29))]}
-			Subject31=${Subjects[$((30))]}
-			Subject32=${Subjects[$((31))]}
-			Subject33=${Subjects[$((32))]}
-			Subject34=${Subjects[$((33))]}
-			Subject35=${Subjects[$((34))]}
-			Subject36=${Subjects[$((35))]}
-			Subject37=${Subjects[$((36))]}
-			Subject38=${Subjects[$((37))]}
-			Subject39=${Subjects[$((38))]}
-			Subject40=${Subjects[$((39))]}
-	
 			echo $Subject1
 			echo $Subject2
 			echo $Subject3
@@ -133,49 +111,29 @@ do
 			Results/${Study}/${Smoothing}/${Design}/${Subject17}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject18}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject19}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject20}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject21}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject22}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject23}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject24}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject25}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject26}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject27}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject28}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject29}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject30}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject31}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject32}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject33}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject34}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject35}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject36}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject37}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject38}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject39}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject40}.feat/reg_standard/stats/cope1.nii.gz
+			Results/${Study}/${Smoothing}/${Design}/${Subject20}.feat/reg_standard/stats/cope1.nii.gz 
 
 			#-------------------------------------------------------
 			# Run group analysis using permutation test in BROCCOLI
 			#-------------------------------------------------------
 
-			./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_twosamplettest_groupsize20.mat -contrasts contrasts_twosamplettest_groupsize20.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_twosamplettest_groupsize20.txt > log.txt
+			./RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 10000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_onesamplettest_groupsize20_10000.txt > log.txt
 
 			# Equivalent call to randomise
-			# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
+			# randomise -i all_subjects.nii.gz -o test -1 -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
 
 			# Count number of lines in log
     		Lines=`cat log.txt | wc -l`
     		if [ "$Lines" -gt "2" ] ; then
-				((SignificantDifferences++))
-    		    echo "Significant group difference detected!"
+				((SignificantActivations++))
+    		    echo "Significant group activation detected!"
 			fi
 	
-			echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
+			echo "Out of $Comparison random group analyses, significant group activations were detected $SignificantActivations times !"
 
 		done
 
-		echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_twosamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize20.txt
+		echo "Out of $Comparison random group analyses, significant group activations were detected $SignificantActivations times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_onesamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize20.txt
 
 	done
 

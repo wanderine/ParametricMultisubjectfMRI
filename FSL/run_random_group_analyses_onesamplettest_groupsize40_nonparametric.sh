@@ -7,7 +7,7 @@ Design=boxcar30
 Study=Beijing
 
 # Loop over different cluster defining thresholds
-for C in 2
+for C in 1
 do
 
 	if [ "$C" -eq "1" ] ; then
@@ -17,9 +17,9 @@ do
 	fi
 
 	# Loop over different smoothing levels
-	for S in 1 2 3 4
+	for S in 1
 	do
-		SignificantDifferences=0
+		SignificantActivations=0
 
 		date1=$(date +"%s")
 
@@ -40,8 +40,7 @@ do
 		fi
 
 		# Loop over many random group comparisons
-		#for Comparison in {1..1000}
-		for Comparison in {1..1000}
+		for Comparison in {1..1}
 		do
 		echo "Starting random group comparison $Comparison !"
 
@@ -95,7 +94,7 @@ do
 			Subject38=${Subjects[$((37))]}
 			Subject39=${Subjects[$((38))]}
 			Subject40=${Subjects[$((39))]}
-	
+
 			echo $Subject1
 			echo $Subject2
 			echo $Subject3
@@ -113,7 +112,7 @@ do
 
 			rm all_subjects.nii.gz
 	
-			fslmerge -t all_subjects.nii.gz \
+			fslmerge -t all_subjects_.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject1}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject2}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject3}.feat/reg_standard/stats/cope1.nii.gz \
@@ -153,29 +152,29 @@ do
 			Results/${Study}/${Smoothing}/${Design}/${Subject37}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject38}.feat/reg_standard/stats/cope1.nii.gz \
 			Results/${Study}/${Smoothing}/${Design}/${Subject39}.feat/reg_standard/stats/cope1.nii.gz \
-			Results/${Study}/${Smoothing}/${Design}/${Subject40}.feat/reg_standard/stats/cope1.nii.gz
+			Results/${Study}/${Smoothing}/${Design}/${Subject40}.feat/reg_standard/stats/cope1.nii.gz 
 
 			#-------------------------------------------------------
 			# Run group analysis using permutation test in BROCCOLI
 			#-------------------------------------------------------
 
-			./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_twosamplettest_groupsize20.mat -contrasts contrasts_twosamplettest_groupsize20.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_twosamplettest_groupsize20.txt > log.txt
+			./RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_onesamplettest_groupsize40.txt > log.txt
 
 			# Equivalent call to randomise
-			# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
+			# randomise -i all_subjects.nii.gz -o test -1 -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
 
 			# Count number of lines in log
     		Lines=`cat log.txt | wc -l`
     		if [ "$Lines" -gt "2" ] ; then
-				((SignificantDifferences++))
-    		    echo "Significant group difference detected!"
+				((SignificantActivations++))
+    		    echo "Significant group activation detected!"
 			fi
 	
-			echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
+			echo "Out of $Comparison random group analyses, significant group activations were detected $SignificantActivations times !"
 
 		done
 
-		echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_twosamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize20.txt
+		echo "Out of $Comparison random group analyses, significant group activations were detected $SignificantActivations times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_broccoli_onesamplettest_${Study}_${Design}_${Smoothing}_perm_${ClusterDefiningThreshold}_groupsize40.txt
 
 	done
 
