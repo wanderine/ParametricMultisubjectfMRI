@@ -118,7 +118,7 @@ for subject = 151:198
     %% CLASSICAL STATISTICAL ANALYSIS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    for experiment = [1 2 3 4]
+    for experiment = [3 4]
         for smoothing = 4:2:16
             
             subjectString

@@ -9,10 +9,10 @@ cd D:\fcon1000\Beijing\
 
 subjects = dir;
 
-for subject = 100:length(subjects);    
-    subjectString = subjects(subject+2).name
-    spm_check_registration(['D:\fcon1000\Beijing\' subjectString '\anat\wmmprage_anonymized.nii'])       
-    %spm_check_registration(['D:\fcon1000\Cambridge\' subjectString '\func\con_boxcar10_s4.hdr'])       
+for subject = 1:length(subjects);    
+    subjectString = subjects(subject+3).name
+    %spm_check_registration(['D:\fcon1000\Beijing\' subjectString '\anat\wmmprage_anonymized.nii'])       
+    spm_check_registration(['D:\fcon1000\Beijing\' subjectString '\func\con_event1_s10.hdr'])       
     pause
 end
 

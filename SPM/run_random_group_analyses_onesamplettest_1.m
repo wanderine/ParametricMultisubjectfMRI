@@ -5,9 +5,10 @@ clc
 addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
-design = 'boxcar30';
+study = 'Cambridge'
+design = 'event1';
 groupSize = 20;
-clusterDefiningThreshold = 0.01;
+clusterDefiningThreshold = 0.001;
 
 significantDifferences = zeros(7,1);
 
@@ -19,7 +20,7 @@ errors = zeros(7,1);
 
 smoothingLevels = 4:2:16;
 
-for smoothing = 5:5       
+for smoothing = 1:1       
     
     % Do 1000 random group comparisons for each smoothing
     for comparison = 1:1000
@@ -37,7 +38,7 @@ for smoothing = 5:5
         end
         
         % Read a random permutation from file
-        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\Cambridge_permutations\permutation' num2str(comparison) '.txt']);
+        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\' study '_permutations\permutation' num2str(comparison) '.txt']);
         C = textscan(fileID,'%s');
         fclose(fileID);
         
@@ -51,7 +52,7 @@ for smoothing = 5:5
         for s = 1:groupSize
             subjectString = C{1}(s);
             subjectString = subjectString{1};
-            group1{s} = ['D:\fcon1000\Cambridge\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
+            group1{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
         end                
         
         % Setup statistical analysis

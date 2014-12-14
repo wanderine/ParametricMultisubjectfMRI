@@ -5,9 +5,10 @@ clc
 addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
+study = 'Beijing'
 design = 'boxcar10';
-groupSize = 20;
-clusterDefiningThreshold = 0.001;
+groupSize = 40;
+clusterDefiningThreshold = 0.01;
 
 significantDifferences = zeros(7,1);
 
@@ -37,7 +38,7 @@ for smoothing = 1:1
         end
         
         % Read a random permutation from file
-        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\Cambridge_permutations\permutation' num2str(comparison) '.txt']);
+        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\' study '_permutations\permutation' num2str(comparison) '.txt']);
         C = textscan(fileID,'%s');
         fclose(fileID);
         
@@ -51,7 +52,7 @@ for smoothing = 1:1
         for s = 1:groupSize
             subjectString = C{1}(s);
             subjectString = subjectString{1};
-            group1{s} = ['D:\fcon1000\Cambridge\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
+            group1{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
         end
         
         % Setup group 2
@@ -59,7 +60,7 @@ for smoothing = 1:1
         for s = 1:groupSize
             subjectString = C{1}(s+groupSize);
             subjectString = subjectString{1};
-            group2{s} = ['D:\fcon1000\Cambridge\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
+            group2{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
         end
         
         % Setup statistical analysis

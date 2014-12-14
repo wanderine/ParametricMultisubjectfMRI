@@ -5,9 +5,10 @@ clc
 addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
+study = 'Beijing'
 design = 'boxcar10';
-groupSize = 20;
-clusterDefiningThreshold = 0.001;
+groupSize = 40;
+clusterDefiningThreshold = 0.01;
 
 significantDifferences = zeros(7,1);
 
@@ -22,7 +23,6 @@ smoothingLevels = 4:2:16;
 for smoothing = 4:4       
     
     % Do 1000 random group comparisons for each smoothing
-    comparisons = 0;
     for comparison = 1:1000
         
         disp(sprintf('Doing comparison %i ! \n',comparison))
@@ -38,21 +38,21 @@ for smoothing = 4:4
         end
         
         % Read a random permutation from file
-        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\Cambridge_permutations\permutation' num2str(comparison) '.txt']);
+        fileID = fopen(['C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\' study '_permutations\permutation' num2str(comparison) '.txt']);
         C = textscan(fileID,'%s');
         fclose(fileID);
         
         data_path = ['D:\fcon1000\tempgroup\'];
         jobs{1}.util{1}.cdir.directory = cellstr(data_path);
         jobs{1}.util{1}.md.basedir = cellstr(data_path);
-        jobs{1}.util{1}.md.name = 'classical4';
+        jobs{1}.util{1}.md.name = 'classical1';
         
         % Setup group 1
         group1 = {};
         for s = 1:groupSize
             subjectString = C{1}(s);
             subjectString = subjectString{1};
-            group1{s} = ['D:\fcon1000\Cambridge\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
+            group1{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
         end
         
         % Setup group 2
@@ -60,7 +60,7 @@ for smoothing = 4:4
         for s = 1:groupSize
             subjectString = C{1}(s+groupSize);
             subjectString = subjectString{1};
-            group2{s} = ['D:\fcon1000\Cambridge\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
+            group2{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
         end
         
         % Setup statistical analysis
@@ -125,8 +125,7 @@ for smoothing = 4:4
                 disp('Significant group difference detected!')
             end
             
-            comparisons = comparisons + 1;
-            FWE = significantDifferences(smoothing) / comparisons;
+            FWE = significantDifferences(smoothing) / comparison;
             disp(sprintf('Current FWE is %f for %i mm of smoothing \n',FWE,smoothingLevels(smoothing)))
             
             xsmoothness = SPM.xVol.FWHM(1) * abs(SPM.xVol.M(1,1));
