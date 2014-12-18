@@ -2,15 +2,14 @@
 
 # Help script to get more free space
 
-#Study=Cambridge
-Study=Beijing
+Study=Cambridge
+#Study=Beijing
 
-Design=boxcar30_REML
+Design=regularEvent_REML
 
 start_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
-for Smooth in 1 2 3 4 5 6 7
-#for Smooth in 1
+for Smooth in 1 2
 do
 
 	if [ "$Smooth" -eq "1" ]; then
@@ -47,6 +46,12 @@ do
 
 	        # Remove intermediate results
 	        rm Results/${Study}/${Smoothing}/${Design}/${Subject}.results/pb*
+
+	        rm Results/${Study}/${Smoothing}/${Design}/${Subject}.results/fitts*
+
+	        rm Results/${Study}/${Smoothing}/${Design}/${Subject}.results/errts*
+
+	        rm Results/${Study}/${Smoothing}/${Design}/${Subject}.results/all_runs*
 
 	    else
 		    echo "This directory does not contain any fMRI data!"
