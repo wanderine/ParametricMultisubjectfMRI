@@ -2,9 +2,9 @@
 
 clear
 
-Design=boxcar10
-#Study=Cambridge
-Study=Beijing
+Design=Event1
+Study=Cambridge
+#Study=Beijing
 
 # Loop over different cluster defining thresholds
 for C in 1 2
@@ -31,12 +31,6 @@ do
 			Smoothing=8mm
 		elif [ "$S" -eq "4" ] ; then
 			Smoothing=10mm
-		elif [ "$S" -eq "5" ] ; then
-			Smoothing=12mm
-		elif [ "$S" -eq "6" ] ; then
-			Smoothing=14mm
-		elif [ "$S" -eq "7" ] ; then
-			Smoothing=16mm
 		fi
 
 		# Loop over many random group comparisons
@@ -117,7 +111,7 @@ do
 			# Run group analysis using permutation test in BROCCOLI
 			#-------------------------------------------------------
 
-			./RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 10000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_onesamplettest_groupsize20_10000.txt > log.txt
+			./RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -cdt ${ClusterDefiningThreshold} -permutationfile permutations_onesamplettest_groupsize20.txt > log.txt
 
 			# Equivalent call to randomise
 			# randomise -i all_subjects.nii.gz -o test -1 -P -c ${ClusterDefiningThreshold} -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz

@@ -2,12 +2,12 @@
 
 clear
 
-Design=boxcar30
-#Study=Cambridge
-Study=Beijing
+Design=Event2
+Study=Cambridge
+#Study=Beijing
 
 # Loop over different cluster defining thresholds
-for C in 2
+for C in 1 2
 do
 
 	if [ "$C" -eq "1" ] ; then
@@ -31,16 +31,9 @@ do
 			Smoothing=8mm
 		elif [ "$S" -eq "4" ] ; then
 			Smoothing=10mm
-		elif [ "$S" -eq "5" ] ; then
-			Smoothing=12mm
-		elif [ "$S" -eq "6" ] ; then
-			Smoothing=14mm
-		elif [ "$S" -eq "7" ] ; then
-			Smoothing=16mm
 		fi
 
 		# Loop over many random group comparisons
-		#for Comparison in {1..1000}
 		for Comparison in {1..1000}
 		do
 		echo "Starting random group comparison $Comparison !"
