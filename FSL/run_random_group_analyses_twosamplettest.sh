@@ -2,7 +2,7 @@
 
 clear
 
-GroupSize=40
+GroupSize=20
 DesignFile=TwoSampleTtest_GroupSize${GroupSize}.fsf
 
 # Cluster defining threshold
@@ -18,7 +18,7 @@ AnalysisType=FLAME1
 SmoothingOld=4mm
 
 DesignOld=boxcar30
-DesignNew=boxcar30
+DesignNew=Event1
 
 StudyOld=Cambridge
 StudyNew=Cambridge
@@ -38,6 +38,9 @@ ThresholdMethodNew="set fmri(thresh) 3"
 ThresholdOld='0.05'
 ThresholdNew='0.05'
 
+NumberOfSubjectsDiffGroup1=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files)
+NumberOfSubjectsDiffGroup2=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
+
 one=1
 two=2
 three=3
@@ -46,12 +49,8 @@ five=5
 six=6
 seven=7
 
-NumberOfSubjectsDiffGroup1=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files)
-NumberOfSubjectsDiffGroup2=$((GroupSize - one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
-
 # Loop over different smoothing levels
-for Smoothing in 1 2 3 4 5 6 7
-#for Smoothing in 1
+for Smoothing in 1 2 3 4
 do
 	SignificantDifferences=0
 
@@ -65,12 +64,6 @@ do
 		SmoothingNew=8mm
 	elif [ "$Smoothing" -eq "4" ] ; then
 		SmoothingNew=10mm
-	elif [ "$Smoothing" -eq "5" ] ; then
-		SmoothingNew=12mm
-	elif [ "$Smoothing" -eq "6" ] ; then
-		SmoothingNew=14mm
-	elif [ "$Smoothing" -eq "7" ] ; then
-		SmoothingNew=16mm
 	fi
 
 	results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}
@@ -149,7 +142,9 @@ do
 		    # Get a new subject
 	    	subjectstring=${Subjects[$(($subject))]}
 			# Change subject number (feat_files(n))	
-	    	modifiedtext="${basetext/$FirstSubjectGroup1/$(($subject + $one))}"		
+	    	modifiedtext="${basetext/$FirstSubjectGroup1/$(($subject + $one))}"	
+		    # Change the study
+		    modifiedtext="${modifiedtext/$StudyOld/$StudyNew}"		
 		    # Change the subject string
 		    modifiedtext="${modifiedtext/$basesubject/$subjectstring}"		
 		    # Change the amount of smoothing
@@ -179,6 +174,8 @@ do
 	    	subjectstring=${Subjects[$(($subject + $GroupSize))]}
 		    # Change subject number (feat_files(n))
 		    modifiedtext="${basetext/$FirstSubjectGroup1/$(($subject + $FirstSubjectGroup2))}"		
+		    # Change the study
+		    modifiedtext="${modifiedtext/$StudyOld/$StudyNew}"	
 		    # Change the subject string
 		    modifiedtext="${modifiedtext/$basesubject/$subjectstring}"		
 		    # Change the amount of smoothing

@@ -2,7 +2,7 @@
 
 clear
 
-GroupSize=40
+GroupSize=20
 DesignFile=OneSampleTtest_GroupSize${GroupSize}.fsf
 
 # Cluster defining threshold
@@ -12,8 +12,8 @@ CDT=2.3
 
 # Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
 EffectOld="set fmri(mixed_yn) 2"
-EffectNew="set fmri(mixed_yn) 0"
-AnalysisType=OLS
+EffectNew="set fmri(mixed_yn) 2"
+AnalysisType=FLAME1
 
 SmoothingOld=4mm
 
@@ -49,7 +49,7 @@ six=6
 seven=7
 
 # Loop over different smoothing levels
-for Smoothing in 1 2 3 4 5 6 7
+for Smoothing in 1 2 3 4
 do
 	SignificantDifferences=0
 
@@ -63,12 +63,6 @@ do
 		SmoothingNew=8mm
 	elif [ "$Smoothing" -eq "4" ] ; then
 		SmoothingNew=10mm
-	elif [ "$Smoothing" -eq "5" ] ; then
-		SmoothingNew=12mm
-	elif [ "$Smoothing" -eq "6" ] ; then
-		SmoothingNew=14mm
-	elif [ "$Smoothing" -eq "7" ] ; then
-		SmoothingNew=16mm
 	fi
 
 	results_directory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}
@@ -147,6 +141,8 @@ do
 	    	subjectstring=${Subjects[$(($subject))]}
 		    # Change subject number (feat_files(n))	
 	    	modifiedtext="${basetext/$FirstSubjectGroup1/$(($subject + $one))}"		
+		    # Change the study
+		    modifiedtext="${modifiedtext/$StudyOld/$StudyNew}"		
 		    # Change the subject string
 		    modifiedtext="${modifiedtext/$basesubject/$subjectstring}"		
 		    # Change the amount of smoothing
@@ -300,12 +296,12 @@ do
 	        # Remove old results
 	        rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}/Group*
 	
-			echo "Out of $Comparison random group comparisons, significant group activation were detected $SignificantDifferences times !"
+			echo "Out of $Comparison random group analyses, significant group activation were detected $SignificantDifferences times !"
 		fi
 
 	done
 
-	echo "Out of $Comparison random group comparisons, significant group activation were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_onesamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}_groupsize${GroupSize}.txt
+	echo "Out of $Comparison random group analyses, significant group activation were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_onesamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}_groupsize${GroupSize}.txt
 
 	date2=$(date +"%s")
 	diff=$(($date2-$date1))
