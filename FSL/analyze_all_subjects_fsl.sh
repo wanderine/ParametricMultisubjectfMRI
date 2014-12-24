@@ -21,8 +21,7 @@ HighPassNew="set fmri(paradigm_hp) 20" #60 for 30 seconds on off, 20 for 10 seco
 
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
-for Smoothing in 3 4 5 6 7 ; do
-#for Smoothing in 1 2 3 4 5 6 7 ; do
+for Smoothing in 1 2 3 4 ; do
 
 	threads=0
 
@@ -39,17 +38,7 @@ for Smoothing in 3 4 5 6 7 ; do
 	elif [ "$Smoothing" -eq "4" ]; then
 		SmoothingNew="set fmri(smooth) 10.0"
 		SmoothingOutputNew=10mm
-	elif [ "$Smoothing" -eq "5" ]; then
-		SmoothingNew="set fmri(smooth) 12.0"
-		SmoothingOutputNew=12mm
-	elif [ "$Smoothing" -eq "6" ]; then
-		SmoothingNew="set fmri(smooth) 14.0"
-		SmoothingOutputNew=14mm
-	elif [ "$Smoothing" -eq "7" ]; then
-		SmoothingNew="set fmri(smooth) 16.0"
-		SmoothingOutputNew=16mm
 	fi
-
 
 	# Loop over all subjects
 	for i in /home/andek/Data/fcon1000/${Study}/* ; do

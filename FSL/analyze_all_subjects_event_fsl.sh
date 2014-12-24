@@ -6,16 +6,15 @@ source general_analysis_settings.sh
 
 MaximumThreads=8 # Maximum number of CPU threads to use
 
-#Study=Cambridge
-Study=Beijing
+Study=Cambridge
+#Study=Beijing
 
 # Design
-DesignNew=Event1
+DesignNew=Event2
 
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
-#for Smoothing in 6 7 ; do
-for Smoothing in 1 ; do
+for Smoothing in 1 2 3 4; do
 
 	threads=0
 
@@ -32,15 +31,6 @@ for Smoothing in 1 ; do
 	elif [ "$Smoothing" -eq "4" ]; then
 		SmoothingNew="set fmri(smooth) 10.0"
 		SmoothingOutputNew=10mm
-	elif [ "$Smoothing" -eq "5" ]; then
-		SmoothingNew="set fmri(smooth) 12.0"
-		SmoothingOutputNew=12mm
-	elif [ "$Smoothing" -eq "6" ]; then
-		SmoothingNew="set fmri(smooth) 14.0"
-		SmoothingOutputNew=14mm
-	elif [ "$Smoothing" -eq "7" ]; then
-		SmoothingNew="set fmri(smooth) 16.0"
-		SmoothingOutputNew=16mm
 	fi
 
 	# Loop over all subjects
