@@ -40,7 +40,7 @@ do
 	fi
 
 	# Loop over different smoothing levels
-	for SmoothingLevel in 1 2 3 4 5 6 7
+	for SmoothingLevel in 1 2 3 4
 	do
 
 		if [ "$SmoothingLevel" -eq "1" ] ; then
@@ -51,12 +51,6 @@ do
 			Smoothing=8mm
 		elif [ "$SmoothingLevel" -eq "4" ] ; then
 			Smoothing=10mm
-		elif [ "$SmoothingLevel" -eq "5" ] ; then
-			Smoothing=12mm
-		elif [ "$SmoothingLevel" -eq "6" ] ; then
-			Smoothing=14mm
-		elif [ "$SmoothingLevel" -eq "7" ] ; then
-			Smoothing=16mm
 		fi
 
 		NoGroupMask=0
@@ -80,7 +74,7 @@ do
 		FWE=0.0
 
 		# Loop over many random group comparisons
-		for Comparison in {1..1}
+		for Comparison in {1..1000}
 		do
 			Comparisons=$(echo "scale=3;$Comparisons + $one" | bc)
 	

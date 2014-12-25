@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# A help script used to test for significance at the single subject level
+
 Study=Cambridge
 #Study=Beijing
 
@@ -42,12 +44,6 @@ do
 			Smoothing=8mm
 		elif [ "$Smooth" -eq "4" ]; then
 			Smoothing=10mm
-		elif [ "$Smooth" -eq "5" ]; then
-			Smoothing=12mm
-		elif [ "$Smooth" -eq "6" ]; then
-			Smoothing=14mm
-		elif [ "$Smooth" -eq "7" ]; then
-			Smoothing=16mm
 		fi
 
 		Subjects=0.0
@@ -99,14 +95,6 @@ do
 				# Mask activity map (the t-score, sub-brik 2)
 				rm activation_masked.nii
 				3dcalc -a "Results/${Study}/${Smoothing}/${Design}/${Subject}.results/stats.${Subject}_REML+tlrc[2]" -b "Results/${Study}/${Smoothing}/${Design}/${Subject}.results/full_mask.${Subject}+tlrc" -expr 'step(b)*a' -prefix activation_masked.nii
-
-				#3dAFNItoNIFTI -prefix $start_directory/activation.nii Results/${Study}/${Smoothing}/${Design}/${Subject}.results/stats.${Subject}_REML+tlrc
-
-				# Apply cluster extent threshold to activity map (t-scores)
-				#3dclust -1dindex 2 -1tindex 2 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 $ClusterExtentThreshold Results/${Study}/${Smoothing}/${Design}/${Subject}.results/stats.${Subject}_REML+tlrc 
-
-				# Apply cluster extent threshold to activity map (t-scores)
-				#3dclust -1dindex 2 -1tindex 2 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 $ClusterExtentThreshold Results/${Study}/${Smoothing}/${Design}/${Subject}.results/stats.${Subject}_REML+tlrc > clustersizes.txt
 
 				# Apply cluster extent threshold to activity map (t-scores)
 				3dclust -1dindex 0 -1tindex 0 -1noneg -1thresh $ClusterDefiningThreshold -dxyz=1 1.01 1 activation_masked.nii

@@ -3,13 +3,12 @@
 #Study=Cambridge
 Study=Beijing
 
-Design=boxcar30_REML
+Design=boxcar30_REML # change all 10 to 30
+#Design=boxcar10_REML # change all 30 to 10
 
 start_directory=/home/andek/Research_projects/RandomGroupAnalyses
 
 for Smooth in 1 2 3 4
-#for Smooth in 1 2 3 4 5 6 7
-#for Smooth in 7
 do
 
 	if [ "$Smooth" -eq "1" ]; then
@@ -24,15 +23,6 @@ do
 	elif [ "$Smooth" -eq "4" ]; then
 		Smoothing=10mm
 		Smoothing_=10.0
-	elif [ "$Smooth" -eq "5" ]; then
-		Smoothing=12mm
-		Smoothing_=12.0
-	elif [ "$Smooth" -eq "6" ]; then
-		Smoothing=14mm
-		Smoothing_=14.0
-	elif [ "$Smooth" -eq "7" ]; then
-		Smoothing=16mm
-		Smoothing_=16.0
 	fi
 
 	# Loop over all subjects
