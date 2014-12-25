@@ -20,12 +20,6 @@ do
 		Smoothing=8mm
 	elif [ "$Smooth" -eq "4" ]; then
 		Smoothing=10mm
-	elif [ "$Smooth" -eq "5" ]; then
-		Smoothing=12mm
-	elif [ "$Smooth" -eq "6" ]; then
-		Smoothing=14mm
-	elif [ "$Smooth" -eq "7" ]; then
-		Smoothing=16mm
 	fi
 
 	# Loop over all subjects
