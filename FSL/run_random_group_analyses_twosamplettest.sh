@@ -2,26 +2,28 @@
 
 clear
 
-GroupSize=20
+GroupSize=40
 DesignFile=TwoSampleTtest_GroupSize${GroupSize}.fsf
 
 # Cluster defining threshold
 ClusterDefiningThresholdOld="set fmri(z_thresh) 2.3"
-ClusterDefiningThresholdNew="set fmri(z_thresh) 3.1"
-CDT=3.1
+ClusterDefiningThresholdNew="set fmri(z_thresh) 2.3"
+
+CDT1=2.3
+CDT2=3.1
 
 # Fixed or random effect, 0 = mixed effect OLS, 2 = mixed effect FLAME1, 3 = fixed effect
 EffectOld="set fmri(mixed_yn) 2"
-EffectNew="set fmri(mixed_yn) 2"
-AnalysisType=FLAME1
+EffectNew="set fmri(mixed_yn) 0"
+AnalysisType=OLS
 
 SmoothingOld=4mm
 
 DesignOld=boxcar30
-DesignNew=Event1
+DesignNew=boxcar30
 
 StudyOld=Cambridge
-StudyNew=Cambridge
+StudyNew=Beijing
 
 design_directory=/home/andek/Research_projects/RandomGroupAnalyses/Design_templates
 temp_directory=/home/andek/Research_projects/RandomGroupAnalyses/temp
@@ -50,9 +52,10 @@ six=6
 seven=7
 
 # Loop over different smoothing levels
-for Smoothing in 1 2 3 4
+for Smoothing in 1
 do
-	SignificantDifferences=0
+	SignificantDifferencesCDT1=0
+	SignificantDifferencesCDT2=0
 
 	date1=$(date +"%s")
 
@@ -237,120 +240,81 @@ do
 		    wait
 		    threads=0
 
-		    # Count number of lines in cluster report files
+			# Loop over all the performed group analyses
+			for (( t=$threads; t<$MaximumThreads; t++ ))
+			do
 
-		    Lines=`cat ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - seven))
-	            cp ${results_directory}/GroupComparison.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected "
-		    fi
+				if [ "$t" -eq "0" ] ; then
+					CurrentGroupComparison=GroupComparison.gfeat
+				elif [ "$t" -eq "1" ] ; then
+					CurrentGroupComparison=GroupComparison+.gfeat
+				elif [ "$t" -eq "2" ] ; then
+					CurrentGroupComparison=GroupComparison++.gfeat
+				elif [ "$t" -eq "3" ] ; then
+					CurrentGroupComparison=GroupComparison+++.gfeat
+				elif [ "$t" -eq "4" ] ; then
+					CurrentGroupComparison=GroupComparison++++.gfeat
+				elif [ "$t" -eq "5" ] ; then
+					CurrentGroupComparison=GroupComparison+++++.gfeat
+				elif [ "$t" -eq "6" ] ; then
+					CurrentGroupComparison=GroupComparison++++++.gfeat
+				elif [ "$t" -eq "7" ] ; then
+					CurrentGroupComparison=GroupComparison+++++++.gfeat
+				fi
 
-		    Lines=`cat ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - six))
-	            cp ${results_directory}/GroupComparison+.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+			    # Count number of lines in cluster report files (for first cluster defining threshold)
 
-		    Lines=`cat ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - five))
-	            cp ${results_directory}/GroupComparison++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+			    Lines=`cat ${results_directory}/${CurrentGroupComparison}/cope1.feat/cluster_zstat1_std.txt | wc -l`
+			    if [ "$Lines" -gt "1" ] ; then
+			        echo "Significant group difference detected for first cluster defining threshold!"
+					echo $'\n'
+					cat ${results_directory}/${CurrentGroupComparison}/cope1.feat/cluster_zstat1_std.txt
+					echo $'\n'
+					((SignificantDifferencesCDT1++))
+			    else
+			        echo "No significant group difference detected for first cluster defining threshold "
+			    fi
 
-		    Lines=`cat ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - four))
-	            cp ${results_directory}/GroupComparison+++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+				# Do new masking
+				fslmaths ${results_directory}/${CurrentGroupComparison}/cope1.feat/stats/zstat1 -mas ${results_directory}/${CurrentGroupComparison}/cope1.feat/mask ${results_directory}/${CurrentGroupComparison}/cope1.feat/thresh_zstat1_${CDT2}
 
-		    Lines=`cat ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - three))
-	            cp ${results_directory}/GroupComparison++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+				# Get smoothness and number of voxels
+				text=`cat ${results_directory}/${CurrentGroupComparison}/cope1.feat/stats/smoothness`
+				temp=${text[$((0))]}
+				values=()
+				values+=($temp)
+				SMOOTHNESS=${values[$((1))]}
+				VOXELS=${values[$((3))]}
 
-		    Lines=`cat ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - two))
-	            cp ${results_directory}/GroupComparison+++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+				# Apply new clustering
+				cluster -i ${results_directory}/${CurrentGroupComparison}/cope1.feat/thresh_zstat1_${CDT2} -c ${results_directory}/${CurrentGroupComparison}/cope1.feat/stats/cope1 -t ${CDT2} -p 0.05 -d ${SMOOTHNESS} --volume=${VOXELS} --othresh=${results_directory}/${CurrentGroupComparison}/cope1.feat/thresh_zstat1_${CDT2} -o ${results_directory}/${CurrentGroupComparison}/cope1.feat/cluster_mask_zstat1_${CDT2} --connectivity=26  --olmax=${results_directory}/${CurrentGroupComparison}/cope1.feat/lmax_zstat1_std_${CDT2}.txt --scalarname=Z > ${results_directory}/${CurrentGroupComparison}/cope1.feat/cluster_zstat1_std_${CDT2}.txt
 
-		    Lines=`cat ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-				Comparison_=$((Comparison - one))
-	            cp ${results_directory}/GroupComparison++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison_}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
+			    # Count number of lines in cluster report files (for second cluster defining threshold)
 
-		    Lines=`cat ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt | wc -l`
-		    if [ "$Lines" -gt "1" ] ; then
-		        echo "Significant group difference detected!"
-				echo $'\n'
-				cat ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt
-				echo $'\n'
-				((SignificantDifferences++))
-	            cp ${results_directory}/GroupComparison+++++++.gfeat/cope1.feat/cluster_zstat1_std.txt ${results_directory}/ClusterCoordinates${AnalysisType}_${CDT}/coordinates_comparison${Comparison}.txt
-		    else
-		        echo "No significant group difference detected  "
-		    fi
-	    
+			    Lines=`cat ${results_directory}/${CurrentGroupComparison}/cope1.feat/cluster_zstat1_std_${CDT2}.txt | wc -l`
+			    if [ "$Lines" -gt "1" ] ; then
+			        echo "Significant group difference detected for second cluster defining threshold!"
+					((SignificantDifferencesCDT2++))
+			    else
+			        echo "No significant group difference detected for second cluster defining threshold  "
+			    fi
+
+			done		    			
+
 	        # Remove old results
 	        rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}/Group*
 	
-			echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
+			echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferencesCDT1 times for first cluster defining threshold!"
+
+			echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferencesCDT2 times for second cluster defining threshold!"
+
 		fi
 
 	done
 
-	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_twosamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT}_groupsize${GroupSize}.txt
+	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferencesCDT1 times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_twosamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT1}_groupsize${GroupSize}.txt
+
+	echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferencesCDT2 times !" > /home/andek/Research_projects/RandomGroupAnalyses/Results/results_fsl_twosamplettest_${StudyNew}_${DesignNew}_${SmoothingNew}_${AnalysisType}_${CDT2}_groupsize${GroupSize}.txt
 
 	date2=$(date +"%s")
 	diff=$(($date2-$date1))
