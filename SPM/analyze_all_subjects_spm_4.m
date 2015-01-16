@@ -97,7 +97,7 @@ for subject = 151:198
     %% SMOOTHING
     %--------------------------------------------------------------------------
         
-    for smoothing = 4:2:16
+    for smoothing = 4:2:10
         job = job + 1;        
         filename = [data_path 'func\wrrest.nii'];
         jobs{job}.spatial{1}.smooth.data = cellstr(filename);
@@ -118,8 +118,8 @@ for subject = 151:198
     %% CLASSICAL STATISTICAL ANALYSIS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    for experiment = [3 4]
-        for smoothing = 4:2:16
+    for experiment = [1 2 3 4]
+        for smoothing = 4:2:10
             
             subjectString
             
