@@ -45,7 +45,7 @@ NumberOfSubjectsDiffGroup1=$(($GroupSize - $one)) # (length of Subjects arrays -
 NumberOfSubjectsDiffGroup2=$(($GroupSize - $one)) # (length of Subjects arrays - 1, since there is one regressor and one group member in the fsf files) 
 
 # Loop over different paradigms
-for Design in 1
+for Design in 1 2 3 4
 do
 
 	if [ "$Design" -eq "1" ] ; then
@@ -59,7 +59,7 @@ do
 	fi
 
 	# Loop over different smoothing levels
-	for Smoothing in 1
+	for Smoothing in 1 2 3 4
 	do
 		SignificantDifferencesCDT1=0
 		SignificantDifferencesCDT2=0
@@ -82,8 +82,7 @@ do
 		rm -rf /home/andek/Research_projects/RandomGroupAnalyses/Results/${StudyNew}/${SmoothingNew}/${DesignNew}/Group*
 
 		# Loop over many random group comparisons
-		#for Comparison in {1..1000}
-		for Comparison in {1..1}
+		for Comparison in {1..1000}
 		do
 			echo "Starting random group comparison $Comparison !"
 
