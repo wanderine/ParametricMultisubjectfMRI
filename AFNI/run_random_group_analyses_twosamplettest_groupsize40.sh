@@ -477,9 +477,9 @@ do
 
 			done
 
-			echo "Current FWE is $FWE" > Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
-			echo "Number of failed group masks is $NoGroupMask" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
-			echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
+			echo "Current FWE is $FWE" > Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
+			echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
+			echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize40.txt
 	
 		done
 	done
