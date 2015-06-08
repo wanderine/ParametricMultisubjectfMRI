@@ -16,7 +16,7 @@ smoothingLevels = 4:2:16;
 
 falseVoxels = zeros(79,95,68);
 
-for d = 3:3
+for d = 4:4
     
     if d == 1
         design = 'boxcar10';
@@ -134,9 +134,7 @@ for d = 3:3
                 max(tmap(:))
                 
                 if (max(tmap(:)) > corrected_threshold)
-                    significantDifferences(smoothing,1,d) = significantDifferences(smoothing,1,d) + 1;
-                    
-                    falseVoxels(yindex,xindex,zindex) = falseVoxels(yindex,xindex,zindex) + 1;
+                    significantDifferences(smoothing,1,d) = significantDifferences(smoothing,1,d) + 1;                                        
                     disp('Significant group difference detected!')                                        
                 end
                 

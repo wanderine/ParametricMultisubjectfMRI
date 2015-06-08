@@ -1,4 +1,4 @@
-%close all
+close all
 clear all
 clc
 
@@ -6,7 +6,7 @@ addpath('D:\spm8')
 addpath('C:\Users\wande\Documents\GitHub\ParametricMultisubjectfMRI\SPM')
 
 study = 'Beijing'
-groupSize = 10;
+groupSize = 20;
 
 significantDifferences = zeros(7,2,4);
 
@@ -16,7 +16,7 @@ smoothingLevels = 4:2:16;
 
 falseVoxels = zeros(79,95,68);
 
-for d = 4:4
+for d = 2:2 
     
     if d == 1
         design = 'boxcar10';
@@ -30,10 +30,10 @@ for d = 4:4
     
     for smoothing = 4:4
         
-        % Do 1000 random group comparisons for each smoothing
-        for comparison = 1:1000        
+        % Do 1000 random group analyses for each smoothing
+        for comparison = 1:1000
             
-            disp(sprintf('Doing comparison %i ! \n',comparison))
+            disp(sprintf('Doing analysis %i ! \n',comparison))
             
             spm('Defaults','fMRI');
             spm_jobman('initcfg');
@@ -63,22 +63,10 @@ for d = 4:4
                 group1{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
             end
             
-            % Setup group 2
-            group2 = {};
-            for s = 1:groupSize
-                subjectString = C{1}(s+groupSize);
-                subjectString = subjectString{1};
-                group2{s} = ['D:\fcon1000\' study '\' subjectString '\func\con_' design '_s' num2str(smoothingLevels(smoothing)) '.img,1'];
-            end
-            
             % Setup statistical analysis
+            
             jobs{2}.stats{1}.factorial_design.dir = {'D:\fcon1000\tempgroup\classical4'};
-            jobs{2}.stats{1}.factorial_design.des.t2.scans1 = group1;
-            jobs{2}.stats{1}.factorial_design.des.t2.scans2 = group2;
-            jobs{2}.stats{1}.factorial_design.des.t2.dept = 0;
-            jobs{2}.stats{1}.factorial_design.des.t2.variance = 1;
-            jobs{2}.stats{1}.factorial_design.des.t2.gmsca = 0;
-            jobs{2}.stats{1}.factorial_design.des.t2.ancova = 0;
+            jobs{2}.stats{1}.factorial_design.des.t1.scans = group1;
             jobs{2}.stats{1}.factorial_design.cov = struct('c', {}, 'cname', {}, 'iCFI', {}, 'iCC', {});
             jobs{2}.stats{1}.factorial_design.masking.tm.tm_none = 1;
             jobs{2}.stats{1}.factorial_design.masking.im = 1;
@@ -93,15 +81,17 @@ for d = 4:4
             
             % Setup contrast
             jobs{2}.stats{3}.con.spmmat = {'D:\fcon1000\tempgroup\classical4\SPM.mat'};
-            jobs{2}.stats{3}.con.consess{1}.tcon = struct('name','group 1 > group 2','convec', [1 -1],'sessrep','none');
+            jobs{2}.stats{3}.con.consess{1}.tcon = struct('name','group 1 > 0','convec', 1,'sessrep','none');
             
             % Look at results
             %jobs{2}.stats{4}.results.spmmat = {'D:\fcon1000\tempgroup\classical4\SPM.mat'};
             %jobs{2}.stats{4}.results.conspec.contrasts = Inf;
             %jobs{2}.stats{4}.results.conspec.threshdesc = 'none';
-            %jobs{2}.stats{4}.results.conspec.thresh = 0.0001; % uncorrected voxel threshold
-            %jobs{2}.stats{4}.results.conspec.extent = 500;
+            %jobs{2}.stats{4}.results.conspec.thresh = clusterDefiningThreshold; % uncorrected voxel threshold
+            %jobs{2}.stats{4}.results.conspec.extent = 0;
             %jobs{2}.stats{4}.results.print = false;
+            
+            
             
             try
                 spm_jobman('run',jobs);
@@ -135,7 +125,7 @@ for d = 4:4
                 
                 if (max(tmap(:)) > corrected_threshold)
                     significantDifferences(smoothing,1,d) = significantDifferences(smoothing,1,d) + 1;
-                    disp('Significant group difference detected!')                                        
+                    disp('Significant group activation detected!')
                 end
                 
                 FWE = significantDifferences(smoothing,1,d) / comparison;
@@ -143,7 +133,7 @@ for d = 4:4
                 
                 %------------
                 
-             
+                
             catch
                 disp('Error detected!')
                 errors(smoothing,d) = errors(smoothing,d) + 1;
