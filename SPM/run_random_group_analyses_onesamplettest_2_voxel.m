@@ -16,7 +16,7 @@ smoothingLevels = 4:2:16;
 
 falseVoxels = zeros(79,95,68);
 
-for d = 2:2 
+for d = 1:1 
     
     if d == 1
         design = 'boxcar10';
@@ -107,18 +107,18 @@ for d = 2:2
                 %-------------------
                 
                 % Get corrected voxel-wise threshold
-                %corrected_threshold = xSPM.uc(1)                                                
-                
                 STAT = 'T';
                 df   = [1 SPM.xX.erdf];
                 R    = SPM.xVol.R;
+                S    = SPM.xVol.S;
                 n = 1;
                 corrected_threshold = 1;
                 Pc = 1;
                 while (abs(Pc - 0.05) > 0.0001)
-                    Pc = spm_P_RF(1,0,corrected_threshold,df,STAT,R,n);
+                    Pc = spm_P(1,0,corrected_threshold,df,STAT,R,n,S);
                     corrected_threshold = corrected_threshold + 0.001;
                 end
+                
                 corrected_threshold = corrected_threshold - 0.001
                 Pc
                 max(tmap(:))
