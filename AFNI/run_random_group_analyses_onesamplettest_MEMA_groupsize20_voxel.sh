@@ -43,8 +43,8 @@ do
 		NoGroupMask=0
 		NoGroupAnalysis=0
 
-		GroupDirectory=/flush/andek/AFNI/${Study}/${Smoothing}/${Design}
-		ResultsDirectory=/flush/andek/AFNI/${Study}/${Smoothing}/${Design}/GroupAnalyses
+		GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
+		ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
 		# Delete old results
 		rm $ResultsDirectory/*
