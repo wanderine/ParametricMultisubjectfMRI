@@ -197,9 +197,9 @@ do
 
 		done
 
-		echo "Current FWE is $FWE" > Results/results_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
-		echo "Number of failed group masks is $NoGroupMask" >> Results/results_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
-		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
+		echo "Current FWE is $FWE" > Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
+		echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
+		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_OLS_voxel_groupsize20.txt
 
 	done
 done
