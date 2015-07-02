@@ -52,8 +52,8 @@ do
 		NoGroupMask=0
 		NoGroupAnalysis=0
 
-		GroupDirectory=/data/andek/AFNI/${Study}/${Smoothing}/${Design}
-		ResultsDirectory=/data/andek/AFNI/${Study}/${Smoothing}/${Design}/GroupAnalyses
+		GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
+		ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
 		#touch SmoothnessEstimates/xsmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize20.txt 
 		#touch SmoothnessEstimates/ysmoothnesses_twosamplettest_${Study}_${Smoothing}_${DesignName}_groupsize20.txt 

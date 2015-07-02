@@ -4,12 +4,12 @@
 
 clear
 
-BonfThreshold=6.86 # p = 0.05, t-value corrected for 50 000 tests (for 18 degrees of freedom)
-
 #Study=Cambridge
 Study=Beijing
 
-for D in 1 2 3 4 
+BonfThreshold=6.72 # p = 0.05, t-value corrected for 50 000 tests (for 19 degrees of freedom)
+
+for D in 1 2 3 4
 do
 
 	if [ "$D" -eq "1" ]; then
@@ -43,8 +43,8 @@ do
 		NoGroupMask=0
 		NoGroupAnalysis=0
 
-		GroupDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}
-		ResultsDirectory=/home/andek/Research_projects/RandomGroupAnalyses/Results/${Study}/${Smoothing}/${Design}/GroupAnalyses
+		GroupDirectory=/flush/andek/AFNI/${Study}/${Smoothing}/${Design}
+		ResultsDirectory=/flush/andek/AFNI/${Study}/${Smoothing}/${Design}/GroupAnalyses
 
 		# Delete old results
 		rm $ResultsDirectory/*
@@ -72,8 +72,6 @@ do
 			subjectstring=${Randomized[$((0))]}
 			Subjects+=($subjectstring)
 
-			# Put the first 20 subjects into Subjects
-			
 			Subject1=${Subjects[$((0))]}
 			Subject2=${Subjects[$((1))]}
 			Subject3=${Subjects[$((2))]}
@@ -94,7 +92,15 @@ do
 			Subject18=${Subjects[$((17))]}
 			Subject19=${Subjects[$((18))]}
 			Subject20=${Subjects[$((19))]}
-		
+
+			#echo "$GroupDirectory/${Subject1}.results/stats.${Subject1}+tlrc[0]"
+	
+			#echo "$Subject1"
+			#echo "$Subject2"
+			#echo "$Subject3"
+			#echo "$Subject4"
+			#echo "$Subject5"
+
 			# Remove old group mask
 			rm $ResultsDirectory/group_mask*
 
@@ -110,7 +116,7 @@ do
 		            $GroupDirectory/${Subject8}.results/full_mask.${Subject8}+tlrc.HEAD \
 		            $GroupDirectory/${Subject9}.results/full_mask.${Subject9}+tlrc.HEAD \
 		            $GroupDirectory/${Subject10}.results/full_mask.${Subject10}+tlrc.HEAD \
-	    	       	$GroupDirectory/${Subject11}.results/full_mask.${Subject11}+tlrc.HEAD \
+	    	        $GroupDirectory/${Subject11}.results/full_mask.${Subject11}+tlrc.HEAD \
 		            $GroupDirectory/${Subject12}.results/full_mask.${Subject12}+tlrc.HEAD \
 		            $GroupDirectory/${Subject13}.results/full_mask.${Subject13}+tlrc.HEAD \
 		            $GroupDirectory/${Subject14}.results/full_mask.${Subject14}+tlrc.HEAD \
@@ -121,14 +127,13 @@ do
 		            $GroupDirectory/${Subject19}.results/full_mask.${Subject19}+tlrc.HEAD \
 		            $GroupDirectory/${Subject20}.results/full_mask.${Subject20}+tlrc.HEAD 
 
-	
 			# Check if group mask was created correctly
-	    	if [ -e $ResultsDirectory/group_mask+tlrc.HEAD ]; then
+		    if [ -e $ResultsDirectory/group_mask+tlrc.HEAD  ]; then
 
-				# Run a two-sample t-test, transform to z-values
+				# Run a one-sample t-test
 
-				3dMEMA -groups A B -jobs 12 -mask $ResultsDirectory/group_mask+tlrc.HEAD -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}    \
-			          -set AA                                             \
+				3dMEMA -jobs 12 -mask $ResultsDirectory/group_mask+tlrc.HEAD -prefix $ResultsDirectory/${Smoothing}_${Design}_${Comparison}    \
+			          -set groupA                                             \
 			             ${Subject1} "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[1]" "$GroupDirectory/${Subject1}.results/stats.${Subject1}_REML+tlrc[2]"\
 			             ${Subject2} "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[1]" "$GroupDirectory/${Subject2}.results/stats.${Subject2}_REML+tlrc[2]"\
 			             ${Subject3} "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[1]" "$GroupDirectory/${Subject3}.results/stats.${Subject3}_REML+tlrc[2]"\
@@ -138,8 +143,7 @@ do
 			             ${Subject7} "$GroupDirectory/${Subject7}.results/stats.${Subject7}_REML+tlrc[1]" "$GroupDirectory/${Subject7}.results/stats.${Subject7}_REML+tlrc[2]"\
 			             ${Subject8} "$GroupDirectory/${Subject8}.results/stats.${Subject8}_REML+tlrc[1]" "$GroupDirectory/${Subject8}.results/stats.${Subject8}_REML+tlrc[2]"\
 			             ${Subject9} "$GroupDirectory/${Subject9}.results/stats.${Subject9}_REML+tlrc[1]" "$GroupDirectory/${Subject9}.results/stats.${Subject9}_REML+tlrc[2]"\
-						 ${Subject10} "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[1]" "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[2]"\
-		    	      -set BB                                               \			             
+			             ${Subject10} "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[1]" "$GroupDirectory/${Subject10}.results/stats.${Subject10}_REML+tlrc[2]"\
 			             ${Subject11} "$GroupDirectory/${Subject11}.results/stats.${Subject11}_REML+tlrc[1]" "$GroupDirectory/${Subject11}.results/stats.${Subject11}_REML+tlrc[2]"\
 			             ${Subject12} "$GroupDirectory/${Subject12}.results/stats.${Subject12}_REML+tlrc[1]" "$GroupDirectory/${Subject12}.results/stats.${Subject12}_REML+tlrc[2]"\
 			             ${Subject13} "$GroupDirectory/${Subject13}.results/stats.${Subject13}_REML+tlrc[1]" "$GroupDirectory/${Subject13}.results/stats.${Subject13}_REML+tlrc[2]"\
@@ -148,20 +152,17 @@ do
 			             ${Subject16} "$GroupDirectory/${Subject16}.results/stats.${Subject16}_REML+tlrc[1]" "$GroupDirectory/${Subject16}.results/stats.${Subject16}_REML+tlrc[2]"\
 			             ${Subject17} "$GroupDirectory/${Subject17}.results/stats.${Subject17}_REML+tlrc[1]" "$GroupDirectory/${Subject17}.results/stats.${Subject17}_REML+tlrc[2]"\
 			             ${Subject18} "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[1]" "$GroupDirectory/${Subject18}.results/stats.${Subject18}_REML+tlrc[2]"\
-			             ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[1]" "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[2]"\
+			    	     ${Subject19} "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[1]" "$GroupDirectory/${Subject19}.results/stats.${Subject19}_REML+tlrc[2]"\
 			             ${Subject20} "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[1]" "$GroupDirectory/${Subject20}.results/stats.${Subject20}_REML+tlrc[2]"
-			             
 
 				# Check if group results were created correctly
 				if [ -e $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc.HEAD  ]; then
-					
-					#3dClustSim -mask $ResultsDirectory/group_mask.nii -fwhmxyz 5 5 5 -athr 0.05 -pthr $ClusterDefiningThresholdP -nodec > clusterthreshold.txt
 
 					# Apply Bonferroni threshold to statistical map
-					rm differencemap.nii.gz
-					3dTcat -prefix differencemap.nii.gz $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc[5]
+					rm activationmap.nii.gz
+					3dTcat -prefix activationmap.nii.gz $ResultsDirectory/${Smoothing}_${Design}_${Comparison}+tlrc[1]
 
-					temp=`fslstats differencemap.nii.gz -R`
+					temp=`fslstats activationmap.nii.gz -R`
 
 					Values=()
 					string=${temp[$((0))]}
@@ -173,13 +174,13 @@ do
 					comp=`echo "$Largest > $BonfThreshold" | bc`
 
 					if [ $comp -eq 0 ]; then
-						echo "No significant group difference detected"
+						echo "No significant group activation detected"
 						FWE=$(echo "scale=3; $SignificantDifferences /  ${Comparisons}" | bc)
 						echo -e "\n"
 						echo "Current FWE is $FWE"
 						echo -e "\n"
 					else
-						echo "Significant group difference detected!"
+						echo "Significant group activation detected!"
 						SignificantDifferences=$(echo "scale=3;$SignificantDifferences + $one" | bc)
 						FWE=$(echo "scale=3; $SignificantDifferences /  ${Comparisons}" | bc)
 						echo -e "\n"
@@ -188,24 +189,26 @@ do
 					fi
 					echo -e "\n"
 
+	
 				else
 					echo "Group analysis was not executed correctly!"
 					((NoGroupAnalysis++))
 				fi
-
+	
 			else
 				echo "Group mask was not created correctly!"
 				((NoGroupMask++))
 			fi
-
+	
 		done
 
-		echo "Current FWE is $FWE" > Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize10.txt
-		echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize10.txt
-		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize10.txt
+		echo "Current FWE 1 is $FWE1" > Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
+		echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
+		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
 
 	done	
 done
+
 
 
 

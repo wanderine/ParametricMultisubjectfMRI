@@ -4,8 +4,6 @@
 
 clear
 
-# Use z-scores instead of t-scores, to not change threshold for different group sizes
-
 BonfThreshold=5.6 # p = 0.05, t-value corrected for 50 000 tests (for 38 degrees of freedom)
 
 #Study=Cambridge
@@ -263,9 +261,9 @@ do
 
 		done
 
-		echo "Current FWE is $FWE" > Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
-		echo "Number of failed group masks is $NoGroupMask" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
-		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
+		echo "Current FWE is $FWE" > Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
+		echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
+		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_twosamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize20.txt
 
 	done	
 done

@@ -25,7 +25,7 @@ NumberOfSubjects=20.0
 
 Significant=0
 
-for D in 1
+for D in 1 2 3 4
 do
 
 	if [ "$D" -eq "1" ]; then
@@ -42,7 +42,7 @@ do
 		DesignName=randomEvent
 	fi
 
-	for Cluster in 1
+	for Cluster in 1 2
 	do
 
 		if [ "$Cluster" -eq "1" ]; then
@@ -56,7 +56,7 @@ do
 		fi
 
 		# Loop over different smoothing levels
-		for SmoothingLevel in 2
+		for SmoothingLevel in 1 2 3 4
 		do
 
 			if [ "$SmoothingLevel" -eq "1" ] ; then
@@ -90,7 +90,7 @@ do
 			FWE=0.0
 
 			# Loop over many random group comparisons
-			for Comparison in {1..10000}
+			for Comparison in {1..1000}
 			do
 				Comparisons=$(echo "scale=3;$Comparisons + $one" | bc)
 	
@@ -299,9 +299,9 @@ do
 	
 			done
 
-			#echo "Current FWE is $FWE" > Results/results_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
-			#echo "Number of failed group masks is $NoGroupMask" >> Results/results_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
-			#echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
+			echo "Current FWE is $FWE" > Results/results_AFNI_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
+			echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
+			echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_twosamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize10.txt
 
 		done	
 	done

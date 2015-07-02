@@ -23,7 +23,7 @@ Study=Cambridge
 nineteen=19
 NumberOfSubjects=20.0
 
-for D in 3 4
+for D in 1 2 3 4
 do
 
 	if [ "$D" -eq "1" ]; then
@@ -296,9 +296,9 @@ do
 
 			done
 
-			echo "Current FWE is $FWE" > Results/results_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
-			echo "Number of failed group masks is $NoGroupMask" >> Results/results_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
-			echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
+			echo "Current FWE is $FWE" > Results/results_AFNI_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
+			echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
+			echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_onesamplettest_fullmask_${Study}_${Smoothing}_${DesignName}_OLS_${CDT}_groupsize20.txt
 
 		done
 	done

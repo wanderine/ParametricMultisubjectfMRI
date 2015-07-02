@@ -131,7 +131,7 @@ do
 		            $GroupDirectory/${Subject8}.results/full_mask.${Subject8}+tlrc.HEAD \
 		            $GroupDirectory/${Subject9}.results/full_mask.${Subject9}+tlrc.HEAD \
 		            $GroupDirectory/${Subject10}.results/full_mask.${Subject10}+tlrc.HEAD \
-	    	        $GroupDirectory/${Subject11}.results/full_mask.${Subject11}+tlrc.HEAD \
+	    	            $GroupDirectory/${Subject11}.results/full_mask.${Subject11}+tlrc.HEAD \
 		            $GroupDirectory/${Subject12}.results/full_mask.${Subject12}+tlrc.HEAD \
 		            $GroupDirectory/${Subject13}.results/full_mask.${Subject13}+tlrc.HEAD \
 		            $GroupDirectory/${Subject14}.results/full_mask.${Subject14}+tlrc.HEAD \
@@ -253,7 +253,7 @@ do
 
 					echo -e "\n"
 
-				    String=CLUSTERS #Search for NO CLUSTERS
+				        String=CLUSTERS #Search for NO CLUSTERS
 					File=clustersizes.txt
 					if grep -q $String "$File"; then 
 						echo "No significant group difference detected"
@@ -289,7 +289,7 @@ do
 
 					echo -e "\n"
 	
-				    String=CLUSTERS #Search for NO CLUSTERS
+				        String=CLUSTERS #Search for NO CLUSTERS
 					File=clustersizes.txt
 					if grep -q $String "$File"; then 
 						echo "No significant group difference detected"
