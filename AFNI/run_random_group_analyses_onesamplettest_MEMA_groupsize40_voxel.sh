@@ -265,7 +265,7 @@ do
 	
 		done
 
-		echo "Current FWE 1 is $FWE1" > Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize40.txt
+		echo "Current FWE is $FWE" > Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize40.txt
 		echo "Number of failed group masks is $NoGroupMask" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize40.txt
 		echo "Number of failed group analyses is $NoGroupAnalysis" >> Results/results_AFNI_onesamplettest_${Study}_${Smoothing}_${DesignName}_MEMA_voxel_groupsize40.txt
 
