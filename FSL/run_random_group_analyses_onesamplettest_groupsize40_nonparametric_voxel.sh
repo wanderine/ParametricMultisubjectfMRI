@@ -149,18 +149,30 @@ do
 				# Run group analysis using permutation test in BROCCOLI
 				#-------------------------------------------------------
 
-				./RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -inferencemode 0 -permutationfile permutations_onesamplettest_groupsize40.txt -quiet > log.txt
+				RandomiseGroupLevel all_subjects.nii.gz -groupmean -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -inferencemode 0
 
 				# Equivalent call to randomise
 				#randomise -i all_subjects.nii.gz -o test -1 -P -x -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
 
-				# Count number of lines in log
-    			Lines=`cat log.txt | wc -l`
-    			if [ "$Lines" -gt "2" ] ; then
-					((SignificantActivations++))
-    			    echo "Significant group activation detected!"
-				fi
-	
+                temp=`fslstats all_subjects_perm_pvalues.nii.gz -R`
+
+                Values=()
+                string=${temp[$((0))]}
+                Values+=($string)
+                Largest=${Values[$((1))]}
+
+                echo "Largest value is $Largest !"
+
+                Threshold=0.95
+                comp=`echo "$Largest > $Threshold" | bc`
+
+                if [ $comp -eq 0 ]; then
+                    echo "No significant group activation detected"
+                else
+                    ((SignificantActivations++))
+                    echo "Significant group activation detected!"
+                fi
+
 				echo "Out of $Comparison random group analyses, significant group activations were detected $SignificantActivations times !"
 
 			done

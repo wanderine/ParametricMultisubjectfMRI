@@ -107,18 +107,32 @@ do
 				# Run group analysis using permutation test in BROCCOLI
 				#-------------------------------------------------------
 
-				./RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_twosamplettest_groupsize10.mat -contrasts contrasts_twosamplettest_groupsize10.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -quiet -inferencemode 0 -permutationfile permutations_twosamplettest_groupsize10.txt > log.txt
+				RandomiseGroupLevel all_subjects.nii.gz -design design_matrix_twosamplettest_groupsize10.mat -contrasts contrasts_twosamplettest_groupsize10.con -mask MNI152_T1_2mm_brain_mask.nii.gz -permutations 1000 -inferencemode 0
 
 				# Equivalent call to randomise
 				# randomise -i all_subjects.nii.gz -o test -d design.mat -t design.con -P -x -n 1000 -m MNI152_T1_2mm_brain_mask.nii.gz
 
-				# Count number of lines in log
-   				Lines=`cat log.txt | wc -l`
-   				if [ "$Lines" -gt "2" ] ; then
-					((SignificantDifferences++))
-   				    echo "Significant group difference detected!"
-				fi
-		
+
+                temp=`fslstats all_subjects_perm_pvalues.nii.gz -R`
+
+                Values=()
+                string=${temp[$((0))]}
+                Values+=($string)
+                Largest=${Values[$((1))]}
+
+                echo "Largest value is $Largest !"
+
+                Threshold=0.95
+                comp=`echo "$Largest > $Threshold" | bc`
+
+                if [ $comp -eq 0 ]; then
+                    echo "No significant group difference detected"
+                else
+                    ((SignificantDifferences++))
+                    echo "Significant group difference detected!"
+                fi
+
+
 				echo "Out of $Comparison random group comparisons, significant group differences were detected $SignificantDifferences times !"
 
 			done
