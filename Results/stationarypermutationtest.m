@@ -6,6 +6,9 @@ addpath('/home/andek/Research_projects/nifti_matlab')
 
 study = 'RhymeJudgment';
 cdt = 2.65;
+%cdt = 3.95;
+z_cdt = '23'; % 2.3
+%z_cdt = '31'; % 3.1
 contrast = 3;
 
 cluster_sizes = [];
@@ -19,13 +22,13 @@ for perm = 1:permutations
     
     % Load a new group permutation map
     if perm < 10
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
     elseif perm < 100
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm000' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm000' num2str(perm) '.nii.gz']);
     elseif perm < 1000
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm00' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm00' num2str(perm) '.nii.gz']);
     else
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm0' num2str(perm) '.nii.gz']); 
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0' num2str(perm) '.nii.gz']); 
     end
     permutationmap = double(permutationmap.img);
        
@@ -53,13 +56,13 @@ for perm = 1:permutations
     
     % Load a new permutation map
     if perm < 10
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
     elseif perm < 100
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm000' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm000' num2str(perm) '.nii.gz']);
     elseif perm < 1000
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm00' num2str(perm) '.nii.gz']);
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm00' num2str(perm) '.nii.gz']);
     else
-        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm0' num2str(perm) '.nii.gz']); 
+        permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0' num2str(perm) '.nii.gz']); 
     end
     permutationmap = double(permutationmap.img);
 
@@ -83,7 +86,7 @@ end
 
 % Load correctly labeled data
 perm = 1;
-permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt23_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
+permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
 permutationmap = double(permutationmap.img);
 
 [labels,N] = bwlabeln(permutationmap > cdt);
@@ -104,5 +107,13 @@ end
  
 
 
+% rhymejudgment
+%if strcmp(study,'RhymeJudgment')
+%    if contrast == 2
+%        corrected_nonstationary_cluster_pvalues = [0.0002 0.002 0.024];
+%    elseif contrast == 3
+%        corected_nonstationary_cluster_pvalues = [0.097 0.219];
+%    end
+%end
 
 
