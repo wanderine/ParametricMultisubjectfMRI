@@ -35,7 +35,7 @@ for perm = 1:permutations
     %---------    
     % Apply cluster defining threshold and look at size of each cluster
     
-    [labels,N] = bwlabeln(permutationmap > cdt);
+    [labels,N] = bwlabeln(permutationmap >= cdt);
     cluster_extents = zeros(N,1);
     for i = 1:N
         cluster_extents(i) = sum(labels(:) == i);
@@ -69,13 +69,13 @@ for perm = 1:permutations
     %---------    
     % Apply cluster defining threshold and look at size of each cluster
     
-    [labels,N] = bwlabeln(permutationmap > cdt);
+    [labels,N] = bwlabeln(permutationmap >= cdt);
     cluster_extents = zeros(N,1);
     cluster_pvalues = zeros(N,1); % uncorrected cluster p-values
     for i = 1:N
         cluster_extents(i) = sum(labels(:) == i);
-        cluster_pvalues(i) = sum( cluster_sizes > cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
-        all_pvalues(pvalue) = sum( cluster_sizes > cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
+        cluster_pvalues(i) = sum( cluster_sizes >= cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
+        all_pvalues(pvalue) = sum( cluster_sizes >= cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
         pvalue = pvalue + 1;
     end
     
@@ -89,14 +89,14 @@ perm = 1;
 permutationmap = load_nii(['/home/andek/Research_projects/TaskAnalyses/' study '/GroupAnalyses/randomise/permout/randomise_contrast' num2str(contrast) '_cdt' z_cdt '_vox_tstat1_perm0000' num2str(perm) '.nii.gz']);
 permutationmap = double(permutationmap.img);
 
-[labels,N] = bwlabeln(permutationmap > cdt);
+[labels,N] = bwlabeln(permutationmap >= cdt);
 cluster_extents = zeros(N,1);
 cluster_pvalues = zeros(N,1); % uncorrected p-values
 corrected_stationary_cluster_pvalues = zeros(N,1); % corrected p-values
 
 for i = 1:N
     cluster_extents(i) = sum(labels(:) == i);
-    cluster_pvalues(i) = sum( cluster_sizes > cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
+    cluster_pvalues(i) = sum( cluster_sizes >= cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
     corrected_stationary_cluster_pvalues(i) = sum( pvalues_perm <= cluster_pvalues(i) ) / length(pvalues_perm); % corrected cluster p-value
     % Only print p-values lower than 0.3
     if corrected_stationary_cluster_pvalues(i) < 0.3
@@ -116,4 +116,18 @@ end
 %    end
 %end
 
+%> instead of >=
 
+%ans =
+
+%   0.218000000000000
+
+
+%ans =
+
+%   785
+
+
+%ans =
+
+%   0.096200000000000
