@@ -5,11 +5,16 @@ clc
 addpath('/home/andek/Research_projects/nifti_matlab')
 
 study = 'RhymeJudgment';
-cdt = 2.65;
-%cdt = 3.95;
-z_cdt = '23'; % 2.3
-%z_cdt = '31'; % 3.1
-contrast = 3;
+%cdt = 2.65;
+cdt = 3.95;
+
+
+
+%z_cdt = '23'; % 2.3
+z_cdt = '31'; % 3.1
+
+
+contrast = 1;
 
 cluster_sizes = [];
 
@@ -47,7 +52,10 @@ end
 % Second round to calculate uncorrected 
 % p-values for every cluster in every permutation
 all_pvalues = zeros(size(cluster_sizes));
+
 pvalues_perm = zeros(permutations,1);
+cluster_sizes_perm = zeros(permutations,1);
+
 pvalue = 1;
 
 for perm = 1:permutations
@@ -78,9 +86,16 @@ for perm = 1:permutations
         all_pvalues(pvalue) = sum( cluster_sizes >= cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
         pvalue = pvalue + 1;
     end
-    
-    % Create *minimum* uncorrected P-value distribution
-    pvalues_perm(perm) = min(cluster_pvalues);
+        
+    if N > 0
+        % Create *minimum* uncorrected P-value distribution
+        pvalues_perm(perm) = min(cluster_pvalues);
+        % Create maximum cluster size distribution
+        cluster_sizes_perm(perm) = max(cluster_extents);
+    else
+        pvalues_perm(perm) = 1;
+        cluster_sizes_perm(perm) = 0;
+    end
     
 end
 
@@ -93,7 +108,9 @@ permutationmap = double(permutationmap.img);
 cluster_extents = zeros(N,1);
 cluster_pvalues = zeros(N,1); % uncorrected p-values
 corrected_stationary_cluster_pvalues = zeros(N,1); % corrected p-values
+corrected_nonstationary_cluster_pvalues = zeros(N,1); % corrected p-values
 
+% Stationary corrected p-values
 for i = 1:N
     cluster_extents(i) = sum(labels(:) == i);
     cluster_pvalues(i) = sum( cluster_sizes >= cluster_extents(i) ) / length(cluster_sizes); % uncorrected cluster p-value
@@ -105,3 +122,21 @@ for i = 1:N
     end
 end
  
+% Non-stationary corrected p-values
+for i = 1:N
+    cluster_extents(i) = sum(labels(:) == i);
+    corrected_nonstationary_cluster_pvalues(i) = sum( cluster_sizes_perm >= cluster_extents(i) ) / length(cluster_sizes_perm);  
+    % Only print p-values lower than 0.3
+    if corrected_nonstationary_cluster_pvalues(i) < 0.3
+        cluster_extents(i)
+        corrected_nonstationary_cluster_pvalues(i)
+    end
+end
+
+for i = 1:N
+    if corrected_stationary_cluster_pvalues(i) < 0.3
+        [cluster_extents(i) corrected_stationary_cluster_pvalues(i)  corrected_nonstationary_cluster_pvalues(i)]
+    end
+end
+
+
