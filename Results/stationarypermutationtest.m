@@ -105,29 +105,3 @@ for i = 1:N
     end
 end
  
-
-
-% rhymejudgment
-%if strcmp(study,'RhymeJudgment')
-%    if contrast == 2
-%        corrected_nonstationary_cluster_pvalues = [0.0002 0.002 0.024];
-%    elseif contrast == 3
-%        corected_nonstationary_cluster_pvalues = [0.097 0.219];
-%    end
-%end
-
-%> instead of >=
-
-%ans =
-
-%   0.218000000000000
-
-
-%ans =
-
-%   785
-
-
-%ans =
-
-%   0.096200000000000
