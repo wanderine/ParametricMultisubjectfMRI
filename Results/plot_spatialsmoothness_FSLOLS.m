@@ -141,8 +141,6 @@ slice = 51;
 
 figure
 image(mean_FWHM(:,:,51) * voxel_size); colormap gray; colorbar; title('Smoothness FSL OLS (mm FWHM)'); axis image; axis off
-%set(gca,'FontSize',15)
-%print -dpng FSLOLS_false_clusters.png
 
 figure
 imagesc(mean_FWHMx(:,:,51) * voxel_size); colormap gray; colorbar; title('Smoothness in x direction')
@@ -152,12 +150,5 @@ imagesc(mean_FWHMy(:,:,51) * voxel_size); colormap gray; colorbar; title('Smooth
 
 figure
 imagesc(mean_FWHMz(:,:,51) * voxel_size); colormap gray; colorbar; title('Smoothness in z direction')
-
-
-%figure; imagesc(false_clusters(:,:,slice)); colormap gray; axis image; axis off; colorbar
-%title('Spatial distribution of false clusters for FSL OLS')
-%set(gca,'FontSize',15)
-%print -dpng FSLOLS_false_clusters.png
-%print -deps FSLOLS_false_clusters.eps
 
 
