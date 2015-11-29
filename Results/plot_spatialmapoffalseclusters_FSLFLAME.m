@@ -13,11 +13,7 @@ c3 = clusterThresholds;
 
 clusterThresholds = [c1; c2; c3];
 
-% Load the anatomical template
-brain = load_nii(['/usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz']);
-brain = double(brain.img);  
-
-false_clusters = zeros(size(brain));
+false_clusters = zeros(91,109,91);
 
 significant_clusters = 0;
 clusters_per_file = zeros(10000,1);
@@ -28,7 +24,7 @@ for file = 1:200000
     file
     
     % Load a new group difference map
-    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FSL/FalseClustersCDT23/AllMapsFLAME/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
+    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/FSL/AllMapsFLAME/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
     difference = double(difference.img);    
        
     %---------    
@@ -69,7 +65,6 @@ slice = 51;
 figure; imagesc(false_clusters(:,:,slice)); colormap gray; axis image; axis off; colorbar
 title('Spatial distribution of false clusters for FSL FLAME')
 set(gca,'FontSize',15)
-%print -dpng FSLFLAME_false_clusters.png
-%print -deps FSLFLAME_false_clusters.eps
+
 
 

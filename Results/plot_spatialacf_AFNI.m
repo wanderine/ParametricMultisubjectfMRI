@@ -10,7 +10,7 @@ all_values = zeros(54,64,70,1000);
 OLS = 1;
 MEMA = 2;
 
-analysis = MEMA;
+analysis = OLS;
 
 if analysis == OLS
        
@@ -18,7 +18,7 @@ if analysis == OLS
         file
         
         % MEMA results
-        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FalseClusters/DifferenceMapsOLS/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
+        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/AFNI/AllMapsOLS/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
         difference = double(difference.img);
         
         % Get z-score for Group 1 - Group 2, for OLS sub-brick 2 represents
@@ -35,7 +35,7 @@ elseif analysis == MEMA
         file
         
         % MEMA results
-        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FalseClusters/DifferenceMapsMEMA/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
+        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/AFNI/AllMapsMEMA/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
         difference = double(difference.img);
         
         % Get t-score for Group 1 - Group 2, for MEMA sub-brick 6 represents
@@ -173,7 +173,7 @@ if analysis == OLS
     L = [0 7];
     set(gca,'XTick',linspace(L(1),L(2),NumTicks))
     set(gca,'XTickLabel',{'0', '3', '6', '9','12', '15', '18', '21'})
-    print -dpng 'AFNIOLS_empirical_theoretical_acf.png'
+    %print -dpng 'AFNIOLS_empirical_theoretical_acf.png'
 elseif analysis == MEMA
     figure
     plot(0:acf_length,mean_acf)
@@ -192,7 +192,7 @@ elseif analysis == MEMA
     L = [0 7];
     set(gca,'XTick',linspace(L(1),L(2),NumTicks))
     set(gca,'XTickLabel',{'0', '3', '6', '9','12', '15', '18', '21'})    
-    print -dpng 'AFNIMEMA_empirical_theoretical_acf.png'
+    %print -dpng 'AFNIMEMA_empirical_theoretical_acf.png'
 end
 
 

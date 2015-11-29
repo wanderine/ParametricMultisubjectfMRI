@@ -2,12 +2,12 @@ close all
 clear all
 clc
 
-addpath('D:\spm8')
+addpath('/home/andek/Research_projects/spm8')
 
 % Beijing two sample t-test 10 subjects per group
 
 file = 1;
-v = spm_vol(['D:\fcon1000\Beijing\FalseClusters\spm_event2_s6_comparison' num2str(file) '.img']);
+v = spm_vol(['/home/andek/Research_projects/RandomGroupAnalyses/Results/SPM/AllMaps/spm_event2_s6_comparison' num2str(file) '.img']);
 [tmap,aa] = spm_read_vols(v);
 
 [sy sx sz] = size(tmap);
@@ -18,7 +18,7 @@ all_tvalues = zeros(sy,sx,sz+20,1000);
 for file = 1:1000
 
     file
-    v = spm_vol(['D:\fcon1000\Beijing\FalseClusters\spm_event2_s6_comparison' num2str(file) '.img']);
+    v = spm_vol(['/home/andek/Research_projects/RandomGroupAnalyses/Results/SPM/AllMaps/spm_event2_s6_comparison' num2str(file) '.img']);
     [tmap,aa] = spm_read_vols(v);
     % Pad with zeros in z direction
     all_tvalues(:,:,11:end-10,file) = tmap;       
@@ -158,8 +158,8 @@ L = [0 1];
 set(gca,'YTick',linspace(L(1),L(2),NumTicks))
 set(gca,'YTickLabel',{'0', '0.1', '0.2', '0.3','0.4', '0.5', '0.6', '0.7','0.8', '0.9', '1'})
 
-print -dpng 'SPM_empirical_theoretical_acf.png'
-print -depsc 'SPM_empirical_theoretical_acf.eps'
+%print -dpng 'SPM_empirical_theoretical_acf.png'
+%print -depsc 'SPM_empirical_theoretical_acf.eps'
 
 
 
@@ -188,6 +188,6 @@ L = [0 1];
 set(gca,'YTick',linspace(L(1),L(2),NumTicks))
 set(gca,'YTickLabel',{'0', '0.1', '0.2', '0.3','0.4', '0.5', '0.6', '0.7','0.8', '0.9', '1'})
 
-print -dpng 'SPM_empirical_theoretical_acf_bw.png'
-print -deps 'SPM_empirical_theoretical_acf_bw.eps'
+%print -dpng 'SPM_empirical_theoretical_acf_bw.png'
+%print -deps 'SPM_empirical_theoretical_acf_bw.eps'
 

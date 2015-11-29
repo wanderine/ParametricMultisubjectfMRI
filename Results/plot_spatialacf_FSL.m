@@ -10,14 +10,14 @@ all_values = zeros(91,109,111,1000);
 OLS = 1;
 FLAME = 2;
 
-analysis = FLAME;
+analysis = OLS;
 
 if analysis == OLS
     
     for file = 1:1000
         file
         
-        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FalseClustersCDT23/AllMapsOLS/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
+        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/FSL/AllMapsOLS/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
         difference = double(difference.img);
         
         % Pad with zeros in z direction
@@ -29,7 +29,7 @@ elseif analysis == FLAME
     for file = 1:1000
         file
         
-        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FalseClustersCDT23/AllMapsFLAME/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
+        difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/FSL/AllMapsFLAME/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
         difference = double(difference.img);
         
         % Pad with zeros in z direction
@@ -166,8 +166,8 @@ if analysis == OLS
     L = [0 1];
     set(gca,'YTick',linspace(L(1),L(2),NumTicks))
     set(gca,'YTickLabel',{'0', '0.1', '0.2', '0.3','0.4', '0.5','0.6', '0.7','0.8', '0.9', '1'})
-    print -dpng 'FSLOLS_empirical_theoretical_acf.png'
-    print -depsc 'FSLOLS_empirical_theoretical_acf.eps'
+    %print -dpng 'FSLOLS_empirical_theoretical_acf.png'
+    %print -depsc 'FSLOLS_empirical_theoretical_acf.eps'
     
     figure
     plot(0:acf_length,mean_acf,'k')
@@ -191,8 +191,8 @@ if analysis == OLS
     set(gca,'YTick',linspace(L(1),L(2),NumTicks))
     set(gca,'YTickLabel',{'0', '0.1', '0.2', '0.3','0.4', '0.5', '0.6', '0.7','0.8', '0.9', '1'})
     
-    print -dpng 'FSLOLS_empirical_theoretical_acf_bw.png'
-    print -deps 'FSLOLS_empirical_theoretical_acf_bw.eps'
+    %print -dpng 'FSLOLS_empirical_theoretical_acf_bw.png'
+    %print -deps 'FSLOLS_empirical_theoretical_acf_bw.eps'
     
     
 elseif analysis == FLAME
@@ -213,8 +213,8 @@ elseif analysis == FLAME
     L = [0 10];
     set(gca,'XTick',linspace(L(1),L(2),NumTicks))
     set(gca,'XTickLabel',{'0', '2', '4', '6','8', '10', '12', '14','16', '18', '20', '22'})
-    print -dpng 'FSLFLAME_empirical_theoretical_acf.png'
-    print -depsc 'FSLFLAME_empirical_theoretical_acf.eps'
+    %print -dpng 'FSLFLAME_empirical_theoretical_acf.png'
+    %print -depsc 'FSLFLAME_empirical_theoretical_acf.eps'
     
     
     figure
@@ -239,8 +239,8 @@ elseif analysis == FLAME
     set(gca,'YTick',linspace(L(1),L(2),NumTicks))
     set(gca,'YTickLabel',{'0', '0.1', '0.2', '0.3','0.4', '0.5', '0.6', '0.7','0.8', '0.9', '1'})
     
-    print -dpng 'FSLFLAME_empirical_theoretical_acf_bw.png'
-    print -deps 'FSLFLAME_empirical_theoretical_acf_bw.eps'
+    %print -dpng 'FSLFLAME_empirical_theoretical_acf_bw.png'
+    %print -deps 'FSLFLAME_empirical_theoretical_acf_bw.eps'
     
 end
 

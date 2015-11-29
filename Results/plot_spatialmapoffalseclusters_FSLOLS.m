@@ -6,11 +6,7 @@ addpath('/home/andek/Research_projects/nifti_matlab')
 
 load FSLOLS_clusterThresholds_1_10000_Beijing_event2_smoothing6mm_twosamplettest_20subjects
 
-% Load the anatomical template
-brain = load_nii(['/usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz']);
-brain = double(brain.img);  
-
-false_clusters = zeros(size(brain));
+false_clusters = zeros(91,109,91);
 
 significant_clusters = 0;
 clusters_per_file = zeros(10000,1);
@@ -23,7 +19,7 @@ for file = 1:10000
     file
     
     % Load a new group difference map
-    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FSL/FalseClustersCDT23/AllMapsOLS/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
+    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/FSL/AllMapsOLS/false_difference_Beijing_6mm_Event2_comparison' num2str(file) '.nii.gz']);
     difference = double(difference.img);
        
     %---------    
@@ -62,7 +58,6 @@ slice = 51;
 figure; imagesc(false_clusters(:,:,slice)); colormap gray; axis image; axis off; colorbar
 title('Spatial distribution of false clusters for FSL OLS')
 set(gca,'FontSize',15)
-%print -dpng FSLOLS_false_clusters.png
-%print -deps FSLOLS_false_clusters.eps
+
 
 

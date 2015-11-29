@@ -3,22 +3,15 @@ clear all
 clc
 
 addpath('/home/andek/Research_projects/nifti_matlab')
-%addpath('/home/andek/nifti_matlab')
 
 load AFNI_clusterThresholds_1_10000_Beijing_event2_smoothing6mm_twosamplettest_20subjects
 
-brain = load_nii('/home/andek/Research_projects/RandomGroupAnalyses/FalseSignificantClusters/TT_N27.nii');
-%brain = load_nii('/home/andek/AFNI/TT_N27.nii');
-brain = double(brain.img);
-brain = brain(1:3:end,1:3:end,1:3:end);
-brain = brain(:,:,1:end-1);
-
-false_clusters = zeros(size(brain));
+false_clusters = zeros(54,64,50);
 
 for file = 1:10000
     file
     
-    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/FalseClusters/DifferenceMapsOLS/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
+    difference = load_nii(['/home/andek/Research_projects/RandomGroupAnalyses/Results/AFNI/AllMapsOLS/Beijing_6mm_randomEvent_REML_' num2str(file) '.nii']);
     difference = double(difference.img);
     
     % Get z-score for Group 1 - Group 2, for OLS sub-brick 2 represents
@@ -58,7 +51,5 @@ slice = 32;
 figure; imagesc(false_clusters(:,:,slice)); colormap gray; axis image; axis off; colorbar
 title('Spatial distribution of false clusters for AFNI OLS')
 set(gca,'FontSize',15)
-%print -dpng AFNIOLS_false_clusters.png
-%print -deps AFNIOLS_false_clusters.eps
 
 
