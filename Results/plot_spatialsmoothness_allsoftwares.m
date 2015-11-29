@@ -23,7 +23,7 @@ brain = brain(5:end-5,5:end-5,:);
 mean_FWHM_brainsize = mean_FWHM_brainsize(5:end-5,5:end-5,:);
 
 figure
-imagesc(mean_FWHM_brainsize(:,:,50) * SPM_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness SPM (mm FWHM)'); axis image; axis off
+imagesc(mean_FWHM_brainsize(:,:,50) * SPM_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness SPM (mm FWHM)'); axis image; axis off; set(gca,'FontSize',15)
 print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/results/SPM_smoothness.png
 
 %-----------
@@ -33,13 +33,13 @@ print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/re
 load spatialsmoothness_FSLOLS.mat
 
 figure
-imagesc(mean_FWHM(:,:,51) * FSL_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness FSL OLS (mm FWHM)'); axis image; axis off
+imagesc(mean_FWHM(:,:,51) * FSL_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness FSL OLS (mm FWHM)'); axis image; axis off; set(gca,'FontSize',15)
 print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/results/FSLOLS_smoothness.png
 
 load spatialsmoothness_FSLFLAME.mat
 
 figure
-imagesc(mean_FWHM(:,:,51) * FSL_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness FSL FLAME (mm FWHM)'); axis image; axis off
+imagesc(mean_FWHM(:,:,51) * FSL_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness FSL FLAME (mm FWHM)'); axis image; axis off; set(gca,'FontSize',15)
 print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/results/FSLFLAME_smoothness.png
 
 %-----------
@@ -49,13 +49,13 @@ print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/re
 load spatialsmoothness_AFNIOLS.mat
 
 figure
-imagesc(mean_FWHM(:,:,32) * AFNI_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness AFNI OLS (mm FWHM)'); axis image; axis off
+imagesc(mean_FWHM(:,:,32) * AFNI_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness AFNI OLS (mm FWHM)'); axis image; axis off; set(gca,'FontSize',15)
 print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/results/AFNIOLS_smoothness.png
 
 load spatialsmoothness_AFNIMEMA.mat
 
 figure
-imagesc(mean_FWHM(:,:,32) * AFNI_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness AFNI MEMA (mm FWHM)'); axis image; axis off
+imagesc(mean_FWHM(:,:,32) * AFNI_voxel_size,[0 20]); colormap gray; colorbar; title('Smoothness AFNI MEMA (mm FWHM)'); axis image; axis off; set(gca,'FontSize',15)
 print -dpng /home/andek/Dropbox/Dokument/LIU/Mina_Artiklar/NatureNeuroscience/results/AFNIMEMA_smoothness.png
 
 

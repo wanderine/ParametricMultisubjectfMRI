@@ -141,7 +141,7 @@ plot(0:acf_length,mean_acf)
 hold on
 plot(0:acf_length,exp(-[0:3:(acf_length*3)]/12),'g')
 hold on
-plot(0:acf_length,exp(-[0:3:(acf_length*3)].^2/50),'r')
+plot(0:acf_length,exp(-[0:3:(acf_length*3)].^2/(2*AFNI_std^2)),'r')
 hold off
 legend('Mean AFNI MEMA ACF','Exponential ACF',sprintf('Squared exponential ACF, \nFWHM = 8 mm'))
 xlabel('Distance (mm)')
