@@ -258,7 +258,7 @@ for groupanalysis = 1:nGroupAnalyses
     
     originaltscoresnoweight = zeros(sy,sx,sz);
     
-    for z = 40:40        
+    for z = 40:40
         for x = 1:sx
             for y = 1:sy
                 
@@ -269,7 +269,7 @@ for groupanalysis = 1:nGroupAnalyses
                     % Initial OLS
                     W = diag(ones(nSubj,1));
                     beta = inv(X'*W*X)*X'*W*Y;
-                    residuals = Y - X*beta;                                       
+                    residuals = Y - X*beta;
                     originaltscoresnoweight(y,x,z) = beta / (sqrt(var(residuals) * inv(X'*X)));
                     
                 end
@@ -285,7 +285,7 @@ for groupanalysis = 1:nGroupAnalyses
     originaltscores = zeros(sy,sx,sz);
     
     % Robust regression in each voxel
-    for z = 40:40        
+    for z = 40:40
         for x = 1:sx
             for y = 1:sy
                 
@@ -354,9 +354,48 @@ for groupanalysis = 1:nGroupAnalyses
         end
         
         
-        % Robust regression
-        
-        
+        % Robust regression in each voxel
+        for z = 40:40
+            for x = 1:sx
+                for y = 1:sy
+                    
+                    if mask(y,x,z) == 1
+                        
+                        Y = squeeze(newdata(y,x,z,:));
+                        
+                        % Initial OLS
+                        W = diag(ones(nSubj,1));
+                        beta = inv(X'*W*X)*X'*W*Y;
+                        residuals = Y - X*beta;
+                        
+                        for it = 1:10
+                            
+                            % Median absolute deviation
+                            m = median(residuals);
+                            MAD = median(abs(residuals - m));
+                            
+                            % Standardize
+                            residuals = residuals / MAD;
+                            residuals = residuals .* adjustment;
+                            
+                            % Apply weight function
+                            %m = median(residuals);
+                            %MAD = median(abs(residuals - m));
+                            %w = residuals .* (1 - (residuals/(6*MAD)).^2).^2;
+                            w = (1 - (residuals/(12*MAD)).^2).^2;
+                            W = diag(w);
+                            
+                            beta = inv(X'*W*X)*X'*W*Y;
+                            residuals = Y - X*beta;
+                            
+                        end
+                        
+                        permutedtscores(y,x,z) = beta / (sqrt(var(residuals) * inv(X'*X)));
+                    end
+                end
+            end
+        end
+                        
         % Save max
         maxdist(perm) = max(permutedtscores(:));
         
