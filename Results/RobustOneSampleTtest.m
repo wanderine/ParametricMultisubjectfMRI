@@ -224,7 +224,7 @@ X = ones(nSubj,1);
 
 significant = 0;
 
-slice = 50;
+slices = 1:sz;
 
 for groupanalysis = 1:nGroupAnalyses
     
@@ -258,11 +258,17 @@ for groupanalysis = 1:nGroupAnalyses
         mask = mask .* double(temp.img);
     end
     
+    temp = mask;
+    
+    [xx,yy,zz] = ndgrid(-3:3);
+    nhood = sqrt(xx.^2 + yy.^2 + zz.^2) <= 3.0;
+    mask = imerode(mask,nhood);
+    
     maxdist = zeros(nPerm,1);
     
     originaltscoresnoweight = zeros(sy,sx,sz);
     
-    for z = slice:slice
+    for z = slices
         for x = 1:sx
             for y = 1:sy
                 
@@ -289,7 +295,7 @@ for groupanalysis = 1:nGroupAnalyses
     originaltscores = zeros(sy,sx,sz);
     
     % Robust regression in each voxel
-    for z = slice:slice
+    for z = slices
         for x = 1:sx
             for y = 1:sy
                 
@@ -316,8 +322,8 @@ for groupanalysis = 1:nGroupAnalyses
                         %m = median(residuals);
                         %MAD = median(abs(residuals - m));
                         %w = residuals .* (1 - (residuals/(9*MAD)).^2).^2;
-                        w = (1 - (residuals/(9*MAD)).^2).^2;
-                                                
+                        w = (1 - (residuals/(12*MAD)).^2).^2;
+                        
                         %w = abs(residuals).^(-1);
                         W = diag(w);
                         
@@ -330,14 +336,14 @@ for groupanalysis = 1:nGroupAnalyses
                 end
             end
         end
-    end        
+    end
     
     % Calculate null distribution for robust regression
     for perm = 1:nPerm
-       
+        
         permutedtscores = zeros(sy,sx,sz);
         
-        perm        
+        perm
         
         if perm > 1
             
@@ -400,7 +406,7 @@ for groupanalysis = 1:nGroupAnalyses
                 end
             end
         end
-                        
+        
         % Save max
         maxdist(perm) = max(permutedtscores(:));
         
@@ -433,4 +439,12 @@ end
 
 FWE = significant / nGroupAnalyses
 
+
+
+for slice = 1:sz
+    slice
+    figure(1)
+    imagesc([ originaltscoresnoweight(:,:,slice) - originaltscores(:,:,slice) ] ); colorbar
+    pause
+end
 
