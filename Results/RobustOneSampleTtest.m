@@ -215,7 +215,7 @@ nSubj = 20;
 
 sx = 109; sy = 91; sz = 91;
 
-nPerm = 100;
+nPerm = 1;
 
 nGroupAnalyses = 1;
 
@@ -223,6 +223,8 @@ nGroupAnalyses = 1;
 X = ones(nSubj,1);
 
 significant = 0;
+
+slice = 50;
 
 for groupanalysis = 1:nGroupAnalyses
     
@@ -260,7 +262,7 @@ for groupanalysis = 1:nGroupAnalyses
     
     originaltscoresnoweight = zeros(sy,sx,sz);
     
-    for z = 40:40
+    for z = slice:slice
         for x = 1:sx
             for y = 1:sy
                 
@@ -287,7 +289,7 @@ for groupanalysis = 1:nGroupAnalyses
     originaltscores = zeros(sy,sx,sz);
     
     % Robust regression in each voxel
-    for z = 40:40
+    for z = slice:slice
         for x = 1:sx
             for y = 1:sy
                 
@@ -300,7 +302,7 @@ for groupanalysis = 1:nGroupAnalyses
                     beta = inv(X'*W*X)*X'*W*Y;
                     residuals = Y - X*beta;
                     
-                    for it = 1:10
+                    for it = 1:5
                         
                         % Median absolute deviation
                         m = median(residuals);
@@ -308,13 +310,15 @@ for groupanalysis = 1:nGroupAnalyses
                         
                         % Standardize
                         residuals = residuals / MAD;
-                        residuals = residuals .* adjustment;
+                        %residuals = residuals .* adjustment;
                         
                         % Apply weight function
                         %m = median(residuals);
                         %MAD = median(abs(residuals - m));
-                        %w = residuals .* (1 - (residuals/(6*MAD)).^2).^2;
-                        w = (1 - (residuals/(12*MAD)).^2).^2;
+                        %w = residuals .* (1 - (residuals/(9*MAD)).^2).^2;
+                        w = (1 - (residuals/(9*MAD)).^2).^2;
+                                                
+                        %w = abs(residuals).^(-1);
                         W = diag(w);
                         
                         beta = inv(X'*W*X)*X'*W*Y;
@@ -326,12 +330,12 @@ for groupanalysis = 1:nGroupAnalyses
                 end
             end
         end
-    end
-    
-    permutedtscores = zeros(sy,sx,sz);
+    end        
     
     % Calculate null distribution for robust regression
     for perm = 1:nPerm
+       
+        permutedtscores = zeros(sy,sx,sz);
         
         perm        
         
@@ -428,4 +432,5 @@ for groupanalysis = 1:nGroupAnalyses
 end
 
 FWE = significant / nGroupAnalyses
+
 
