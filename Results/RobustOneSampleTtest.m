@@ -222,6 +222,8 @@ nGroupAnalyses = 1;
 % Designmatrix
 X = ones(nSubj,1);
 
+significant = 0;
+
 for groupanalysis = 1:nGroupAnalyses
     
     groupanalysis
@@ -331,8 +333,7 @@ for groupanalysis = 1:nGroupAnalyses
     % Calculate null distribution for robust regression
     for perm = 1:nPerm
         
-        %perm
-        
+        perm        
         
         if perm > 1
             
@@ -418,8 +419,13 @@ for groupanalysis = 1:nGroupAnalyses
         end
     end
     
+    % Check if smallest p-value is smaller than 0.05
+    if min(corrpvalues(:) <= 0.05)
+        significant = significant + 1;
+    end
+    
     
 end
 
-
+FWE = significant / nGroupAnalyses
 
