@@ -5,10 +5,13 @@ clc
 %study = 'Beijing';
 %load ../SPM/randomDifferenceEventsBeijingAllSubjects.mat
 
-study = 'Cambridge';
-load ../SPM/randomDifferenceEventsCambridgeAllSubjects.mat
+%study = 'Cambridge';
+%load ../SPM/randomDifferenceEventsCambridgeAllSubjects.mat
 
-numEvents = 11;
+study = 'Oulu';
+load ../SPM/randomDifferenceEventsOuluAllSubjects.mat
+
+numEvents = 13;
 
 BeijingSubjects={
     
@@ -416,10 +419,119 @@ CambridgeSubjects={
 
 };
 
-for subject = 1:198
+OuluSubjects = {
+    
+'sub01077'
+'sub01241'
+'sub01261'
+'sub01679'
+'sub02036'
+'sub05081'
+'sub06307'
+'sub07552'
+'sub07876'
+'sub07946'
+'sub10958'
+'sub12060'
+'sub12126'
+'sub12152'
+'sub12379'
+'sub14473'
+'sub14725'
+'sub15128'
+'sub15422'
+'sub15497'
+'sub16378'
+'sub18356'
+'sub19159'
+'sub19971'
+'sub20495'
+'sub20926'
+'sub21499'
+'sub21502'
+'sub22180'
+'sub23392'
+'sub24781'
+'sub25331'
+'sub26554'
+'sub27274'
+'sub27392'
+'sub29793'
+'sub31444'
+'sub32052'
+'sub32596'
+'sub33176'
+'sub35020'
+'sub35232'
+'sub35967'
+'sub39346'
+'sub39460'
+'sub40619'
+'sub41433'
+'sub41724'
+'sub41731'
+'sub42178'
+'sub43055'
+'sub43803'
+'sub45566'
+'sub46973'
+'sub47094'
+'sub49227'
+'sub50637'
+'sub51387'
+'sub57150'
+'sub58867'
+'sub62124'
+'sub63516'
+'sub65041'
+'sub65461'
+'sub66467'
+'sub68752'
+'sub69925'
+'sub72000'
+'sub72795'
+'sub73221'
+'sub73709'
+'sub73853'
+'sub74276'
+'sub74941'
+'sub75293'
+'sub75361'
+'sub75620'
+'sub76935'
+'sub77629'
+'sub78282'
+'sub78327'
+'sub78648'
+'sub79784'
+'sub84631'
+'sub85532'
+'sub86362'
+'sub86410'
+'sub86559'
+'sub89213'
+'sub90623'
+'sub91105'
+'sub91222'
+'sub91232'
+'sub94314'
+'sub95854'
+'sub96080'
+'sub96197'
+'sub98146'
+'sub98207'
+'sub98439'
+'sub98661'
+'sub98739'
+'sub99718'
+
+};
+
+for subject = 1:103
     
     %subjectString = BeijingSubjects{subject};
-    subjectString = CambridgeSubjects{subject};
+    %subjectString = CambridgeSubjects{subject};
+    subjectString = OuluSubjects{subject};
     
     fid = fopen(['/home/andek/Research_projects/RandomGroupAnalyses/' study '_randomevents/differenceEventsstim1_' subjectString '.txt'],'w');    
     for event = 1:numEvents
